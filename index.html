@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f3efe7" />
+    <meta name="description" content="Learn something useful every day across economics, art, science, psychology, history, technology, and more." />
+    <title>Daily Knowledge</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23171916'/%3E%3Cpath d='M15 13h34v38H15z' rx='4' fill='%23f5efe3'/%3E%3Cpath d='M20 20h24v3H20zm0 8h18v3H20zm0 8h24v3H20z' fill='%238d342e'/%3E%3Cpath d='M41 43l3 3 6-8' fill='none' stroke='%23c7a86a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <button class="brand" type="button" data-view-link="today" aria-label="Daily Knowledge home">
+          <span class="brand-mark" aria-hidden="true">DK</span>
+          <span>
+            <strong>Daily Knowledge</strong>
+            <small>Learn something useful every day.</small>
+          </span>
+        </button>
+        <button class="icon-button" id="settings-button" type="button" aria-label="Choose topics" title="Choose topics">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.42 1.42-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20h-2v-.08a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06-1.42-1.42.06-.06A1.7 1.7 0 0 0 9.4 15.4a1.7 1.7 0 0 0-1.56-1.03H7.8v-2h.08A1.7 1.7 0 0 0 9.44 11.3a1.7 1.7 0 0 0-.34-1.88l-.06-.06 1.42-1.42.06.06a1.7 1.7 0 0 0 1.88.34A1.7 1.7 0 0 0 13.43 6.8V6.7h2v.08a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06 1.42 1.42-.06.06a1.7 1.7 0 0 0-.34 1.88 1.7 1.7 0 0 0 1.56 1.03H21v2h-.08A1.7 1.7 0 0 0 19.4 15Z"/></svg>
+        </button>
+      </header>
+
+      <main>
+        <section id="today-view" class="view active" aria-labelledby="today-heading">
+          <div class="intro-row">
+            <div>
+              <p class="eyebrow" id="today-date"></p>
+              <h1 id="today-heading">Your daily three</h1>
+            </div>
+            <div class="streak-pill" aria-label="Learning streak"><span id="streak-count">0</span> day streak</div>
+          </div>
+          <div class="daily-progress" id="daily-progress" aria-live="polite">
+            <div class="score-lockup">
+              <span class="score-label">Daily score</span>
+              <strong id="daily-progress-label">0 / 3</strong>
+              <em id="daily-progress-message">Today’s challenge: master three ideas.</em>
+            </div>
+            <div class="progress-track" aria-hidden="true"><span id="daily-progress-fill"></span></div>
+          </div>
+          <div id="daily-deck" class="daily-deck"></div>
+          <p class="daily-note">A fresh card from every selected topic, every day. No endless feed.</p>
+        </section>
+
+        <section id="library-view" class="view" aria-labelledby="library-heading">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Explore intentionally</p>
+              <h1 id="library-heading">Knowledge library</h1>
+            </div>
+            <span id="library-count" class="count-label"></span>
+          </div>
+          <div class="discovery-bar">
+            <div>
+              <span class="discovery-icon" aria-hidden="true">✦</span>
+              <span><strong>Your library keeps growing</strong><small>Discover a new sourced idea whenever curiosity strikes.</small></span>
+            </div>
+            <button class="primary-button" id="discover-button" type="button">Discover another idea</button>
+          </div>
+          <div class="filter-row" id="library-filters" aria-label="Filter cards"></div>
+          <div id="library-grid" class="library-grid"></div>
+        </section>
+
+        <section id="saved-view" class="view" aria-labelledby="saved-heading">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Your collection</p>
+              <h1 id="saved-heading">Saved ideas</h1>
+            </div>
+            <span id="saved-count" class="count-label"></span>
+          </div>
+          <div id="saved-grid" class="library-grid"></div>
+        </section>
+      </main>
+
+      <p class="privacy-note">No account needed · Your topics, streak and saved cards stay on this device.</p>
+
+      <nav class="bottom-nav" aria-label="Main navigation">
+        <button class="nav-item active" type="button" data-view-link="today">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5v-16Z"/><path d="M4 19a2 2 0 0 1 2-2h14"/></svg>
+          <span>Today</span>
+        </button>
+        <button class="nav-item" type="button" data-view-link="library">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><rect x="3" y="15" width="7" height="5" rx="1"/><rect x="14" y="15" width="7" height="5" rx="1"/></svg>
+          <span>Library</span>
+        </button>
+        <button class="nav-item" type="button" data-view-link="saved">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1Z"/></svg>
+          <span>Saved</span>
+        </button>
+      </nav>
+    </div>
+
+    <dialog id="topic-dialog" class="sheet-dialog">
+      <form method="dialog" id="topic-form">
+        <div class="sheet-handle" aria-hidden="true"></div>
+        <p class="eyebrow">Make it yours</p>
+        <h2>What do you want to understand better?</h2>
+        <p class="muted">Choose the subjects you’re curious about. You’ll receive one new card from every selected topic each day. No account is required.</p>
+        <div id="topic-options" class="topic-options"></div>
+        <p id="topic-error" class="form-error" role="alert"></p>
+        <button class="primary-button full-width" value="default" type="submit">Save my topics</button>
+      </form>
+    </dialog>
+
+    <dialog id="card-dialog" class="card-dialog">
+      <div class="dialog-content">
+        <button class="dialog-close icon-button" type="button" aria-label="Close card">×</button>
+        <div id="dialog-card"></div>
+      </div>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="./app.js"></script>
+  </body>
+</html>
