@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" role="img" aria-labelledby="title desc">
+  <title id="title">One Card Wiser monogram</title>
+  <desc id="desc">A gold numeral one and an ivory letter W inside a charcoal circle with a fine gold ring.</desc>
+  <rect width="1080" height="1080" fill="#f2eee5"/>
+  <circle cx="540" cy="540" r="500" fill="#20231f"/>
+  <circle cx="540" cy="540" r="468" fill="none" stroke="#a48650" stroke-width="12"/>
+  <g font-family="Georgia, Times New Roman, serif" font-weight="400">
+    <text x="337" y="682" fill="#a48650" font-size="430">1</text>
+    <text x="501" y="682" fill="#f5efe4" font-size="404" letter-spacing="-24">W</text>
+  </g>
+</svg>
