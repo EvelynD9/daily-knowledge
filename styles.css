@@ -67,17 +67,21 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .brand-mark {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
   width: 42px;
   height: 42px;
+  overflow: hidden;
   border-radius: 50%;
-  border: 1px solid rgba(196, 162, 97, .72);
+  border: 1px solid rgba(196, 162, 97, .82);
   background: var(--night);
-  color: #fff;
-  font: 600 13px/1 Georgia, serif;
-  letter-spacing: .09em;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  line-height: 42px;
 }
+.brand-one { color: var(--gold); font-size: 17px; }
+.brand-w { margin-left: -1px; color: #f5efe4; font-size: 16px; letter-spacing: -.06em; }
 
 .brand strong { display: block; font-family: Georgia, "Times New Roman", serif; font-size: 18px; }
 .brand small { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; }
