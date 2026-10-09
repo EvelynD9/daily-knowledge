@@ -52,7 +52,7 @@ run('fetchKnowledgeCard=async(topic)=>({...CARDS[0],id:"existing-source",topic,d
   assert.equal(urls.length,50);assert.equal(new Set(urls).size,50);
   for(const url of urls){const p=new URL(url).pathname;assert.ok(fs.existsSync(root+p.replace(/^\//,'')+'index.html'),p);}
   const html=fs.readFileSync(root+'index.html','utf8');
-  for(const match of html.matchAll(/(?:href|src)="\.\/([^"]+)"/g)){const file=root+match[1];assert.ok(fs.existsSync(file),file);}
+  for(const match of html.matchAll(/(?:href|src)="\.\/([^"]+)"/g)){const file=root+match[1].split('?')[0];assert.ok(fs.existsSync(file),file);}
   const manifest=JSON.parse(fs.readFileSync(root+'manifest.webmanifest','utf8'));for(const icon of manifest.icons)assert.ok(fs.existsSync(root+icon.src.replace(/^\.\//,'')));
   // Test service worker cache install, offline navigation and third-party exclusion.
   const swEvents={},cache=new Map();let responsePromise;

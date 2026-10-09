@@ -1,6 +1,7 @@
-const CACHE = "ocw-shell-v2";
+const CACHE = "ocw-shell-v3";
 const ROOT = new URL("./", self.location).pathname;
-const SHELL = ["", "index.html", "styles.css", "content.js", "app.js", "features.js", "analytics-config.js", "logo-mark.svg", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png"].map(path => ROOT + path);
+const SHELL = ["", "index.html", "styles.css?v=20261009-2", "content.js?v=20261009-2", "app.js?v=20261009-2", "features.js?v=20261009-2", "analytics-config.js?v=20261009-2", "logo-mark.svg", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png"].map(path => ROOT + path);
+const SHELL_PATHS = new Set(SHELL.map(path => path.split("?")[0]));
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)));
 });
@@ -18,10 +19,10 @@ self.addEventListener("fetch", event => {
       if (url.pathname === ROOT || url.pathname === ROOT + "index.html") return cache.match(ROOT + "index.html");
       return new Response('<h1>You are offline</h1><p>This public page is not cached. <a href="' + ROOT + '">Open your daily cards</a>.</p>', { headers: { "Content-Type": "text/html; charset=utf-8" } });
     }));
-  } else if (SHELL.includes(url.pathname)) {
+  } else if (SHELL_PATHS.has(url.pathname)) {
     event.respondWith(fetch(event.request).then(response => {
       if (response.ok) { const copy = response.clone(); event.waitUntil(caches.open(CACHE).then(cache => cache.put(event.request, copy))); }
       return response;
-    }).catch(() => caches.match(event.request)));
+    }).catch(() => caches.match(event.request, { ignoreSearch: true })));
   }
 });
