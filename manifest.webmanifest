@@ -1,0 +1,15 @@
+{
+  "id": "./",
+  "name": "One Card Wiser",
+  "short_name": "One Card Wiser",
+  "description": "Build a mind you’re proud of with short daily learning cards.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3efe7",
+  "theme_color": "#f3efe7",
+  "icons": [
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
