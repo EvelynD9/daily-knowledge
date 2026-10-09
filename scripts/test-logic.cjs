@@ -47,7 +47,47 @@ run('fetchKnowledgeCard=async(topic)=>({...CARDS[0],id:"existing-source",topic,d
   await run('discoverFreshCard()');assert.equal(run('state.discoveredCards.length'),1);assert.match(element('#toast').textContent,/No new source preview/);
   globals.localStorage.setItem=()=>{throw new Error('quota')};run('saveState()');assert.match(element('#toast').textContent,/could not save/);
   assert.equal(run('publicCardUrl(CARDS[0])'),'https://onecardwiser.com/cards/econ-opportunity-cost/');
-  assert.equal(run('analyticsConfigured()'),false);
+  assert.equal(run('analyticsConfigured()'),true);
+  // Verify the real consent handlers before enabling the configured measurement ID.
+  const gaStorage=new Map(), gaScripts=[], gaListeners={}; let gaDialog=null;
+  const gaElement={addEventListener(){},hidden:true};
+  const gaContext=vm.createContext({
+    URL,Date,navigator:{},location:{origin:'https://onecardwiser.com',pathname:'/',hostname:'onecardwiser.com'},
+    localStorage:{getItem:k=>gaStorage.get(k)||null,setItem:(k,v)=>gaStorage.set(k,v)},
+    document:{
+      cookie:'',
+      querySelector:s=>s==='#analytics-dialog'?gaDialog:gaElement,
+      addEventListener:(n,fn)=>gaListeners[n]=fn,
+      createElement:tag=>tag==='script'?{}:{
+        addEventListener(n,fn){this[n]=fn},
+        showModal(){},
+        close(){this.closeEvent?.()},
+        remove(){gaDialog=null}
+      },
+      head:{append:s=>gaScripts.push(s)},
+      body:{append:d=>{gaDialog=d;d.closeEvent=()=>d.remove()}}
+    },
+    addEventListener(){}
+  });
+  vm.runInContext('window=globalThis',gaContext);
+  vm.runInContext(fs.readFileSync(root+'analytics-config.js','utf8'),gaContext);
+  vm.runInContext(fs.readFileSync(root+'features.js','utf8'),gaContext);
+  gaListeners.DOMContentLoaded();
+  assert.equal(gaScripts.length,0,'No Google script before consent');
+  const choose=choice=>gaDialog.click({target:{closest:()=>({dataset:{consent:choice}})}});
+  choose('no');assert.equal(gaScripts.length,0,'Decline must not load Google');
+  vm.runInContext('analyticsChoices()',gaContext);choose('yes');
+  assert.equal(gaScripts.length,1);
+  assert.equal(gaScripts[0].src,'https://www.googletagmanager.com/gtag/js?id=G-GXCH42NMMJ');
+  vm.runInContext('trackEvent("card_complete",{topic:"science"})',gaContext);
+  const eventCount=gaContext.dataLayer.length;
+  vm.runInContext('analyticsChoices()',gaContext);choose('no');
+  vm.runInContext('trackEvent("card_complete",{topic:"science"})',gaContext);
+  assert.equal(gaContext.dataLayer.length,eventCount,'Withdrawal prevents further events');
+  assert.equal(gaContext['ga-disable-G-GXCH42NMMJ'],true);
+  vm.runInContext('analyticsChoices()',gaContext);choose('yes');
+  assert.equal(gaScripts.length,1,'Re-enabling must not duplicate the tag');
+  assert.equal(gaContext['ga-disable-G-GXCH42NMMJ'],false);
   const xml=fs.readFileSync(root+'sitemap.xml','utf8');const urls=[...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(m=>m[1]);
   assert.equal(urls.length,50);assert.equal(new Set(urls).size,50);
   for(const url of urls){const p=new URL(url).pathname;assert.ok(fs.existsSync(root+p.replace(/^\//,'')+'index.html'),p);}
@@ -61,5 +101,5 @@ run('fetchKnowledgeCard=async(topic)=>({...CARDS[0],id:"existing-source",topic,d
   swEvents.fetch({request:{method:'GET',mode:'navigate',url:'https://onecardwiser.com/'},respondWith:p=>responsePromise=p});assert.match(await (await responsePromise).text(),/cached/);
   swEvents.fetch({request:{method:'GET',mode:'navigate',url:'https://onecardwiser.com/topics/art/'},respondWith:p=>responsePromise=p});assert.match(await (await responsePromise).text(),/You are offline/);
   let intercepted=false;swEvents.fetch({request:{method:'GET',url:'https://en.wikipedia.org/w/api.php'},respondWith:()=>intercepted=true});assert.equal(intercepted,false);
-  console.log('PASS: all 33 cards have source links and quizzes; daily allocation, all 12 topics, completion, streak retention, undo, save, legacy migration, invalid state, duplicate rejection, storage failures, sharing URLs, analytics disabled, 50 sitemap pages, manifest assets and offline service worker.');
+  console.log('PASS: all 33 cards have source links and quizzes; daily allocation, all 12 topics, completion, streak retention, undo, save, legacy migration, invalid state, duplicate rejection, storage failures, sharing URLs, analytics consent and withdrawal, 50 sitemap pages, manifest assets and offline service worker.');
 })().catch(error=>{console.error(error);process.exitCode=1});

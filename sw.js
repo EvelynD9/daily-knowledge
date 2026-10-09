@@ -1,6 +1,6 @@
-const CACHE = "ocw-shell-v3";
+const CACHE = "ocw-shell-v4";
 const ROOT = new URL("./", self.location).pathname;
-const SHELL = ["", "index.html", "styles.css?v=20261009-2", "content.js?v=20261009-2", "app.js?v=20261009-2", "features.js?v=20261009-2", "analytics-config.js?v=20261009-2", "logo-mark.svg", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png"].map(path => ROOT + path);
+const SHELL = ["", "index.html", "styles.css?v=20261009-3", "content.js?v=20261009-3", "app.js?v=20261009-3", "features.js?v=20261009-3", "analytics-config.js?v=20261009-3", "logo-mark.svg", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png"].map(path => ROOT + path);
 const SHELL_PATHS = new Set(SHELL.map(path => path.split("?")[0]));
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)));
