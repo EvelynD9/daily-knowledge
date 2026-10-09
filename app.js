@@ -161,7 +161,11 @@ function ensureDailyCards() {
   if (!state.dailyCardIds[today] || typeof state.dailyCardIds[today] !== "object") state.dailyCardIds[today] = {};
   for (const topicId of state.topics) {
     const existing = findCard(state.dailyCardIds[today][topicId]);
-    if (!existing || existing.topic !== topicId) state.dailyCardIds[today][topicId] = pickDailyCard(topicId).id;
+    if (!existing || existing.topic !== topicId) {
+      const next = pickDailyCard(topicId);
+      state.dailyCardIds[today][topicId] = next.id;
+      delete state.quizAnswers[next.id];
+    }
   }
   saveState();
   renderAll();
