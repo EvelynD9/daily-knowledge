@@ -37,6 +37,11 @@ assert.equal(run('loadState().topics.join()'),'science');
 assert.equal(run('loadState().completionLog["2026-10-08"][0]'),'science-sleep');
 storage.set('daily-knowledge-v1','broken-json');assert.equal(run('loadState().topics.length'),3);
 storage.set('daily-knowledge-v1',JSON.stringify({topics:'bad',dailyCardIds:[],discoveredCards:[null,{}]}));assert.equal(run('loadState().discoveredCards.length'),0);
+run('state.discoveredCards=[{...CARDS[0],id:"old-source",discovered:true}];state.topics=["economics"];state.saved.push("old-source");state.dailyCardIds[dateKey()].economics="old-source";ensureDailyCards()');
+assert.equal(run('todaysCards()[0].discovered'),undefined);
+assert.equal(run('state.saved.includes("old-source")'),true);
+run('state.dailyCardIds[dateKey()].economics="old-source";state.completionLog[dateKey()]=["old-source"];ensureDailyCards()');
+assert.equal(run('todaysCards()[0].id'),'old-source');
 run('fetchKnowledgeCard=async(topic)=>({...CARDS[0],id:"existing-source",topic,discovered:true});state.discoveredCards=[{...CARDS[0],id:"existing-source",discovered:true}];state.topics=["economics"]');
 (async()=>{
   await run('discoverFreshCard()');assert.equal(run('state.discoveredCards.length'),1);assert.match(element('#toast').textContent,/No new source preview/);
