@@ -7,6 +7,18 @@
     <meta name="description" content="Become one card wiser every day with focused ideas across economics, art, science, psychology, history, technology, and more." />
     <title>One Card Wiser — Daily Learning</title>
     <link rel="icon" type="image/svg+xml" href="./logo-mark.svg" />
+    <link rel="canonical" href="https://onecardwiser.com/" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="One Card Wiser — Build a mind you’re proud of." />
+    <meta property="og:description" content="Short learning cards, practical examples and quick quizzes. Build your daily learning habit without an endless feed." />
+    <meta property="og:url" content="https://onecardwiser.com/" />
+    <meta property="og:image" content="https://onecardwiser.com/social-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://onecardwiser.com/social-preview.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"One Card Wiser","url":"https://onecardwiser.com/","description":"Short daily learning cards with examples, sources and quizzes."}</script>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -33,6 +45,7 @@
             </div>
             <div class="streak-pill" aria-label="Learning streak"><span id="streak-count">0</span> day streak</div>
           </div>
+          <p id="weekly-progress" class="weekly-progress" aria-live="polite"></p>
           <div class="daily-progress" id="daily-progress" aria-live="polite">
             <div class="score-lockup">
               <span class="score-label">Daily score</span>
@@ -42,7 +55,7 @@
             <div class="progress-track" aria-hidden="true"><span id="daily-progress-fill"></span></div>
           </div>
           <div id="daily-deck" class="daily-deck"></div>
-          <p class="daily-note">A fresh card from every selected topic, every day. No endless feed.</p>
+          <p class="daily-note">A daily card for each selected topic. Written ideas first, then spaced revisits to make them stick.</p>
         </section>
 
         <section id="library-view" class="view" aria-labelledby="library-heading">
@@ -56,9 +69,9 @@
           <div class="discovery-bar">
             <div>
               <span class="discovery-icon" aria-hidden="true">✦</span>
-              <span><strong>Your library keeps growing</strong><small>Discover a new sourced idea whenever curiosity strikes.</small></span>
+              <span><strong>Follow your curiosity</strong><small>Browse written cards or explore a clearly labelled Wikipedia source preview.</small></span>
             </div>
-            <button class="primary-button" id="discover-button" type="button">Discover another idea</button>
+            <button class="primary-button" id="discover-button" type="button">Explore a source preview</button>
           </div>
           <div class="filter-row" id="library-filters" aria-label="Filter cards"></div>
           <div id="library-grid" class="library-grid"></div>
@@ -76,6 +89,14 @@
         </section>
       </main>
 
+      <section class="site-tools" aria-label="More from One Card Wiser">
+        <button class="secondary-button" id="install-button" type="button">Install on your phone</button>
+        <a href="./learn-something-new-every-day/">Daily learning</a>
+        <a href="./topics/">Explore topics</a>
+        <a href="./privacy/">Privacy</a>
+        <button class="text-button" id="analytics-settings" type="button">Analytics choices</button>
+        <p id="install-help" hidden></p>
+      </section>
       <p class="privacy-note">No account needed · Your topics, streak and saved cards stay on this device.</p>
 
       <nav class="bottom-nav" aria-label="Main navigation">
@@ -99,7 +120,7 @@
         <div class="sheet-handle" aria-hidden="true"></div>
         <p class="eyebrow">Make it yours</p>
         <h2>What do you want to understand better?</h2>
-        <p class="muted">Choose the subjects you’re curious about. You’ll receive one new card from every selected topic each day. No account is required.</p>
+        <p class="muted">Choose the subjects you’re curious about. You’ll receive a daily card from every selected topic, with earlier ideas revisited when you finish the written collection. No account is required.</p>
         <div id="topic-options" class="topic-options"></div>
         <p id="topic-error" class="form-error" role="alert"></p>
         <button class="primary-button full-width" value="default" type="submit">Save my topics</button>
@@ -114,6 +135,9 @@
     </dialog>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="./analytics-config.js"></script>
+    <script src="./features.js"></script>
+    <script src="./content.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>
