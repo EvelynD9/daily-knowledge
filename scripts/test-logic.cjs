@@ -8,10 +8,23 @@ const globals={console, URL, URLSearchParams, AbortSignal, FormData, Date, setTi
   fetch:async()=>{throw new Error('network offline')}};
 globals.window=globals;globals.scrollTo=()=>{};globals.addEventListener=(name,fn)=>listeners.set('window:'+name,fn);
 const ctx=vm.createContext(globals);
-for(const file of ['analytics-config.js','content.js','locales.js','content-el.js','content-ru.js','content-ro.js','extra-content.js','i18n.js','features.js','review.js','app.js'])vm.runInContext(fs.readFileSync(root+file,'utf8'),ctx,{filename:file});
+for(const file of ['analytics-config.js','content.js','locales.js','content-el.js','content-ru.js','content-ro.js','extra-content.js','i18n.js','features.js','review.js','experience.js','app.js'])vm.runInContext(fs.readFileSync(root+file,'utf8'),ctx,{filename:file});
 const run=code=>vm.runInContext(code,ctx);
 const click=attributes=>listeners.get('document:click')({target:{closest:selector=>attributes[selector]||null}});
 assert.equal(run('todaysCards().length'),3);
+assert.equal(element('#welcome-panel').hidden,false,'First visit offers a sample without a blocking modal');
+assert.equal(element('#session-complete').hidden,true);
+const initialState=run('JSON.stringify(state)');
+run('state.onboardingSeen=true;renderToday()');assert.equal(element('#welcome-panel').hidden,true);
+run('state.completionLog[dateKey()]=todaysCards().map(c=>c.id);renderToday()');
+assert.equal(element('#session-complete').hidden,false);assert.equal(element('#daily-progress').hidden,true);
+assert.match(element('#session-complete').innerHTML,/You completed 3 ideas today/);
+assert.match(run('sessionNextAction(todaysCards()[0])'),/data-session-summary/);
+run('state.completionLog[dateKey()].splice(1,1);renderToday()');
+assert.equal(element('#session-complete').hidden,true);assert.match(run('sessionNextAction(todaysCards()[0])'),/data-next-idea/);
+run('state=JSON.parse('+JSON.stringify(initialState)+');renderToday()');
+const report=run('feedbackReport("A sample usability report","bug")');assert.match(report,/Bug/);assert.match(report,/Language: en/);assert.doesNotMatch(report,/saved|completionLog|quizAnswers/);
+
 assert.equal(run('CARDS.length'),96);
 assert.equal(run('t("Last 7 days: {n} cards completed · {d} days of learning",{n:1,d:1})'),'Last 7 days: 1 card completed · 1 day of learning');
 assert.equal(run('new Set(CARDS.map(c=>c.id)).size'),96);

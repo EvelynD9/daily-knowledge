@@ -9,6 +9,7 @@ function initialLanguage(){
 }
 function t(key,values={}){
  let text=UI_TRANSLATIONS[key]?.[currentLanguage]||key;
+ if(values.n===1 && key==="You completed {n} ideas today.")text={en:"You completed one idea today.",el:"Ολοκλήρωσες μία ιδέα σήμερα.",ru:"Сегодня вы завершили одну карточку.",ro:"Ai finalizat o idee astăzi."}[currentLanguage];
  if(currentLanguage==="en"){
   if(key==="{n} ideas"&&values.n===1)text="{n} idea";
   if(key==="Last 7 days: {n} cards completed · {d} days of learning"){

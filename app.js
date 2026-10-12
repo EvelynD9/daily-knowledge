@@ -264,11 +264,13 @@ function cardMarkup(card, { dialog = false } = {}) {
         ${!card.discovered ? `<p class="source-attribution">${t("Explanation and illustrative examples by One Card Wiser. Source linked for further reading.")}</p>` : ""}
         ${quizMarkup(card)}
         ${reviewAction(card)}
+        ${sessionNextAction(card)}
         <div class="card-actions">
           <button class="primary-button ${complete ? "completed" : ""}" type="button" data-complete="${escapeHtml(card.id)}">${complete ? t("✓ Completed") : t("Mark as complete")}</button>
           <button class="secondary-button ${saved ? "saved" : ""}" type="button" data-save="${escapeHtml(card.id)}">${saved ? t("★ Saved") : t("☆ Save for later")}</button>
           <button class="secondary-button" type="button" data-share="${escapeHtml(card.id)}">${t("Share idea ↗")}</button>
           <button class="secondary-button" type="button" data-download="${escapeHtml(card.id)}">${t("Download story ↓")}</button>
+          <button class="text-button" type="button" data-open-feedback>${t("Feedback or a problem?")}</button>
         </div>
       </div>
     </article>`;
@@ -328,6 +330,7 @@ function renderToday() {
   document.querySelector("#daily-progress").classList.toggle("complete", allDone);
   document.querySelector("#streak-count").textContent = calculateStreak();
   document.querySelector("#streak-label").textContent=t("{n} day streak",{n:calculateStreak()});
+  renderSessionExperience({allDone,completed,total,cards});
 }
 
 function calculateStreak() {
@@ -440,6 +443,7 @@ document.addEventListener("click", event => {
     saveState(); renderAll();
     const dailyIds = todaysCards().map(card => card.id);
     const dailySetComplete = dailyIds.includes(id) && dailyIds.length === state.topics.length && dailyIds.every(cardId => isCompleteToday(cardId));
+    if(completing && dailySetComplete)trackEvent("daily_set_complete",{cards:dailyIds.length});
     showToast(!completing ? t("Marked as not completed") : dailySetComplete ? t("Daily set complete — brilliant work ✦") : t("One down. Keep your curiosity moving."));
   }
 
@@ -515,7 +519,7 @@ document.querySelector("#topic-form").addEventListener("submit", event => {
 document.querySelector("#discover-button").addEventListener("click", discoverFreshCard);
 
 document.querySelector(".dialog-close").addEventListener("click", () => document.querySelector("#card-dialog").close());
-document.querySelector("#card-dialog").addEventListener("close",()=>{activeReviewId=null;activeReviewAnswer=null;});
+document.querySelector("#card-dialog").addEventListener("close",()=>{activeReviewId=null;activeReviewAnswer=null;if(introAnalyticsPending){introAnalyticsPending=false;maybeAskAnalytics();}});
 document.querySelector("#card-dialog").addEventListener("click", event => {
   if (event.target === event.currentTarget) event.currentTarget.close();
 });
@@ -524,7 +528,7 @@ renderAll();
 ensureDailyCards();
 const requestedCard = new URLSearchParams(location.search).get("card");
 if (requestedCard && findCard(requestedCard)) openCard(requestedCard);
-else if (!state.onboardingSeen) setTimeout(() => document.querySelector("#topic-dialog").showModal(), 350);
+
 let renderedDay = dateKey();
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden && renderedDay !== dateKey()) { renderedDay = dateKey(); ensureDailyCards(); }
