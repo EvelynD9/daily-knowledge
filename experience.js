@@ -17,7 +17,7 @@ function sessionNextAction(card) {
 function feedbackReport(message, category) {
   const categories = {usability:'Usability', content:'Content or translation', bug:'Bug', idea:'Suggestion'};
   const card = document.querySelector('#card-dialog').open ? activeDialogCardId : null;
-  return `${categories[category] || 'Feedback'}\n\n${message.trim()}\n\nLanguage: ${currentLanguage}\nCard: ${card || 'General website'}\nVersion: 20261012-6`;
+  return `${categories[category] || 'Feedback'}\n\n${message.trim()}\n\nLanguage: ${currentLanguage}\nCard: ${card || 'General website'}\nVersion: 20261012-7`;
 }
 
 document.addEventListener('click', async event => {

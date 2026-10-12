@@ -55,6 +55,11 @@ assert.equal(JSON.parse(exported).state.saved[0],'econ-opportunity-cost');
 assert.ok(!exported.includes('ocw-analytics-consent'));
 run('this.parsedBackup=readProgressBackup('+JSON.stringify(exported)+')');
 assert.equal(run('parsedBackup.state.quizAnswers["econ-opportunity-cost"]'),1);
+run('this.fresh=JSON.parse(JSON.stringify(DEFAULT_STATE));fresh.dailyCardIds[dateKey()]={economics:"econ-inflation"};this.transferred=mergeProgressBackup(fresh,parsedBackup.state)');
+assert.equal(run('transferred.dailyCardIds[dateKey()].economics'),'econ-opportunity-cost','A fresh device restores the backup daily selection');
+assert.equal(run('transferred.saved.includes("econ-opportunity-cost")'),true);
+assert.equal(run('transferred.quizAnswers["econ-opportunity-cost"]'),1);
+
 assert.throws(()=>run('readProgressBackup("invalid JSON")'),/valid/);
 const malformed=JSON.parse(exported);malformed.state.completed['econ-opportunity-cost']='2026-02-31';
 assert.throws(()=>run('readProgressBackup('+JSON.stringify(JSON.stringify(malformed))+')'),/invalid progress/);

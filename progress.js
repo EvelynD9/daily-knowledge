@@ -64,8 +64,9 @@ function mergeProgressBackup(current, incoming) {
   for(const day of new Set([...Object.keys(current.completionLog),...Object.keys(incoming.completionLog)]))completionLog[day]=[...new Set([...(current.completionLog[day]||[]),...(incoming.completionLog[day]||[])])];
   const completed=latest(current.completed,incoming.completed);
   for(const [day,ids] of Object.entries(completionLog))for(const id of ids)if(!completed[id] || day>completed[id])completed[id]=day;
+  const hasLearning=Object.keys(current.completed).length>0 || current.saved.length>0 || Object.keys(current.quizAnswers).length>0;
   const dailyCardIds={};
-  for(const day of new Set([...Object.keys(current.dailyCardIds),...Object.keys(incoming.dailyCardIds)]))dailyCardIds[day]={...(incoming.dailyCardIds[day]||{}),...(current.dailyCardIds[day]||{})};
+  for(const day of new Set([...Object.keys(current.dailyCardIds),...Object.keys(incoming.dailyCardIds)]))dailyCardIds[day]=hasLearning?{...(incoming.dailyCardIds[day]||{}),...(current.dailyCardIds[day]||{})}:{...(current.dailyCardIds[day]||{}),...(incoming.dailyCardIds[day]||{})};
   return {...current,topics:incoming.topics,completed,completionLog,dailyCardIds,
     saved:[...new Set([...current.saved,...incoming.saved])],
     quizAnswers:{...incoming.quizAnswers,...current.quizAnswers},
