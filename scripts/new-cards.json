@@ -1,0 +1,1325 @@
+[
+  {
+    "id": "psychology-retrieval",
+    "topic": "psychology",
+    "sourceName": "Roediger & Karpicke · Psychological Science",
+    "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/16507066/",
+    "answer": 1,
+    "en": [
+      "Remembering is a form of practice",
+      "Trying to recall an idea can strengthen later memory.",
+      "Rereading makes material familiar. Retrieval asks you to reconstruct it without looking; checking afterward helps correct mistakes.",
+      "Close a card, explain it in one sentence, then compare your explanation with the original.",
+      "Test your memory before reaching for the answer.",
+      "Which activity uses retrieval practice?",
+      [
+        "Reading the same paragraph again",
+        "Explaining it with the page closed",
+        "Highlighting every line"
+      ],
+      "Retrieval means bringing information back from memory."
+    ]
+  },
+  {
+    "id": "psychology-spacing",
+    "topic": "psychology",
+    "sourceName": "Toppino et al. · Memory & Cognition",
+    "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/29728945/",
+    "answer": 0,
+    "en": [
+      "Small sessions can outlast one marathon",
+      "Spaced practice distributes learning across time.",
+      "Returning after a gap can support lasting memory. Useful spacing depends on the material and how long you want to remember it.",
+      "Revisit an idea tomorrow and later in the week instead of reading it five times immediately.",
+      "Leave a gap, then recall again.",
+      "Which schedule uses spaced practice?",
+      [
+        "Short sessions on different days",
+        "Five rereads in one sitting",
+        "One uninterrupted all-night session"
+      ],
+      "Spacing separates learning sessions rather than concentrating them together."
+    ]
+  },
+  {
+    "id": "psychology-confirmation",
+    "topic": "psychology",
+    "sourceName": "OpenStax · Introduction to Philosophy",
+    "sourceUrl": "https://openstax.org/books/introduction-philosophy/pages/2-2-overcoming-cognitive-biases-and-engaging-in-critical-reflection",
+    "answer": 2,
+    "en": [
+      "Your favourite explanation needs a challenger",
+      "Confirmation bias favours evidence that supports an existing belief.",
+      "Searching only for agreement can make a weak belief feel well supported. Contrary evidence deserves a fair test too.",
+      "You believe a product is excellent and read only positive reviews, ignoring recurring complaints.",
+      "Ask what evidence would change your mind.",
+      "Which action helps challenge confirmation bias?",
+      [
+        "Reading only agreeing opinions",
+        "Counting repeated claims as independent proof",
+        "Examining credible evidence against your view"
+      ],
+      "A fair search includes information that could contradict your belief."
+    ]
+  },
+  {
+    "id": "psychology-anchoring",
+    "topic": "psychology",
+    "sourceName": "Tversky & Kahneman · Science",
+    "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/17835457/",
+    "answer": 1,
+    "en": [
+      "The first number can set the frame",
+      "Anchoring occurs when an initial value influences a later judgement.",
+      "An early number can pull an estimate toward it even when it is a poor reference. Independent comparisons help.",
+      "An expensive first offer makes a slightly cheaper second offer feel like a bargain, despite lower prices elsewhere.",
+      "Form your own estimate before seeing someone else's.",
+      "Why can the first price affect later judgements?",
+      [
+        "It proves fair value",
+        "It becomes a mental reference point",
+        "It guarantees quality"
+      ],
+      "An anchor influences comparison without establishing the right value."
+    ]
+  },
+  {
+    "id": "psychology-availability",
+    "topic": "psychology",
+    "sourceName": "OpenStax · Psychology 2e",
+    "sourceUrl": "https://openstax.org/books/psychology-2e/pages/7-3-problem-solving",
+    "answer": 0,
+    "en": [
+      "Easy to remember does not mean common",
+      "The availability heuristic judges frequency using examples that come readily to mind.",
+      "Vivid or recent events are easier to recall. That ease can distort estimates of how often something happens.",
+      "After several dramatic news reports, a rare event may feel more common than the statistics suggest.",
+      "Check the base rate as well as the memorable story.",
+      "What can make an event seem unusually common?",
+      [
+        "A vivid example that is easy to recall",
+        "Its name being difficult to pronounce",
+        "The absence of any information"
+      ],
+      "Memorable examples can dominate judgement without representing typical frequency."
+    ]
+  },
+  {
+    "id": "psychology-attribution",
+    "topic": "psychology",
+    "sourceName": "OpenStax · Psychology 2e",
+    "sourceUrl": "https://openstax.org/books/psychology-2e/pages/12-1-what-is-social-psychology",
+    "answer": 2,
+    "en": [
+      "Behaviour has a situation behind it",
+      "Attribution bias can overemphasise personality and underweight circumstances.",
+      "We often know less about another person's pressures than our own. One action is weak evidence of a permanent trait.",
+      "A late colleague seems careless until you learn their train was cancelled.",
+      "Look for a situational explanation before labelling someone.",
+      "What information could improve your judgement of a late colleague?",
+      [
+        "A harsher personality label",
+        "Your first impression alone",
+        "The circumstances of their journey"
+      ],
+      "Situational information can reveal causes that a personality judgement misses."
+    ]
+  },
+  {
+    "id": "psychology-reinforcement",
+    "topic": "psychology",
+    "sourceName": "OpenStax · Psychology 2e",
+    "sourceUrl": "https://openstax.org/books/psychology-2e/pages/6-3-operant-conditioning",
+    "answer": 1,
+    "en": [
+      "Negative reinforcement is not punishment",
+      "Reinforcement increases a behaviour; punishment aims to decrease it.",
+      "In negative reinforcement, an unpleasant stimulus is removed after an action. Negative describes removal, not a bad outcome.",
+      "A seat-belt warning stops when you buckle up, encouraging the action.",
+      "Ask whether the behaviour increases or decreases.",
+      "A warning sound stops when a seat belt is fastened. What is this?",
+      [
+        "Punishment",
+        "Negative reinforcement",
+        "Removing every consequence"
+      ],
+      "Removing the unpleasant sound encourages fastening the seat belt."
+    ]
+  },
+  {
+    "id": "history-chronology",
+    "topic": "history",
+    "sourceName": "Library of Congress · Historical Thinking",
+    "sourceUrl": "https://www.loc.gov/static/programs/teachers/about-this-program/teaching-with-primary-sources-partner-program/documents/historical_thinking.pdf",
+    "answer": 0,
+    "en": [
+      "Order matters before explanation",
+      "Chronology establishes when events happened relative to one another.",
+      "A timeline can rule out impossible explanations: a cause must precede its effect. Sequence alone still does not prove causation.",
+      "A policy introduced after a protest cannot explain why that protest began.",
+      "Put the events in order before connecting them.",
+      "What does a timeline establish by itself?",
+      [
+        "The order of events",
+        "The single cause of every event",
+        "Everyone's motives"
+      ],
+      "Chronology gives sequence; causal explanations need additional evidence."
+    ]
+  },
+  {
+    "id": "history-context",
+    "topic": "history",
+    "sourceName": "Library of Congress · Primary Sources",
+    "sourceUrl": "https://www.loc.gov/programs/teachers/getting-started-with-primary-sources/",
+    "answer": 1,
+    "en": [
+      "Read the document's world, too",
+      "Historical context concerns the conditions in which a source was created.",
+      "Audience, institutions, available knowledge and social pressures shape what a document means.",
+      "A public speech and a private letter by the same person may use different language for different audiences.",
+      "Ask who could hear or read these words at the time.",
+      "Which detail helps contextualise a speech?",
+      [
+        "Only its font",
+        "Its intended audience and circumstances",
+        "Your preferred modern opinion"
+      ],
+      "The original setting helps explain how and why a source was produced."
+    ]
+  },
+  {
+    "id": "history-corroboration",
+    "topic": "history",
+    "sourceName": "Library of Congress · Historical Thinking",
+    "sourceUrl": "https://www.loc.gov/static/programs/teachers/about-this-program/teaching-with-primary-sources-partner-program/documents/assessing-historical-thinking.pdf",
+    "answer": 2,
+    "en": [
+      "Agreement is stronger when sources are independent",
+      "Corroboration compares evidence from more than one source.",
+      "Two accounts repeating one earlier report are not two independent witnesses. Differences can be informative as well as agreement.",
+      "Compare a diary, a dated photograph and an official record rather than three copies of one article.",
+      "Trace where each account obtained its information.",
+      "Which evidence offers stronger independent corroboration?",
+      [
+        "Three copied articles",
+        "One repeated rumour",
+        "Separate records made by different observers"
+      ],
+      "Independent origins matter more than the number of repetitions."
+    ]
+  },
+  {
+    "id": "history-anachronism",
+    "topic": "history",
+    "sourceName": "Library of Congress · Historical Thinking",
+    "sourceUrl": "https://www.loc.gov/static/programs/teachers/about-this-program/teaching-with-primary-sources-partner-program/documents/historical_thinking.pdf",
+    "answer": 0,
+    "en": [
+      "Do not lend the past tomorrow's knowledge",
+      "An anachronism places something in the wrong historical time.",
+      "Using later technology or information to explain earlier decisions can distort what people could actually know or do.",
+      "Judging an old voyage as if its crew had satellite forecasts assigns them tools they never possessed.",
+      "Separate knowledge available then from knowledge available now.",
+      "Which judgement contains an anachronism?",
+      [
+        "Expecting an eighteenth-century crew to use satellite forecasts",
+        "Checking the voyage date",
+        "Comparing contemporary ship logs"
+      ],
+      "Satellite forecasting belongs to a later period."
+    ]
+  },
+  {
+    "id": "history-oral",
+    "topic": "history",
+    "sourceName": "Oral History Association",
+    "sourceUrl": "https://oralhistory.org/oha-core-principles/",
+    "answer": 1,
+    "en": [
+      "Memory is evidence with a perspective",
+      "Oral history records people's recollections and interpretations of the past.",
+      "Interviews preserve experiences that documents may omit. Memory and later context can reshape an account, so comparison remains important.",
+      "A worker's interview adds daily experience to a factory's official records.",
+      "Value the testimony while checking dates and other evidence.",
+      "Why compare an interview with other sources?",
+      [
+        "Spoken evidence is always false",
+        "Memory can change and perspective matters",
+        "Official records are always complete"
+      ],
+      "An interview is valuable evidence, but neither memory nor documents are flawless."
+    ]
+  },
+  {
+    "id": "history-archaeology",
+    "topic": "history",
+    "sourceName": "U.S. National Park Service",
+    "sourceUrl": "https://www.nps.gov/articles/000/what-is-archeological-context.htm",
+    "answer": 2,
+    "en": [
+      "An object's location is part of its story",
+      "Archaeological context links a find to its position and associated material.",
+      "An object removed without recording its surroundings loses evidence about use, date and relationships.",
+      "A coin found in a documented floor layer says more than a coin with no recorded origin.",
+      "Ask where a find came from, not only what it is.",
+      "What adds important meaning to an artefact?",
+      [
+        "Its price alone",
+        "A polished appearance",
+        "Its recorded location and associations"
+      ],
+      "Context connects an object to the wider evidence of a site."
+    ]
+  },
+  {
+    "id": "history-periods",
+    "topic": "history",
+    "sourceName": "UCLA · National Center for History in the Schools",
+    "sourceUrl": "https://phi.history.ucla.edu/nchs/preface/developing-standards/",
+    "answer": 0,
+    "en": [
+      "Historical periods are useful boundaries",
+      "Periodisation divides the past into named eras for analysis.",
+      "The boundaries highlight some changes and hide others. A transition can happen at different times in different places.",
+      "A political revolution may transform government immediately while farming habits change much more slowly.",
+      "Ask what changed at the boundary and for whom.",
+      "Why might one period boundary not fit every region?",
+      [
+        "Changes occurred at different times",
+        "All dates are meaningless",
+        "Every society changed identically"
+      ],
+      "Periods are analytical tools rather than universal simultaneous switches."
+    ]
+  },
+  {
+    "id": "philosophy-validity",
+    "topic": "philosophy",
+    "sourceName": "OpenStax · Introduction to Philosophy",
+    "sourceUrl": "https://openstax.org/books/introduction-philosophy/pages/5-3-arguments",
+    "answer": 1,
+    "en": [
+      "A conclusion needs a route",
+      "A deductive argument is valid when true premises would guarantee its conclusion.",
+      "Validity concerns the connection between claims, not whether the premises are actually true.",
+      "All dragons breathe fire; Mira is a dragon; therefore Mira breathes fire. The structure works even with fictional premises.",
+      "Check the logical connection separately from the facts.",
+      "Can a valid argument have false premises?",
+      [
+        "No, validity makes every premise true",
+        "Yes, validity concerns the structure",
+        "Only if it has no conclusion"
+      ],
+      "Validity tests whether the conclusion follows if the premises are true."
+    ]
+  },
+  {
+    "id": "philosophy-soundness",
+    "topic": "philosophy",
+    "sourceName": "OpenStax · Introduction to Philosophy",
+    "sourceUrl": "https://openstax.org/books/introduction-philosophy/pages/5-3-arguments",
+    "answer": 2,
+    "en": [
+      "Good structure also needs true starting points",
+      "A sound deductive argument is valid and has true premises.",
+      "A tidy logical chain can still mislead if it begins with a false claim. Soundness requires both parts.",
+      "A claim about every customer cannot be established using an unverified premise about all people.",
+      "Ask: does it follow, and are its starting claims true?",
+      "What makes a deductive argument sound?",
+      [
+        "An impressive speaker",
+        "A true conclusion alone",
+        "Valid structure and true premises"
+      ],
+      "Both validity and true premises are required."
+    ]
+  },
+  {
+    "id": "philosophy-conditions",
+    "topic": "philosophy",
+    "sourceName": "OpenStax · Introduction to Philosophy",
+    "sourceUrl": "https://openstax.org/books/introduction-philosophy/pages/5-2-logical-statements",
+    "answer": 0,
+    "en": [
+      "Required does not mean enough",
+      "A necessary condition must be present; a sufficient condition guarantees the result.",
+      "An ingredient can be indispensable without producing an outcome on its own. Confusing these roles causes weak arguments.",
+      "A charged battery is necessary for this battery-powered torch to work, but a broken bulb can still prevent light.",
+      "Ask whether a condition is required, enough, or both.",
+      "Why is a charged battery not sufficient in this example?",
+      [
+        "The bulb may also be broken",
+        "Batteries never supply energy",
+        "The torch needs no other parts"
+      ],
+      "Other required conditions can still be missing."
+    ]
+  },
+  {
+    "id": "philosophy-consequences",
+    "topic": "philosophy",
+    "sourceName": "OpenStax · Introduction to Philosophy",
+    "sourceUrl": "https://openstax.org/books/introduction-philosophy/pages/9-2-consequentialism",
+    "answer": 1,
+    "en": [
+      "One ethical lens looks at outcomes",
+      "Consequentialism evaluates actions by their consequences.",
+      "Different consequentialist theories disagree about which outcomes matter. Predictions and who is affected become central questions.",
+      "Comparing two policies by the harm each prevents uses an outcome-focused lens.",
+      "Identify whose outcomes are counted and what is uncertain.",
+      "Which question is most directly consequentialist?",
+      [
+        "Does this follow a duty regardless of results?",
+        "What outcomes will this action produce?",
+        "Who spoke first?"
+      ],
+      "Consequentialism places consequences at the centre of moral evaluation."
+    ]
+  },
+  {
+    "id": "philosophy-duties",
+    "topic": "philosophy",
+    "sourceName": "OpenStax · Introduction to Philosophy",
+    "sourceUrl": "https://openstax.org/books/introduction-philosophy/pages/9-3-deontology",
+    "answer": 2,
+    "en": [
+      "Another ethical lens asks about duties",
+      "Deontological ethics gives duties or constraints a central role.",
+      "An attractive outcome does not automatically justify every method. Different theories explain duties and conflicts differently.",
+      "Refusing to deceive a customer despite a possible sale can reflect a duty-based judgement.",
+      "Ask which principle the action respects or violates.",
+      "Which consideration is central to a duty-based judgement?",
+      [
+        "Only sales revenue",
+        "Only popularity",
+        "Whether the action respects a moral duty"
+      ],
+      "Deontology does not assess actions solely by their consequences."
+    ]
+  },
+  {
+    "id": "philosophy-virtue",
+    "topic": "philosophy",
+    "sourceName": "OpenStax · Introduction to Philosophy",
+    "sourceUrl": "https://openstax.org/books/introduction-philosophy/pages/9-4-virtue-ethics",
+    "answer": 0,
+    "en": [
+      "Ethics can ask who you are becoming",
+      "Virtue ethics emphasises character and cultivated qualities.",
+      "Instead of examining only rules or outcomes, it asks how judgement and habits express qualities such as honesty and courage.",
+      "Practising honest feedback builds a disposition, not just a record of isolated compliant acts.",
+      "What kind of character does this repeated action cultivate?",
+      "Which question reflects virtue ethics?",
+      [
+        "What kind of person does this habit help me become?",
+        "What is the cheapest option?",
+        "Can every rule be ignored?"
+      ],
+      "Virtue ethics focuses on character and practical judgement."
+    ]
+  },
+  {
+    "id": "philosophy-knowledge",
+    "topic": "philosophy",
+    "sourceName": "OpenStax · Introduction to Philosophy",
+    "sourceUrl": "https://openstax.org/books/introduction-philosophy/pages/7-1-what-epistemology-studies",
+    "answer": 1,
+    "en": [
+      "Confidence is not the same as knowledge",
+      "Epistemology studies knowledge, justification and belief.",
+      "Feeling certain does not establish that a belief is true or well supported. Philosophers investigate what distinguishes knowledge from a lucky guess.",
+      "Guessing tomorrow's weather correctly once does not show that your method was reliable.",
+      "Separate the claim from your reasons for believing it.",
+      "Why does one correct guess not establish a reliable method?",
+      [
+        "Correct answers are never useful",
+        "It could have been correct by luck",
+        "Confidence always proves truth"
+      ],
+      "Accuracy in one case does not by itself establish justification or reliability."
+    ]
+  },
+  {
+    "id": "technology-binary",
+    "topic": "technology",
+    "sourceName": "Harvard · CS50",
+    "sourceUrl": "https://cs50.harvard.edu/extension/2026/spring/notes/0/",
+    "answer": 2,
+    "en": [
+      "Two symbols can represent a whole world",
+      "Binary represents numbers using digits 0 and 1.",
+      "Each position has a power-of-two value. Agreed encodings let patterns of bits represent text, images and other data.",
+      "Binary 101 means 4 + 0 + 1, so it represents decimal 5.",
+      "Distinguish the bit pattern from the encoding used to interpret it.",
+      "What decimal number does binary 101 represent?",
+      [
+        "101",
+        "3",
+        "5"
+      ],
+      "Its positions represent four, two and one; 1×4 + 0×2 + 1×1 = 5."
+    ]
+  },
+  {
+    "id": "technology-encryption",
+    "topic": "technology",
+    "sourceName": "Cloudflare · Learning Center",
+    "sourceUrl": "https://www.cloudflare.com/learning/ssl/what-is-encryption/",
+    "answer": 0,
+    "en": [
+      "Encryption protects the contents",
+      "Encryption transforms readable data into ciphertext using an algorithm and key.",
+      "An authorised recipient uses the appropriate key to recover the message. Protection also depends on implementation and key handling.",
+      "An encrypted message can travel across a network without exposing its readable contents to every intermediary.",
+      "Ask who can access the keys, not only whether encryption is mentioned.",
+      "What is the main purpose of encryption?",
+      [
+        "Protecting readable content from unauthorised access",
+        "Making every file smaller",
+        "Proving every message is truthful"
+      ],
+      "Encryption protects confidentiality; it does not make a claim true."
+    ]
+  },
+  {
+    "id": "technology-hashing",
+    "topic": "technology",
+    "sourceName": "NIST · CSRC",
+    "sourceUrl": "https://csrc.nist.gov/glossary/term/cryptographic_hash_function",
+    "answer": 1,
+    "en": [
+      "A hash is a fingerprint, not a locked box",
+      "A cryptographic hash maps data to a fixed-length digest.",
+      "It is designed to resist recovering the input and finding matching digests for different inputs. Hashing is not reversible encryption.",
+      "Comparing a downloaded file's hash with a trusted published hash can help detect a change.",
+      "Use a trusted reference; a matching hash alone does not identify a trustworthy publisher.",
+      "How does hashing differ from encryption?",
+      [
+        "Hashing always preserves the original message",
+        "A hash is not intended to be decrypted",
+        "Hashes guarantee all downloads are safe"
+      ],
+      "Hashing produces a digest rather than reversible ciphertext."
+    ]
+  },
+  {
+    "id": "technology-supervised",
+    "topic": "technology",
+    "sourceName": "Google · Machine Learning",
+    "sourceUrl": "https://developers.google.com/machine-learning/intro-to-ml/supervised",
+    "answer": 2,
+    "en": [
+      "Learning can begin with labelled examples",
+      "Supervised learning learns relationships between inputs and known target labels.",
+      "Training examples guide a model toward predictions for new inputs. The usefulness of those predictions depends on data and evaluation.",
+      "A spam classifier learns from emails labelled spam or not spam.",
+      "Ask how the labels were created and whether new cases resemble the training data.",
+      "Which dataset supports supervised learning?",
+      [
+        "Emails with no targets or labels",
+        "Only a random list of numbers",
+        "Emails paired with spam or not-spam labels"
+      ],
+      "Known target labels provide the learning signal."
+    ]
+  },
+  {
+    "id": "technology-overfitting",
+    "topic": "technology",
+    "sourceName": "Google · Machine Learning",
+    "sourceUrl": "https://developers.google.com/machine-learning/crash-course/overfitting/overfitting",
+    "answer": 0,
+    "en": [
+      "Memorising examples is not generalising",
+      "Overfitting occurs when a model fits training data but performs poorly on new data.",
+      "A model may learn accidental details rather than useful patterns. Evaluation on separate data helps expose the problem.",
+      "A classifier recognises its training photos perfectly but fails on new photographs.",
+      "Judge performance on examples the model did not train on.",
+      "Which result suggests overfitting?",
+      [
+        "Excellent training results and poor new-data results",
+        "Similar good results on training and new data",
+        "No training examples at all"
+      ],
+      "The gap suggests the model learned training-specific details."
+    ]
+  },
+  {
+    "id": "technology-latency",
+    "topic": "technology",
+    "sourceName": "Cloudflare · Learning Center",
+    "sourceUrl": "https://www.cloudflare.com/en-gb/learning/performance/glossary/what-is-latency/",
+    "answer": 1,
+    "en": [
+      "A wide road can still have a long journey",
+      "Bandwidth describes capacity; latency describes delay.",
+      "More capacity can move more data at once, but it does not automatically reduce the time for a request to travel and return.",
+      "A video call can feel delayed despite a connection advertised with a high download rate.",
+      "Ask about response time as well as transfer capacity.",
+      "What does high bandwidth guarantee by itself?",
+      [
+        "Zero delay",
+        "Greater data-transfer capacity, not necessarily lower latency",
+        "Instant responses from every server"
+      ],
+      "Capacity and delay describe different aspects of a connection."
+    ]
+  },
+  {
+    "id": "technology-version-control",
+    "topic": "technology",
+    "sourceName": "Git · Pro Git",
+    "sourceUrl": "https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control.html",
+    "answer": 2,
+    "en": [
+      "History makes changes easier to manage",
+      "Version control records changes so earlier states can be compared or recovered.",
+      "A useful history explains what changed and supports collaboration. It is more structured than a folder of files named final-final.",
+      "A team can identify which edit introduced a problem and inspect the previous working version.",
+      "Record meaningful changes with clear explanations.",
+      "What is a key benefit of version control?",
+      [
+        "It prevents every possible bug",
+        "It removes the need to review changes",
+        "It preserves a traceable change history"
+      ],
+      "Recorded versions make comparison and recovery possible."
+    ]
+  },
+  {
+    "id": "business-costs",
+    "topic": "business",
+    "sourceName": "OpenStax · Managerial Accounting",
+    "sourceUrl": "https://openstax.org/books/principles-managerial-accounting/pages/2-2-identify-and-apply-basic-cost-behavior-patterns",
+    "answer": 0,
+    "en": [
+      "Some costs move with output",
+      "Variable costs change with activity; total fixed costs stay stable within a relevant range.",
+      "Fixed does not mean permanent. Rent may stay unchanged for a month while packaging rises with every extra order.",
+      "Selling one more meal needs extra ingredients but may not change this month's rent.",
+      "Separate costs per extra unit from costs of keeping the operation open.",
+      "Which cost is usually variable in this example?",
+      [
+        "Ingredients for one more meal",
+        "The unchanged monthly rent",
+        "A fixed monthly licence fee"
+      ],
+      "Ingredients increase when another meal is produced."
+    ]
+  },
+  {
+    "id": "business-cash",
+    "topic": "business",
+    "sourceName": "OpenStax · Entrepreneurship",
+    "sourceUrl": "https://openstax.org/books/entrepreneurship/pages/9-4-developing-startup-financial-statements-and-projections",
+    "answer": 1,
+    "en": [
+      "Profit is not cash in the bank",
+      "Profit and cash flow measure different things.",
+      "A recorded sale may create profit before the customer pays. Cash timing determines whether bills can be paid now.",
+      "A profitable business with unpaid invoices can still struggle to cover wages this week.",
+      "Track when money arrives and leaves, not only reported profit.",
+      "Why can a profitable firm be short of cash?",
+      [
+        "Profit guarantees immediate payment",
+        "Customers may not have paid yet",
+        "Cash and profit are identical"
+      ],
+      "Recorded earnings and actual receipts can occur at different times."
+    ]
+  },
+  {
+    "id": "business-break-even",
+    "topic": "business",
+    "sourceName": "OpenStax · Entrepreneurship",
+    "sourceUrl": "https://openstax.org/books/entrepreneurship/pages/9-4-developing-startup-financial-statements-and-projections",
+    "answer": 2,
+    "en": [
+      "Break-even asks how many sales cover the basics",
+      "Break-even occurs when total revenue equals total costs.",
+      "In a simple single-product model, fixed costs divided by contribution per unit gives the units needed to break even.",
+      "With fixed costs of €100 and €5 contribution per sale, 20 sales cover those fixed costs.",
+      "Check the assumptions behind the calculation.",
+      "How many sales cover €100 fixed costs at €5 contribution each?",
+      [
+        "5",
+        "100",
+        "20"
+      ],
+      "100 divided by 5 equals 20, under the stated assumptions."
+    ]
+  },
+  {
+    "id": "business-contribution",
+    "topic": "business",
+    "sourceName": "OpenStax · Managerial Accounting",
+    "sourceUrl": "https://openstax.org/books/principles-managerial-accounting/pages/3-1-explain-contribution-margin-and-calculate-contribution-margin-per-unit-contribution-margin-ratio-and-total-contribution-margin",
+    "answer": 0,
+    "en": [
+      "A sale has to help pay the fixed costs",
+      "Contribution per unit is selling price minus variable cost per unit.",
+      "That remainder contributes toward fixed costs and then profit. It is not automatically the final profit on the sale.",
+      "A €10 item with €6 variable cost contributes €4 before fixed costs are covered.",
+      "Calculate what one extra sale actually contributes.",
+      "What is the contribution of a €10 sale with €6 variable cost?",
+      [
+        "€4",
+        "€10",
+        "€16"
+      ],
+      "Subtract variable cost from the selling price: 10 − 6 = 4."
+    ]
+  },
+  {
+    "id": "business-customer",
+    "topic": "business",
+    "sourceName": "OpenStax · Entrepreneurship",
+    "sourceUrl": "https://openstax.org/books/entrepreneurship/pages/11-2-designing-the-business-model",
+    "answer": 1,
+    "en": [
+      "Start with the customer's problem",
+      "A value proposition explains a useful benefit for a particular customer.",
+      "Features describe a product; value explains why someone would choose it. Testing the problem comes before assuming demand.",
+      "A booking tool matters to a busy customer because it reduces coordination, not merely because it has many buttons.",
+      "Ask whom it helps and which difficulty it removes.",
+      "Which statement communicates customer value?",
+      [
+        "Our app has 20 screens",
+        "Book an appointment without repeated phone calls",
+        "We used a fashionable programming language"
+      ],
+      "The statement connects the offering to a concrete customer benefit."
+    ]
+  },
+  {
+    "id": "business-network",
+    "topic": "business",
+    "sourceName": "OECD · The Digital Transformation of SMEs",
+    "sourceUrl": "https://www.oecd.org/en/publications/the-digital-transformation-of-smes_bdb9256a-en/full-report/component-7.html",
+    "answer": 2,
+    "en": [
+      "A network can become more useful as it grows",
+      "A network effect occurs when participation changes value for other users.",
+      "A messaging service can become more useful when the people you need join it. More users do not improve every product automatically.",
+      "A chat app used by all your friends is easier to use for communication than an isolated alternative.",
+      "Identify who benefits from each additional participant.",
+      "Which example shows a network effect?",
+      [
+        "A product getting heavier",
+        "A price increasing with no new users",
+        "A messaging app becoming useful as friends join"
+      ],
+      "Other participants add opportunities to communicate."
+    ]
+  },
+  {
+    "id": "business-bottleneck",
+    "topic": "business",
+    "sourceName": "OpenStax · Managerial Accounting",
+    "sourceUrl": "https://openstax.org/books/principles-managerial-accounting/pages/10-6-evaluate-and-determine-how-to-make-decisions-when-resources-are-constrained",
+    "answer": 0,
+    "en": [
+      "The slowest stage can set the pace",
+      "A bottleneck constrains the throughput of a process.",
+      "Speeding up a stage that already has spare capacity may not increase final output. The limiting stage deserves attention.",
+      "A café can prepare 30 orders an hour but take payment for only 15; faster preparation alone will not fix the queue.",
+      "Find the limiting step before improving the busiest-looking step.",
+      "What limits output in this café example?",
+      [
+        "Payment capacity",
+        "The colour of the cups",
+        "Preparation capacity of 30 orders"
+      ],
+      "Only 15 payments an hour can pass through the limiting stage."
+    ]
+  },
+  {
+    "id": "health-homeostasis",
+    "topic": "health",
+    "sourceName": "OpenStax · Anatomy and Physiology 2e",
+    "sourceUrl": "https://openstax.org/books/anatomy-and-physiology-2e/pages/1-5-homeostasis",
+    "answer": 1,
+    "en": [
+      "Stability requires constant adjustment",
+      "Homeostasis maintains internal conditions within workable ranges.",
+      "Negative feedback counters a deviation rather than keeping the body perfectly unchanged.",
+      "When body temperature rises, sweating can help release heat and oppose the increase.",
+      "Look for the variable, the sensor and the corrective response.",
+      "Which example illustrates negative feedback?",
+      [
+        "A change reinforcing itself indefinitely",
+        "Sweating opposing a rise in temperature",
+        "A body never responding to change"
+      ],
+      "The response works against the deviation."
+    ]
+  },
+  {
+    "id": "health-gas-exchange",
+    "topic": "health",
+    "sourceName": "OpenStax · Anatomy and Physiology 2e",
+    "sourceUrl": "https://openstax.org/books/anatomy-and-physiology-2e/pages/22-4-gas-exchange",
+    "answer": 2,
+    "en": [
+      "Breathing creates an exchange surface",
+      "Oxygen and carbon dioxide diffuse across the thin alveolar-capillary barrier.",
+      "Differences in partial pressure drive gases in opposite directions between air and blood.",
+      "Oxygen passes from alveolar air into blood while carbon dioxide moves from blood toward the air to be exhaled.",
+      "Separate moving air from exchanging gases.",
+      "Where does most lung gas exchange occur?",
+      [
+        "In the throat",
+        "Only in the nose",
+        "Across the alveolar-capillary barrier"
+      ],
+      "The thin barrier allows diffusion between alveolar air and blood."
+    ]
+  },
+  {
+    "id": "health-atp",
+    "topic": "health",
+    "sourceName": "OpenStax · Biology 2e",
+    "sourceUrl": "https://openstax.org/books/biology-2e/pages/6-4-atp-adenosine-triphosphate",
+    "answer": 0,
+    "en": [
+      "Cells need usable energy, not just fuel",
+      "ATP helps couple energy-releasing processes to cellular work.",
+      "Cells continually produce and use ATP. It is an energy-transfer molecule rather than a large long-term fuel store.",
+      "Muscle contraction uses ATP while metabolism replenishes it from available fuels.",
+      "Distinguish stored fuel from the molecule that helps power immediate work.",
+      "What is an important role of ATP?",
+      [
+        "Coupling energy supply to cellular work",
+        "Storing all body fat permanently",
+        "Replacing every nutrient"
+      ],
+      "ATP participates in transferring usable energy to cellular processes."
+    ]
+  },
+  {
+    "id": "health-hormones",
+    "topic": "health",
+    "sourceName": "OpenStax · Anatomy and Physiology 2e",
+    "sourceUrl": "https://openstax.org/books/anatomy-and-physiology-2e/pages/17-2-hormones",
+    "answer": 1,
+    "en": [
+      "A chemical message needs a receiver",
+      "Hormones act on target cells with suitable receptors.",
+      "A hormone may circulate widely, but cells respond according to their receptors and signalling machinery.",
+      "A signal in the blood does not make every tissue perform the same action.",
+      "Ask which cells can receive the message.",
+      "Why do only some cells respond to a hormone?",
+      [
+        "Blood never reaches other cells",
+        "They have the relevant receptors",
+        "All hormones affect every cell identically"
+      ],
+      "Target-cell receptors help determine the response."
+    ]
+  },
+  {
+    "id": "health-tendons",
+    "topic": "health",
+    "sourceName": "OpenStax · Anatomy and Physiology 2e",
+    "sourceUrl": "https://openstax.org/books/anatomy-and-physiology-2e/pages/10-2-skeletal-muscle",
+    "answer": 2,
+    "en": [
+      "Movement needs a connection",
+      "Tendons transmit force from muscle to bone.",
+      "Muscles generate tension; connective tissue transfers it to the skeleton. Tendons and ligaments serve different main connections.",
+      "A contracting calf muscle pulls through the Achilles tendon to move the heel.",
+      "Distinguish muscle-to-bone from bone-to-bone connections.",
+      "What is the main connection made by a tendon?",
+      [
+        "Bone to bone",
+        "Nerve to skin",
+        "Muscle to bone"
+      ],
+      "Tendons connect muscle and bone; ligaments commonly connect bones."
+    ]
+  },
+  {
+    "id": "health-bone",
+    "topic": "health",
+    "sourceName": "OpenStax · Anatomy and Physiology 2e",
+    "sourceUrl": "https://openstax.org/books/anatomy-and-physiology-2e/pages/6-4-bone-formation-and-development",
+    "answer": 0,
+    "en": [
+      "Bone is living tissue",
+      "Bone is continually maintained through formation and resorption.",
+      "Remodelling renews tissue and responds to mechanical demands and biological signals. Bone is not an inert support beam.",
+      "The skeleton keeps changing even after a person has reached adult height.",
+      "Think of bone as an active tissue, not a fixed object.",
+      "Which statement describes adult bone?",
+      [
+        "It continues to remodel",
+        "It becomes completely inactive",
+        "It contains no living cells"
+      ],
+      "Bone formation and resorption continue throughout adult life."
+    ]
+  },
+  {
+    "id": "health-circadian",
+    "topic": "health",
+    "sourceName": "NIH · NIGMS",
+    "sourceUrl": "https://www.nigms.nih.gov/education/fact-sheets/Pages/circadian-rhythms",
+    "answer": 1,
+    "en": [
+      "The body keeps time",
+      "Circadian rhythms organise many processes on an approximately 24-hour cycle.",
+      "Internal clocks interact with cues such as light. Timing affects patterns of sleepiness and alertness.",
+      "Crossing time zones can put the local light-dark cycle out of step with an internal clock.",
+      "Notice both how long and when you sleep.",
+      "What can influence the timing of circadian rhythms?",
+      [
+        "Only the size of a clock",
+        "Light-dark cues",
+        "A complete absence of internal rhythms"
+      ],
+      "Light is an important cue for aligning internal timing with the environment."
+    ]
+  },
+  {
+    "id": "geography-plates",
+    "topic": "geography",
+    "sourceName": "USGS · Understanding Plate Motions",
+    "sourceUrl": "https://www.usgs.gov/special-topics/subduction-zone-science/understanding-plate-motions",
+    "answer": 2,
+    "en": [
+      "The surface is moving beneath us",
+      "Plate tectonics describes motion of Earth's lithospheric plates.",
+      "Plates separate, converge or slide past one another. Their boundaries help explain patterns of earthquakes, volcanoes and mountain building.",
+      "A band of earthquakes can trace the boundary between moving plates.",
+      "Look at boundaries when interpreting geological patterns.",
+      "Why are many earthquakes concentrated in bands?",
+      [
+        "Every location has identical conditions",
+        "Maps cause earthquakes",
+        "Many occur near moving plate boundaries"
+      ],
+      "Plate interaction concentrates many geological processes along boundaries."
+    ]
+  },
+  {
+    "id": "geography-watershed",
+    "topic": "geography",
+    "sourceName": "USGS · Water Science School",
+    "sourceUrl": "https://www.usgs.gov/water-science-school/science/watersheds-and-drainage-basins",
+    "answer": 0,
+    "en": [
+      "A river connects a whole landscape",
+      "A watershed is the area that drains toward a shared outlet.",
+      "Water and material from upstream can affect places downstream. Watershed boundaries often follow high ground, not political borders.",
+      "Rain on different sides of a ridge may flow into different rivers.",
+      "Trace the drainage area, not just the visible river.",
+      "What commonly separates neighbouring watersheds?",
+      [
+        "A ridge or other drainage divide",
+        "Every national border",
+        "The river's colour"
+      ],
+      "Higher ground can direct water toward different outlets."
+    ]
+  },
+  {
+    "id": "geography-heat-islands",
+    "topic": "geography",
+    "sourceName": "U.S. Environmental Protection Agency",
+    "sourceUrl": "https://www.epa.gov/heatislands/what-are-heat-islands",
+    "answer": 1,
+    "en": [
+      "A city can hold extra heat",
+      "Urban heat islands are urban areas warmer than nearby surroundings.",
+      "Surfaces, buildings, reduced vegetation and human activity influence heat storage and release. Conditions vary within a city.",
+      "A paved area without shade may remain warmer than a nearby tree-covered space.",
+      "Compare land cover when comparing local temperatures.",
+      "Which feature can contribute to an urban heat island?",
+      [
+        "More shade from trees",
+        "Extensive heat-absorbing surfaces and little vegetation",
+        "Identical land cover everywhere"
+      ],
+      "The built environment changes how heat is absorbed and released."
+    ]
+  },
+  {
+    "id": "geography-weather-climate",
+    "topic": "geography",
+    "sourceName": "NOAA · NCEI",
+    "sourceUrl": "https://www.ncei.noaa.gov/news/weather-vs-climate",
+    "answer": 2,
+    "en": [
+      "One cold day does not describe a climate",
+      "Weather is short-term atmospheric conditions; climate describes long-term patterns.",
+      "Individual days vary around broader distributions. A trend requires observations over longer periods.",
+      "A rainy holiday tells you about those days, not the destination's entire climate.",
+      "Match the timescale of the evidence to the question.",
+      "Which evidence better describes climate?",
+      [
+        "One afternoon's temperature",
+        "A single storm photograph",
+        "Long-term temperature and rainfall patterns"
+      ],
+      "Climate concerns long-term characteristics rather than one event."
+    ]
+  },
+  {
+    "id": "geography-scale",
+    "topic": "geography",
+    "sourceName": "USGS · Map Scales",
+    "sourceUrl": "https://www.usgs.gov/publications/map-scales",
+    "answer": 0,
+    "en": [
+      "Scale decides how much fits on a map",
+      "A map scale relates distance on the map to distance on the ground.",
+      "At 1:100,000, one unit on the map represents 100,000 of the same units on the ground.",
+      "At that scale, 1 centimetre represents 1 kilometre.",
+      "Check scale before estimating distance or expecting detail.",
+      "At 1:100,000, what does 1 cm represent?",
+      [
+        "1 km",
+        "100 km",
+        "1 metre"
+      ],
+      "100,000 centimetres equals 1 kilometre."
+    ]
+  },
+  {
+    "id": "geography-rain-shadow",
+    "topic": "geography",
+    "sourceName": "NASA · Earth Observatory",
+    "sourceUrl": "https://science.nasa.gov/earth/earth-observatory/oregon-rain-shadow-79247/",
+    "answer": 1,
+    "en": [
+      "A mountain can divide wet and dry",
+      "A rain shadow can form on the downwind side of a mountain range.",
+      "Air rising over mountains cools and may lose moisture as precipitation. Descending air on the other side can be warmer and drier.",
+      "Two nearby valleys can have different rainfall because a mountain separates their airflow.",
+      "Consider prevailing wind and terrain together.",
+      "Which side is commonly drier in a rain-shadow pattern?",
+      [
+        "The windward rising-air side",
+        "The downwind descending-air side",
+        "Both sides must be identical"
+      ],
+      "Descending air after moisture loss can create a drier downwind region."
+    ]
+  },
+  {
+    "id": "geography-density",
+    "topic": "geography",
+    "sourceName": "U.S. Census Bureau",
+    "sourceUrl": "https://www.census.gov/programs-surveys/geography/about/glossary.html",
+    "answer": 2,
+    "en": [
+      "An average can hide where people live",
+      "Population density divides population by land area.",
+      "A regional average does not reveal settlement patterns within it. People may be concentrated in a few cities.",
+      "An area with 10,000 people across 100 km² has average density 100 people per km², even if most live in one town.",
+      "Ask about distribution as well as the average.",
+      "What is the average density in this example?",
+      [
+        "10 people per km²",
+        "1,000 people per km²",
+        "100 people per km²"
+      ],
+      "10,000 divided by 100 equals 100; the average can still hide concentration."
+    ]
+  },
+  {
+    "id": "culture-ethnocentrism",
+    "topic": "culture",
+    "sourceName": "OpenStax · Sociology 3e",
+    "sourceUrl": "https://openstax.org/books/introduction-sociology-3e/pages/3-1-what-is-culture",
+    "answer": 0,
+    "en": [
+      "Familiar is not automatically universal",
+      "Ethnocentrism judges another culture mainly by one's own cultural standards.",
+      "Treating familiar practices as the only normal ones can block understanding of different meanings.",
+      "You assume a different greeting is disrespectful because it is not the greeting you learned.",
+      "Describe the difference before ranking it.",
+      "Which judgement illustrates ethnocentrism?",
+      [
+        "Their greeting is wrong because it differs from ours",
+        "What does this greeting mean here?",
+        "How did this practice develop?"
+      ],
+      "The judgement uses one's own custom as the universal standard."
+    ]
+  },
+  {
+    "id": "culture-relativism",
+    "topic": "culture",
+    "sourceName": "OpenStax · Sociology 2e",
+    "sourceUrl": "https://openstax.org/books/introduction-sociology-2e/pages/3-1-what-is-culture",
+    "answer": 1,
+    "en": [
+      "Understanding starts with local meaning",
+      "Cultural relativism examines practices within their cultural context.",
+      "Understanding a practice is different from endorsing everything about it. Context helps explain what people mean and value.",
+      "Before judging an unfamiliar ceremony, ask participants what its actions signify.",
+      "Seek explanation before assuming the meaning.",
+      "What does contextual understanding require?",
+      [
+        "Approving every practice automatically",
+        "Investigating what it means within that culture",
+        "Ignoring the participants"
+      ],
+      "Understanding local meaning does not require automatic moral approval."
+    ]
+  },
+  {
+    "id": "culture-material",
+    "topic": "culture",
+    "sourceName": "OpenStax · Sociology 3e",
+    "sourceUrl": "https://openstax.org/books/introduction-sociology-3e/pages/3-section-summary",
+    "answer": 2,
+    "en": [
+      "Objects carry shared meanings",
+      "Material culture includes the physical objects people create and use.",
+      "Nonmaterial culture includes ideas and values. The two interact: an object can embody a belief or social relationship.",
+      "A wedding ring is a physical object linked to ideas about commitment.",
+      "Ask both what an object does and what it represents.",
+      "Which item is an example of material culture?",
+      [
+        "A belief about loyalty",
+        "An unwritten expectation",
+        "A wedding ring"
+      ],
+      "The ring is a physical object; its meaning involves nonmaterial culture."
+    ]
+  },
+  {
+    "id": "culture-values",
+    "topic": "culture",
+    "sourceName": "OpenStax · Sociology 3e",
+    "sourceUrl": "https://openstax.org/books/introduction-sociology-3e/pages/3-2-elements-of-culture",
+    "answer": 0,
+    "en": [
+      "Values and norms play different roles",
+      "Values express what a group considers important; norms guide behaviour.",
+      "A broad value can be supported by several specific expectations. Stated values and actual behaviour can differ.",
+      "Respect is a value; waiting your turn in a queue is a norm that may express it.",
+      "Separate the principle from the expected action.",
+      "Which example is a behavioural norm?",
+      [
+        "Waiting your turn in a queue",
+        "The broad ideal of fairness",
+        "The abstract importance of respect"
+      ],
+      "A norm specifies expected conduct rather than only an ideal."
+    ]
+  },
+  {
+    "id": "culture-subculture",
+    "topic": "culture",
+    "sourceName": "OpenStax · Sociology 3e",
+    "sourceUrl": "https://openstax.org/books/introduction-sociology-3e/pages/3-3-high-low-pop-sub-counter-culture-and-cultural-change",
+    "answer": 1,
+    "en": [
+      "One society contains many cultural worlds",
+      "A subculture shares distinctive practices within a larger society.",
+      "Membership does not mean rejecting every wider social value. People can belong to several groups at once.",
+      "A professional community develops vocabulary and routines that outsiders do not immediately recognise.",
+      "Avoid treating a whole society as culturally identical.",
+      "What is a subculture?",
+      [
+        "A group with no shared practices",
+        "A distinctive cultural group within a larger society",
+        "Every member of society behaving identically"
+      ],
+      "Distinctive practices can exist within a wider shared social setting."
+    ]
+  },
+  {
+    "id": "culture-diffusion",
+    "topic": "culture",
+    "sourceName": "OpenStax · Sociology 3e",
+    "sourceUrl": "https://openstax.org/books/introduction-sociology-3e/pages/3-key-terms",
+    "answer": 2,
+    "en": [
+      "Ideas travel and change",
+      "Cultural diffusion is the spread of practices, objects or ideas between groups.",
+      "Adoption can involve adaptation rather than exact copying. Contact, migration and communication create routes for exchange.",
+      "A food tradition travels with migrants and develops new local versions.",
+      "Trace both the route and the changes.",
+      "Which example illustrates diffusion?",
+      [
+        "An idea never leaving one group",
+        "Every tradition remaining unchanged",
+        "A food practice spreading and adapting elsewhere"
+      ],
+      "Diffusion carries cultural elements across groups, often with adaptation."
+    ]
+  },
+  {
+    "id": "culture-ritual",
+    "topic": "culture",
+    "sourceName": "OpenStax · Sociology 3e",
+    "sourceUrl": "https://openstax.org/books/introduction-sociology-3e/pages/15-1-the-sociological-approach-to-religion",
+    "answer": 0,
+    "en": [
+      "Repeated actions can express belonging",
+      "Rituals are patterned actions with shared symbolic meaning.",
+      "A ritual can mark a transition or connect participants to a group. Repetition alone does not explain its meaning.",
+      "A graduation ceremony marks a change in status through familiar gestures and symbols.",
+      "Ask what the action marks and who recognises its meaning.",
+      "What distinguishes a ritual from mere repetition?",
+      [
+        "Shared symbolic meaning",
+        "Only the number of times it happens",
+        "The absence of participants"
+      ],
+      "Meaning and social recognition matter, not repetition alone."
+    ]
+  },
+  {
+    "id": "aviation-forces",
+    "topic": "aviation",
+    "sourceName": "NASA · Glenn Research Center",
+    "sourceUrl": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/four-forces-on-an-airplane/",
+    "answer": 1,
+    "en": [
+      "Flight is a balance of forces",
+      "Lift, weight, thrust and drag act on an aircraft.",
+      "Lift and drag are defined relative to airflow; weight acts toward Earth. A steady straight flight can have balanced forces without being stationary.",
+      "An aircraft cruising at constant velocity still has forces acting on it.",
+      "Distinguish balanced forces from an absence of forces.",
+      "What can balanced forces produce?",
+      [
+        "Only a motionless object",
+        "Constant velocity in a straight line",
+        "Automatic acceleration"
+      ],
+      "Zero net force permits constant velocity; it does not require zero speed."
+    ]
+  },
+  {
+    "id": "aviation-angle",
+    "topic": "aviation",
+    "sourceName": "NASA · Glenn Research Center",
+    "sourceUrl": "https://www.grc.nasa.gov/WWW/k-12/VirtualAero/BottleRocket/airplane/incline.html",
+    "answer": 2,
+    "en": [
+      "The wing's angle is relative to the airflow",
+      "Angle of attack is the angle between the wing chord and relative airflow.",
+      "It is different from the aircraft's pitch attitude relative to the horizon. A changing flight path changes the relationship.",
+      "The same nose attitude can correspond to different angles of attack during different flight paths.",
+      "Name the reference line before comparing angles.",
+      "What reference defines angle of attack?",
+      [
+        "Only the horizon",
+        "The airport runway",
+        "The relative airflow and wing chord"
+      ],
+      "Angle of attack is referenced to airflow, not simply the horizon."
+    ]
+  },
+  {
+    "id": "aviation-stall",
+    "topic": "aviation",
+    "sourceName": "FAA · Pilot's Handbook",
+    "sourceUrl": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/phak",
+    "answer": 0,
+    "en": [
+      "A stall is an airflow problem",
+      "An aerodynamic stall occurs when a wing exceeds its critical angle of attack.",
+      "Flow separation reduces lift capability. A stall is not the same as an engine stopping and is not defined by one universal speed.",
+      "Different loading or manoeuvres can change the airspeed at which a wing reaches its critical angle.",
+      "Separate engine condition, airspeed and angle of attack.",
+      "What defines an aerodynamic stall?",
+      [
+        "Exceeding the critical angle of attack",
+        "Any engine stopping",
+        "Passing a universal speed for all aircraft"
+      ],
+      "The critical angle of attack is central to the stall condition."
+    ]
+  },
+  {
+    "id": "aviation-drag",
+    "topic": "aviation",
+    "sourceName": "NASA · Glenn Research Center",
+    "sourceUrl": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/what-is-drag/",
+    "answer": 1,
+    "en": [
+      "Moving through air has a cost",
+      "Drag is an aerodynamic force opposing motion relative to the air.",
+      "Shape, speed and flow conditions affect drag. Drag associated with producing lift is one part of the total.",
+      "Changing an aircraft's configuration can change drag even when the aircraft stays the same size.",
+      "Ask which source of drag changes in the situation.",
+      "Which statement about drag is correct?",
+      [
+        "Only engines generate it",
+        "Many aircraft surfaces contribute to it",
+        "It never changes with airflow"
+      ],
+      "Drag comes from interaction between the aircraft and air."
+    ]
+  },
+  {
+    "id": "aviation-checklists",
+    "topic": "aviation",
+    "sourceName": "FAA · Human Factors Research",
+    "sourceUrl": "https://www.faa.gov/sites/faa.gov/files/data_research/research/med_humanfacs/oamtechreports/AM91-07.pdf",
+    "answer": 2,
+    "en": [
+      "A checklist supports memory",
+      "A checklist helps verify important actions in a repeatable way.",
+      "Its usefulness depends on design, timing and disciplined use. It supports understanding rather than replacing it.",
+      "A cross-check can catch an omitted step that felt familiar enough to remember.",
+      "Treat verification as an action, not a ritual of reading words.",
+      "What is a sensible role for a checklist?",
+      [
+        "Replace all system knowledge",
+        "Guarantee nobody can make an error",
+        "Support reliable verification of important actions"
+      ],
+      "Checklists reduce reliance on memory but still require appropriate use."
+    ]
+  },
+  {
+    "id": "aviation-crm",
+    "topic": "aviation",
+    "sourceName": "FAA · Resource Management",
+    "sourceUrl": "https://www.faa.gov/newsroom/safety-briefing/single-pilot-crew-resource-management-0",
+    "answer": 0,
+    "en": [
+      "Safety improves when resources work together",
+      "Resource management coordinates people, information and available tools.",
+      "Clear communication and decisions help a team use knowledge distributed across its members and supporting services.",
+      "A team member voices a concern early, allowing the others to check an assumption before it becomes a problem.",
+      "Make concerns clear and invite useful information.",
+      "Which action supports resource management?",
+      [
+        "Communicating a relevant concern clearly",
+        "Hiding uncertainty to appear confident",
+        "Ignoring supporting information"
+      ],
+      "Useful information must reach the people making the decision."
+    ]
+  },
+  {
+    "id": "aviation-density",
+    "topic": "aviation",
+    "sourceName": "FAA · Pilot's Handbook",
+    "sourceUrl": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/phak",
+    "answer": 1,
+    "en": [
+      "Hotter air can change performance",
+      "Density altitude expresses air density as an equivalent altitude in a standard atmosphere.",
+      "Higher density altitude means less dense air. This can reduce aircraft performance; the effect depends on the aircraft and conditions.",
+      "A hot day can make an airport perform like a higher-elevation location than its actual elevation suggests.",
+      "Distinguish airport elevation from the density of the air.",
+      "What does higher density altitude mean?",
+      [
+        "Denser air",
+        "Less dense air",
+        "An airport physically moving uphill"
+      ],
+      "Density altitude describes the air, not a change in the airport's ground elevation."
+    ]
+  }
+]

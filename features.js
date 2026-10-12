@@ -24,12 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   document.querySelector("#analytics-settings").addEventListener("click", analyticsChoices);
-  if (analyticsConfigured()) {
-    let consent;
-    try { consent = localStorage.getItem("ocw-analytics-consent"); } catch { /* Storage may be unavailable. */ }
-    if (consent === "yes") startAnalytics();
-    else if (consent !== "no") analyticsChoices();
-  }
+  maybeAskAnalytics();
   if ("serviceWorker" in navigator && window.isSecureContext) {
     navigator.serviceWorker.register("./sw.js").catch(() => { /* Online app remains available. */ });
   }
@@ -157,3 +152,9 @@ function analyticsChoices() {
   dialog.addEventListener("close", () => dialog.remove(), { once: true }); document.body.append(dialog); dialog.showModal();
 }
 
+
+function maybeAskAnalytics(){
+ if(!analyticsConfigured()||(typeof state!=="undefined"&&!state.onboardingSeen))return;
+ let consent;try{consent=localStorage.getItem("ocw-analytics-consent");}catch{}
+ if(consent==="yes")startAnalytics();else if(consent!=="no")analyticsChoices();
+}

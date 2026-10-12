@@ -7,7 +7,17 @@ function initialLanguage(){
   try{const stored=localStorage.getItem('ocw-language');if(Object.hasOwn(LANGUAGE_NAMES,stored))return stored;}catch{}
   return 'en';
 }
-function t(key,values={}){return (UI_TRANSLATIONS[key]?.[currentLanguage]||key).replace(/\{(\w+)\}/g,(match,name)=>values[name]??match);}
+function t(key,values={}){
+ let text=UI_TRANSLATIONS[key]?.[currentLanguage]||key;
+ if(currentLanguage==="en"){
+  if(key==="{n} ideas"&&values.n===1)text="{n} idea";
+  if(key==="Last 7 days: {n} cards completed · {d} days of learning"){
+   if(values.n===1)text=text.replace("cards completed","card completed");
+   if(values.d===1)text=text.replace("days of learning","day of learning");
+  }
+ }
+ return text.replace(/\{(\w+)\}/g,(match,name)=>values[name]??match);
+}
 function localePath(path){return '/'+(currentLanguage==='en'?'':currentLanguage+'/')+path.replace(/^\/+/, '');}
 function languageSelectMarkup(){return `<label class="language-picker"><span data-i18n="Language">${t('Language')}</span><select data-language-select aria-label="${t('Language')}" data-i18n-aria="Language">${Object.entries(LANGUAGE_NAMES).map(([code,name])=>`<option value="${code}" ${code===currentLanguage?'selected':''}>${name}</option>`).join('')}</select></label>`;}
 function translateInterface(){

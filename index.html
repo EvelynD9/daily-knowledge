@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="google-site-verification" content="2RVYRakc48tYX-lAn5dbIOi2XaUiv-DVATBUjyXDWPw" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#f3efe7" />
     <meta name="description" content="Become one card wiser every day with focused ideas across economics, art, science, psychology, history, technology, and more." />
     <title>One Card Wiser — Daily Learning</title>
@@ -20,7 +20,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://onecardwiser.com/social-preview.png" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"One Card Wiser","url":"https://onecardwiser.com/","description":"Short daily learning cards with examples, sources and quizzes."}</script>
-    <link rel="stylesheet" href="./styles.css?v=20261012-1" />
+    <link rel="stylesheet" href="./styles.css?v=20261012-2" />
   </head>
   <body>
     <div class="app-shell">
@@ -74,6 +74,7 @@
             </div>
             <button class="primary-button" id="discover-button" type="button" data-i18n="Explore a source preview">Explore a source preview</button>
           </div>
+          <label class="library-search"><span data-i18n="Search ideas">Search ideas</span><input id="library-search" type="search" autocomplete="off" aria-label="Search ideas" data-i18n-aria="Search ideas"></label>
           <div class="filter-row" id="library-filters" aria-label="Filter cards" data-i18n-aria="Filter cards"></div>
           <div id="library-grid" class="library-grid"></div>
         </section>
@@ -88,6 +89,7 @@
           </div>
           <div id="saved-grid" class="library-grid"></div>
         </section>
+<section id="review-view" class="view" aria-labelledby="review-heading"><div class="section-heading"><div><p class="eyebrow" data-i18n="Make it stick">Make it stick</p><h1 id="review-heading" data-i18n="Review your learning">Review your learning</h1></div><span id="review-count" class="count-label"></span></div><p class="review-note" data-i18n="Missed questions first, then older ideas. Recall the answer before reading again.">Missed questions first, then older ideas. Recall the answer before reading again.</p><div id="review-grid" class="library-grid"></div></section>
       </main>
 
       <section class="site-tools" aria-label="More from One Card Wiser" data-i18n-aria="More from One Card Wiser">
@@ -109,6 +111,7 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><rect x="3" y="15" width="7" height="5" rx="1"/><rect x="14" y="15" width="7" height="5" rx="1"/></svg>
           <span data-i18n="Library">Library</span>
         </button>
+<button class="nav-item" type="button" data-view-link="review"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 8M4 4v6h6"/></svg><span data-i18n="Review">Review</span></button>
         <button class="nav-item" type="button" data-view-link="saved">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1Z"/></svg>
           <span data-i18n="Saved">Saved</span>
@@ -118,7 +121,7 @@
 
     <dialog id="topic-dialog" class="sheet-dialog">
       <form method="dialog" id="topic-form">
-        <div class="sheet-handle" aria-hidden="true"></div><label class="language-picker"><span data-i18n="Language">Language</span><select data-language-select aria-label="Language" data-i18n-aria="Language"><option value="en">English</option><option value="el">Ελληνικά</option><option value="ru">Русский</option><option value="ro">Română</option></select></label>
+        <div class="sheet-handle" aria-hidden="true"></div><div class="topic-toolbar"><label class="language-picker"><span data-i18n="Language">Language</span><select data-language-select aria-label="Language" data-i18n-aria="Language"><option value="en">English</option><option value="el">Ελληνικά</option><option value="ru">Русский</option><option value="ro">Română</option></select></label><button id="close-topic" class="icon-button" type="button" aria-label="Close" data-i18n-aria="Close">×</button></div>
         <p class="eyebrow" data-i18n="Make it yours">Make it yours</p>
         <h2 data-i18n="What do you want to understand better?">What do you want to understand better?</h2>
         <p class="muted" data-i18n="Choose the subjects you’re curious about. You’ll receive a daily card from every selected topic, with earlier ideas revisited when you finish the written collection. No account is required.">Choose the subjects you’re curious about. You’ll receive a daily card from every selected topic, with earlier ideas revisited when you finish the written collection. No account is required.</p>
@@ -130,21 +133,23 @@
 
     <dialog id="card-dialog" class="card-dialog">
       <div class="dialog-content">
-        <button class="dialog-close icon-button" type="button" aria-label="Close card" data-i18n-aria="Close card">×</button>
+        <div class="reader-toolbar"><span data-i18n="Read and learn">Read and learn</span><button class="dialog-close icon-button" type="button" aria-label="Close card" data-i18n-aria="Close card">×</button></div>
         <div id="dialog-card"></div>
       </div>
     </dialog>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="./analytics-config.js?v=20261012-1"></script>
-    <script src="./content.js?v=20261012-1"></script>
-    <script src="./locales.js?v=20261012-1"></script>
-    <script src="./content-el.js?v=20261012-1"></script>
-    <script src="./content-ru.js?v=20261012-1"></script>
-    <script src="./content-ro.js?v=20261012-1"></script>
-    <script src="./i18n.js?v=20261012-1"></script>
-    <script src="./features.js?v=20261012-1"></script>
-    <script src="./app.js?v=20261012-1"></script>
+    <script src="./analytics-config.js?v=20261012-2"></script>
+    <script src="./content.js?v=20261012-2"></script>
+    <script src="./locales.js?v=20261012-2"></script>
+    <script src="./content-el.js?v=20261012-2"></script>
+    <script src="./content-ru.js?v=20261012-2"></script>
+    <script src="./content-ro.js?v=20261012-2"></script>
+    <script src="./extra-content.js?v=20261012-2"></script>
+    <script src="./i18n.js?v=20261012-2"></script>
+    <script src="./features.js?v=20261012-2"></script>
+    <script src="./review.js?v=20261012-2"></script>
+    <script src="./app.js?v=20261012-2"></script>
   </body>
 </html>
 

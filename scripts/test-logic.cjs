@@ -1,18 +1,28 @@
 const fs = require('node:fs'), vm = require('node:vm'), assert = require('node:assert/strict');
 const root=require('node:path').resolve(__dirname,'..')+'/';
 const elements=new Map(), listeners=new Map(), storage=new Map();
-function element(selector) {if (!elements.has(selector)) elements.set(selector,{textContent:'',innerHTML:'',open:false,style:{},classList:{toggle(){},add(){},remove(){}},addEventListener(name,fn){listeners.set(selector+':'+name,fn)},showModal(){this.open=true},close(){this.open=false}});return elements.get(selector);}
+function element(selector) {if (!elements.has(selector)) elements.set(selector,{textContent:'',innerHTML:'',open:false,style:{},classList:{contains(){return false},toggle(){},add(){},remove(){}},addEventListener(name,fn){listeners.set(selector+':'+name,fn)},showModal(){this.open=true},close(){this.open=false}});return elements.get(selector);}
 const globals={console, URL, URLSearchParams, AbortSignal, FormData, Date, setTimeout:()=>0,clearTimeout(){}, navigator:{},location:{search:'',origin:'https://onecardwiser.com',pathname:'/'},
   localStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>storage.set(key,value)},
-  document:{documentElement:{lang:'en'},querySelector:element,querySelectorAll:()=>[],addEventListener:(name,fn)=>listeners.set('document:'+name,fn)},
+  document:{documentElement:{lang:'en'},querySelector:element,querySelectorAll:()=>[],addEventListener:(name,fn)=>{const previous=listeners.get('document:'+name);listeners.set('document:'+name,event=>{previous?.(event);fn(event)})}},
   fetch:async()=>{throw new Error('network offline')}};
 globals.window=globals;globals.scrollTo=()=>{};globals.addEventListener=(name,fn)=>listeners.set('window:'+name,fn);
 const ctx=vm.createContext(globals);
-for(const file of ['analytics-config.js','content.js','locales.js','content-el.js','content-ru.js','content-ro.js','i18n.js','features.js','app.js'])vm.runInContext(fs.readFileSync(root+file,'utf8'),ctx,{filename:file});
+for(const file of ['analytics-config.js','content.js','locales.js','content-el.js','content-ru.js','content-ro.js','extra-content.js','i18n.js','features.js','review.js','app.js'])vm.runInContext(fs.readFileSync(root+file,'utf8'),ctx,{filename:file});
 const run=code=>vm.runInContext(code,ctx);
 const click=attributes=>listeners.get('document:click')({target:{closest:selector=>attributes[selector]||null}});
 assert.equal(run('todaysCards().length'),3);
+assert.equal(run('CARDS.length'),96);
+assert.equal(run('t("Last 7 days: {n} cards completed · {d} days of learning",{n:1,d:1})'),'Last 7 days: 1 card completed · 1 day of learning');
+assert.equal(run('new Set(CARDS.map(c=>c.id)).size'),96);
+assert.equal(run('Object.keys(TOPICS).every(id=>CARDS.filter(c=>c.topic===id).length===8)'),true);
 assert.equal(run('todaysCards()[0].id'),'econ-opportunity-cost');
+
+run('currentFilter="psychology";librarySearch="";renderLibrary()');assert.equal(element('#library-count').textContent,'8 ideas');
+run('currentFilter="all";librarySearch="binary";renderLibrary()');assert.equal(element('#library-count').textContent,'1 idea');
+run('librarySearch="no-such-idea-xyz";renderLibrary()');assert.match(element('#library-grid').innerHTML,/No matching ideas/);
+run('librarySearch="";currentFilter="all";renderLibrary()');assert.equal(element('#library-count').textContent,'96 ideas');
+
 assert.equal(run('CARDS.every(c=>safeUrl(c.sourceUrl)&&QUIZZES[c.id]&&QUIZZES[c.id].options.length===3)'),true);
 click({'[data-quiz-choice]':{dataset:{quizCard:'econ-opportunity-cost',quizChoice:'1'}}});
 assert.equal(run('state.quizAnswers["econ-opportunity-cost"]'),1);
@@ -32,7 +42,7 @@ for(const language of ['el','ru','ro','en']){
  assert.equal(run('CARDS.every(c=>QUIZZES[c.id].answer===ORIGINAL_CONTENT.QUIZZES[c.id].answer)'),true);
  if(language!=='en'){
   assert.notEqual(run('CARDS[0].title'),englishTitle);
-  assert.equal(run('Object.keys(CONTENT_LOCALES[currentLanguage]).length'),33);
+  assert.equal(run('Object.keys(CONTENT_LOCALES[currentLanguage]).length'),96);
   assert.equal(run('CARDS.every(c=>{const row=CONTENT_LOCALES[currentLanguage][c.id];return row.length===8&&row.slice(0,6).every(v=>typeof v==="string"&&v.length>0)&&row[6].length===3&&row[6].every(v=>typeof v==="string"&&v.length>0)&&typeof row[7]==="string"})'),true);
   assert.equal(run('publicCardUrl(CARDS[0])'),'https://onecardwiser.com/'+language+'/cards/econ-opportunity-cost/');
   assert.ok(run('quizMarkup(CARDS[0])').includes(run('QUIZZES[CARDS[0].id].question')));
@@ -41,8 +51,28 @@ for(const language of ['el','ru','ro','en']){
 assert.equal(run('CARDS[0].title'),englishTitle);
 globals.location.search='?lang=ro&card=econ-opportunity-cost';assert.equal(run('initialLanguage()'),'ro');
 globals.location.search='?lang=invalid';storage.set('ocw-language','invalid');assert.equal(run('initialLanguage()'),'en');globals.location.search='';storage.set('ocw-language','en');
-const source=['app.js','features.js','i18n.js'].map(f=>fs.readFileSync(root+f,'utf8')).join('\n');
+const source=['app.js','features.js','i18n.js','review.js'].map(f=>fs.readFileSync(root+f,'utf8')).join('\n');
 for(const match of source.matchAll(/\bt\("([^"\n]+)"/g))assert.equal(run('Object.hasOwn(UI_TRANSLATIONS,'+JSON.stringify(match[1])+')'),true,'Missing translation: '+match[1]);
+
+
+const beforeReview=run('JSON.stringify(state)');
+run('state.completed={};state.quizAnswers={};state.reviewLog={};state.quizAnswers["psychology-anchoring"]=0;state.completed["science-sleep"]=dateKey(new Date(Date.now()-4*86400000))');
+assert.equal(run('reviewQueue()[0].id'),'psychology-anchoring','Missed questions have priority');
+assert.ok(run('reviewQueue().some(c=>c.id==="science-sleep")'),'Older ideas return after three days');
+element('#review-view').classList.contains=()=>true;
+run('openCard("psychology-anchoring")');
+assert.equal(run('state.quizAnswers["psychology-anchoring"]'),0,'Opening review preserves previous answer');
+assert.equal(run('activeReviewAnswer'),null);
+click({'[data-quiz-choice]':{dataset:{quizCard:'psychology-anchoring',quizChoice:'1'}}});
+assert.equal(run('activeReviewAnswer'),1);assert.equal(run('state.quizAnswers["psychology-anchoring"]'),0,'Review stays separate until finished');
+click({'[data-reviewed]':{dataset:{reviewed:'psychology-anchoring'}}});
+assert.equal(run('state.quizAnswers["psychology-anchoring"]'),1);
+assert.equal(run('state.reviewLog["psychology-anchoring"]'),run('dateKey()'));
+assert.equal(run('reviewQueue().some(c=>c.id==="psychology-anchoring")'),false);
+assert.equal(run('Boolean(state.completed["psychology-anchoring"])'),false,'Review does not count as daily completion');
+assert.equal(run('loadState().reviewLog["psychology-anchoring"]'),run('dateKey()'));
+element('#review-view').classList.contains=()=>false;
+run('state='+beforeReview+';activeReviewId=null;activeReviewAnswer=null');
 
 run('const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);state.completionLog[dateKey(yesterday)]=["econ-opportunity-cost"];state.dailyCardIds[dateKey(yesterday)]=state.dailyCardIds[dateKey()];delete state.dailyCardIds[dateKey()];state.completed["econ-opportunity-cost"]=dateKey(yesterday);state.completionLog[dateKey()]=[];ensureDailyCards()');
 assert.equal(run('todaysCards()[0].id'),'econ-compounding');
@@ -111,7 +141,7 @@ run('fetchKnowledgeCard=async(topic)=>({...CARDS[0],id:"existing-source",topic,d
   assert.equal(gaScripts.length,1,'Re-enabling must not duplicate the tag');
   assert.equal(gaContext['ga-disable-G-GXCH42NMMJ'],false);
   const xml=fs.readFileSync(root+'sitemap.xml','utf8');const urls=[...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(m=>m[1]);
-  assert.equal(urls.length,197);assert.equal(new Set(urls).size,197);
+  assert.equal(urls.length,449);assert.equal(new Set(urls).size,449);
   for(const url of urls){const p=new URL(url).pathname,filename=root+p.replace(/^\//,'')+'index.html';assert.ok(fs.existsSync(filename),p);if(p!=='/'){const page=fs.readFileSync(filename,'utf8');assert.equal([...page.matchAll(/rel="alternate" hreflang=/g)].length,4,p);assert.ok(page.includes('rel="canonical" href="'+url+'"'));const lang=/^\/(el|ru|ro)\//.exec(p)?.[1]||'en';assert.ok(page.includes('<html lang="'+lang+'"'));}}
   const html=fs.readFileSync(root+'index.html','utf8');
   for(const match of html.matchAll(/(?:href|src)="\.\/([^"]+)"/g)){const file=root+match[1].split('?')[0];assert.ok(fs.existsSync(file),file);}
@@ -123,6 +153,6 @@ run('fetchKnowledgeCard=async(topic)=>({...CARDS[0],id:"existing-source",topic,d
   swEvents.fetch({request:{method:'GET',mode:'navigate',url:'https://onecardwiser.com/'},respondWith:p=>responsePromise=p});assert.match(await (await responsePromise).text(),/cached/);
   swEvents.fetch({request:{method:'GET',mode:'navigate',url:'https://onecardwiser.com/topics/art/'},respondWith:p=>responsePromise=p});assert.match(await (await responsePromise).text(),/You are offline/);
   let intercepted=false;swEvents.fetch({request:{method:'GET',url:'https://en.wikipedia.org/w/api.php'},respondWith:()=>intercepted=true});assert.equal(intercepted,false);
-  console.log('PASS: four languages, remembered preference, preserved progress and quiz answer indices, reciprocal language pages; all 33 cards have source links and quizzes; daily allocation, all 12 topics, completion, streak retention, undo, save, legacy migration, invalid state, duplicate rejection, storage failures, sharing URLs, analytics consent and withdrawal, 197 sitemap pages, manifest assets and offline service worker.');
+  console.log('PASS: four languages, remembered preference, preserved progress and quiz answer indices, reciprocal language pages; all 96 cards have source links and quizzes; daily allocation, all 12 topics, completion, streak retention, undo, save, legacy migration, invalid state, duplicate rejection, storage failures, sharing URLs, analytics consent and withdrawal, 449 sitemap pages, manifest assets and offline service worker.');
 })().catch(error=>{console.error(error);process.exitCode=1});
 

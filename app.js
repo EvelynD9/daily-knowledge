@@ -8,10 +8,12 @@ const DEFAULT_STATE = {
   dailyCardIds: {},
   discoveryIndex: 0,
   completionLog: {},
+  reviewLog: {},
   onboardingSeen: false
 };
 let state = loadState();
 let currentFilter = "all";
+let librarySearch="";
 let activeDialogCardId = null;
 let toastTimer;
 let dailyLoading = false;
@@ -31,6 +33,7 @@ function loadState() {
     }
     for (const [id, date] of Object.entries(completed)) completionLog[date] = [...new Set([...(completionLog[date] || []), id])];
     return { ...defaults, topics: topics.length ? topics : defaults.topics, completed, completionLog,
+      reviewLog:Object.fromEntries(Object.entries(object(stored.reviewLog)).filter(([,date])=>/^\d{4}-\d{2}-\d{2}$/.test(date))),
       saved: Array.isArray(stored.saved) ? [...new Set(stored.saved.filter(id => typeof id === "string"))] : [],
       quizAnswers: object(stored.quizAnswers), dailyCardIds: object(stored.dailyCardIds),
       discoveredCards: Array.isArray(stored.discoveredCards) ? stored.discoveredCards.filter(card => card && TOPICS[card.topic] && typeof card.id === "string" && typeof card.title === "string" && safeUrl(card.sourceUrl)) : [],
@@ -220,8 +223,8 @@ function quizMarkup(card) {
           : `<button class="recall-button" type="button" data-recall="${escapeHtml(card.id)}">${t("I have my answer — reveal the cue")}</button>`}
       </section>`;
   }
-  const hasAnswer = Object.prototype.hasOwnProperty.call(state.quizAnswers, card.id);
-  const selected = state.quizAnswers[card.id];
+  const selected = activeReviewId===card.id?activeReviewAnswer:state.quizAnswers[card.id];
+  const hasAnswer = activeReviewId===card.id?Number.isInteger(activeReviewAnswer):Object.prototype.hasOwnProperty.call(state.quizAnswers, card.id);
   const isCorrect = hasAnswer && selected === quiz.answer;
   const options = quiz.options.map((option, index) => {
     const classes = ["quiz-option"];
@@ -260,6 +263,7 @@ function cardMarkup(card, { dialog = false } = {}) {
         ${sourceUrl ? `<a class="source-link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">${t("Source:")} ${escapeHtml(card.sourceName || t("Read more"))} ↗</a>${card.discovered ? `<p class="source-attribution">${t("Excerpt adapted from Wikipedia")} · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>. ${t("This is a source preview, not a reviewed learning card.")}</p>` : ""}` : ""}
         ${!card.discovered ? `<p class="source-attribution">${t("Explanation and illustrative examples by One Card Wiser. Source linked for further reading.")}</p>` : ""}
         ${quizMarkup(card)}
+        ${reviewAction(card)}
         <div class="card-actions">
           <button class="primary-button ${complete ? "completed" : ""}" type="button" data-complete="${escapeHtml(card.id)}">${complete ? t("✓ Completed") : t("Mark as complete")}</button>
           <button class="secondary-button ${saved ? "saved" : ""}" type="button" data-save="${escapeHtml(card.id)}">${saved ? t("★ Saved") : t("☆ Save for later")}</button>
@@ -339,7 +343,7 @@ function calculateStreak() {
 }
 
 function renderFilters() {
-  const available = ["all", ...state.topics];
+  const available = ["all", ...Object.keys(TOPICS)];
   if (!available.includes(currentFilter)) currentFilter = "all";
   document.querySelector("#library-filters").innerHTML = available.map(topic => {
     const label = topic === "all" ? t("All topics") : TOPICS[topic].label;
@@ -348,9 +352,11 @@ function renderFilters() {
 }
 
 function renderLibrary() {
-  const list = filteredCards().filter(card => currentFilter === "all" || card.topic === currentFilter);
+  const normalise=value=>String(value).normalize("NFD").replace(/\p{M}/gu,"").toLocaleLowerCase(currentLanguage);
+  const query=normalise(librarySearch.trim());
+  const list = allCards().filter(card => (currentFilter === "all" || card.topic === currentFilter)&&(!query||normalise([card.title,card.hook,TOPICS[card.topic].label].join(" ")).includes(query)));
   document.querySelector("#library-count").textContent = t("{n} ideas",{n:list.length});
-  document.querySelector("#library-grid").innerHTML = list.map(miniCardMarkup).join("");
+  document.querySelector("#library-grid").innerHTML = list.length?list.map(miniCardMarkup).join(""):`<div class="empty-state"><h3>${t("No matching ideas")}</h3><p>${t("Try another word or choose a different topic.")}</p><button class="secondary-button" type="button" data-clear-search>${t("Clear search")}</button></div>`;
 }
 
 function renderSaved() {
@@ -373,7 +379,7 @@ function renderTopicOptions() {
 }
 
 function renderAll() {
-  renderWeeklyProgress(); renderToday(); renderFilters(); renderLibrary(); renderSaved(); renderTopicOptions();
+  renderReview(); renderWeeklyProgress(); renderToday(); renderFilters(); renderLibrary(); renderSaved(); renderTopicOptions();
   if (activeDialogCardId && document.querySelector("#card-dialog").open) {
     const card = findCard(activeDialogCardId);
     if (card) document.querySelector("#dialog-card").innerHTML = cardMarkup(card);
@@ -381,18 +387,23 @@ function renderAll() {
 }
 
 function showView(name) {
+  trackEvent("view_open",{view:name});
   document.querySelectorAll(".view").forEach(view => view.classList.toggle("active", view.id === `${name}-view`));
   document.querySelectorAll(".nav-item").forEach(item => item.classList.toggle("active", item.dataset.viewLink === name));
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function openCard(id) {
+  const reviewing=document.querySelector("#review-view").classList.contains("active");
+  activeReviewId=reviewing?id:null;
+  activeReviewAnswer=null;
   const card = findCard(id);
   if (!card) return;
   trackEvent("card_open", { topic: card.topic, kind: card.discovered ? "source_preview" : "written" });
   activeDialogCardId = id;
   document.querySelector("#dialog-card").innerHTML = cardMarkup(card, { dialog: true });
-  document.querySelector("#card-dialog").showModal();
+  if(!document.querySelector("#card-dialog").open)document.querySelector("#card-dialog").showModal();
+  document.querySelector(".dialog-content").scrollTop=0;
 }
 
 function showToast(message) {
@@ -437,8 +448,8 @@ document.addEventListener("click", event => {
     const id = quizChoice.dataset.quizCard;
     const choice = Number(quizChoice.dataset.quizChoice);
     trackEvent("quiz_answer", { topic: findCard(id)?.topic, correct: choice === QUIZZES[id].answer });
-    state.quizAnswers[id] = choice;
-    saveState(); renderAll();
+    if(activeReviewId===id){activeReviewAnswer=choice;renderAll();}
+    else {state.quizAnswers[id] = choice;if(choice!==QUIZZES[id].answer)delete state.reviewLog[id];saveState();renderAll();}
     if (choice === QUIZZES[id].answer) showToast(t("Correct — that idea is yours now."));
   }
 
@@ -451,7 +462,8 @@ document.addEventListener("click", event => {
 
   const quizReset = event.target.closest("[data-quiz-reset]");
   if (quizReset) {
-    delete state.quizAnswers[quizReset.dataset.quizReset];
+    if(activeReviewId===quizReset.dataset.quizReset)activeReviewAnswer=null;
+    else delete state.quizAnswers[quizReset.dataset.quizReset];
     saveState(); renderAll();
   }
 
@@ -497,11 +509,13 @@ document.querySelector("#topic-form").addEventListener("submit", event => {
   renderAll();
   ensureDailyCards();
   showToast(t("Your daily mix is ready"));
+  maybeAskAnalytics();
 });
 
 document.querySelector("#discover-button").addEventListener("click", discoverFreshCard);
 
 document.querySelector(".dialog-close").addEventListener("click", () => document.querySelector("#card-dialog").close());
+document.querySelector("#card-dialog").addEventListener("close",()=>{activeReviewId=null;activeReviewAnswer=null;});
 document.querySelector("#card-dialog").addEventListener("click", event => {
   if (event.target === event.currentTarget) event.currentTarget.close();
 });
@@ -516,3 +530,11 @@ document.addEventListener("visibilitychange", () => {
   if (!document.hidden && renderedDay !== dateKey()) { renderedDay = dateKey(); ensureDailyCards(); }
 });
 
+
+document.querySelector("#close-topic").addEventListener("click",()=>{
+ document.querySelector("#topic-dialog").close();
+ if(!state.onboardingSeen){state.onboardingSeen=true;saveState();maybeAskAnalytics();}
+});
+
+document.addEventListener("input",event=>{if(event.target.id==="library-search"){librarySearch=event.target.value;renderLibrary();}});
+document.addEventListener("click",event=>{if(event.target.closest("[data-clear-search]")){librarySearch="";document.querySelector("#library-search").value="";renderLibrary();}});
