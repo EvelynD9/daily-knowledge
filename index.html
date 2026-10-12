@@ -20,7 +20,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://onecardwiser.com/social-preview.png" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"One Card Wiser","url":"https://onecardwiser.com/","description":"Short daily learning cards with examples, sources and quizzes."}</script>
-    <link rel="stylesheet" href="./styles.css?v=20261012-5" />
+    <link rel="stylesheet" href="./styles.css?v=20261012-6" />
   </head>
   <body>
     <div class="app-shell">
@@ -104,6 +104,7 @@
         <a href="./learn-something-new-every-day/" data-locale-path="learn-something-new-every-day/" data-i18n="Daily learning">Daily learning</a>
         <a href="./topics/" data-locale-path="topics/" data-i18n="Explore topics">Explore topics</a>
         <a href="./privacy/" data-locale-path="privacy/" data-i18n="Privacy">Privacy</a>
+        <button class="text-button" type="button" data-open-progress data-i18n="Back up or restore progress">Back up or restore progress</button>
         <button class="text-button" type="button" data-open-feedback data-i18n="Feedback or a problem?">Feedback or a problem?</button>
         <button class="text-button" id="analytics-settings" type="button" data-i18n="Analytics choices">Analytics choices</button>
         <p id="install-help" hidden></p>
@@ -133,6 +134,7 @@
         <p class="eyebrow" data-i18n="Make it yours">Make it yours</p>
         <h2 data-i18n="What do you want to understand better?">What do you want to understand better?</h2>
         <p class="muted" data-i18n="Choose the subjects you’re curious about. You’ll receive a daily card from every selected topic, with earlier ideas revisited when you finish the written collection. No account is required.">Choose the subjects you’re curious about. You’ll receive a daily card from every selected topic, with earlier ideas revisited when you finish the written collection. No account is required.</p>
+        <button class="secondary-button full-width" type="button" data-open-progress data-i18n="Back up or restore progress">Back up or restore progress</button>
         <div id="topic-options" class="topic-options"></div>
         <p id="topic-error" class="form-error" role="alert"></p>
         <button class="primary-button full-width" value="default" type="submit" data-i18n="Save my topics">Save my topics</button>
@@ -153,19 +155,28 @@
 <label><span data-i18n="What happened, or what would help?">What happened, or what would help?</span><textarea id="feedback-message" required minlength="10" maxlength="1500" rows="5"></textarea></label><p class="muted" data-i18n="At least 10 characters. Your message is not sent automatically.">At least 10 characters. Your message is not sent automatically.</p><p id="feedback-error" class="form-error" role="alert"></p><button class="primary-button full-width" type="submit" data-i18n="Prepare report">Prepare report</button></form>
 <div id="feedback-ready" hidden><p data-i18n="Report ready. Copy it or open GitHub to review and submit it.">Report ready. Copy it or open GitHub to review and submit it.</p><textarea id="feedback-report" readonly rows="6" aria-label="Prepared report" data-i18n-aria="Prepared report"></textarea><div class="welcome-actions"><button class="secondary-button" type="button" data-copy-feedback data-i18n="Copy report">Copy report</button><a id="feedback-link" class="primary-button" target="_blank" rel="noopener noreferrer" data-i18n="Review on GitHub ↗">Review on GitHub ↗</a></div><p id="feedback-status" role="status"></p></div>
 </dialog>
+    <dialog id="progress-dialog" class="sheet-dialog" aria-labelledby="progress-heading">
+<div class="feedback-heading"><h2 id="progress-heading" data-i18n="Keep your learning safe">Keep your learning safe</h2><button class="icon-button" type="button" data-close-progress aria-label="Close" data-i18n-aria="Close">×</button></div>
+<p class="muted" data-i18n="Download your progress before changing phones or clearing browser data. No account needed.">Download your progress before changing phones or clearing browser data. No account needed.</p>
+<section class="backup-section"><h3 data-i18n="Save a backup">Save a backup</h3><p data-i18n="Includes saved ideas, completed cards, quiz answers, review dates, topics and language.">Includes saved ideas, completed cards, quiz answers, review dates, topics and language.</p><button class="primary-button full-width" type="button" data-export-progress data-i18n="Download my progress">Download my progress</button><p id="backup-status" role="status"></p></section>
+<section class="backup-section"><h3 data-i18n="Restore on this device">Restore on this device</h3><p data-i18n="Open One Card Wiser on the other device and choose your backup file here. Devices will not sync automatically.">Open One Card Wiser on the other device and choose your backup file here. Devices will not sync automatically.</p><input id="backup-file" type="file" accept=".json,application/json" hidden><button class="secondary-button full-width" type="button" data-choose-backup data-i18n="Choose backup file">Choose backup file</button><p id="backup-error" class="form-error" role="alert"></p>
+<div id="backup-preview" class="backup-preview" hidden><h3 data-i18n="Check before restoring">Check before restoring</h3><p id="backup-filename"></p><p id="backup-summary"></p><p id="backup-preferences"></p><p data-i18n="Your current saved ideas and learning history will be kept. Existing quiz answers on this device take priority.">Your current saved ideas and learning history will be kept. Existing quiz answers on this device take priority.</p><div class="welcome-actions"><button class="primary-button" type="button" data-restore-progress data-i18n="Restore this backup">Restore this backup</button><button class="secondary-button" type="button" data-cancel-restore data-i18n="Cancel">Cancel</button></div></div></section>
+<p class="muted" data-i18n="The file stays on your device. Nothing is uploaded, and analytics consent is not included.">The file stays on your device. Nothing is uploaded, and analytics consent is not included.</p>
+</dialog>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="./analytics-config.js?v=20261012-5"></script>
-    <script src="./content.js?v=20261012-5"></script>
-    <script src="./locales.js?v=20261012-5"></script>
-    <script src="./content-el.js?v=20261012-5"></script>
-    <script src="./content-ru.js?v=20261012-5"></script>
-    <script src="./content-ro.js?v=20261012-5"></script>
-    <script src="./extra-content.js?v=20261012-5"></script>
-    <script src="./i18n.js?v=20261012-5"></script>
-    <script src="./features.js?v=20261012-5"></script>
-    <script src="./review.js?v=20261012-5"></script>
-    <script src="./experience.js?v=20261012-5"></script>
-    <script src="./app.js?v=20261012-5"></script>
+    <script src="./analytics-config.js?v=20261012-6"></script>
+    <script src="./content.js?v=20261012-6"></script>
+    <script src="./locales.js?v=20261012-6"></script>
+    <script src="./content-el.js?v=20261012-6"></script>
+    <script src="./content-ru.js?v=20261012-6"></script>
+    <script src="./content-ro.js?v=20261012-6"></script>
+    <script src="./extra-content.js?v=20261012-6"></script>
+    <script src="./i18n.js?v=20261012-6"></script>
+    <script src="./features.js?v=20261012-6"></script>
+    <script src="./review.js?v=20261012-6"></script>
+    <script src="./experience.js?v=20261012-6"></script>
+    <script src="./app.js?v=20261012-6"></script>
+    <script src="./progress.js?v=20261012-6"></script>
   </body>
 </html>
 

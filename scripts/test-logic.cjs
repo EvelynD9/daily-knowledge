@@ -8,7 +8,7 @@ const globals={console, URL, URLSearchParams, AbortSignal, FormData, Date, setTi
   fetch:async()=>{throw new Error('network offline')}};
 globals.window=globals;globals.scrollTo=()=>{};globals.addEventListener=(name,fn)=>listeners.set('window:'+name,fn);
 const ctx=vm.createContext(globals);
-for(const file of ['analytics-config.js','content.js','locales.js','content-el.js','content-ru.js','content-ro.js','extra-content.js','i18n.js','features.js','review.js','experience.js','app.js'])vm.runInContext(fs.readFileSync(root+file,'utf8'),ctx,{filename:file});
+for(const file of ['analytics-config.js','content.js','locales.js','content-el.js','content-ru.js','content-ro.js','extra-content.js','i18n.js','features.js','review.js','experience.js','app.js','progress.js'])vm.runInContext(fs.readFileSync(root+file,'utf8'),ctx,{filename:file});
 const run=code=>vm.runInContext(code,ctx);
 const click=attributes=>listeners.get('document:click')({target:{closest:selector=>attributes[selector]||null}});
 assert.equal(run('todaysCards().length'),3);
@@ -46,6 +46,35 @@ assert.equal(run('calculateStreak()'),1);
 click({'[data-save]':{dataset:{save:'econ-opportunity-cost'}}});
 assert.equal(run('state.saved[0]'),'econ-opportunity-cost');
 assert.equal(run('loadState().saved[0]'),'econ-opportunity-cost');
+
+
+const backupBefore=run('JSON.stringify(state)');
+const exported=run('JSON.stringify(makeProgressBackup())');
+assert.equal(JSON.parse(exported).format,'one-card-wiser');
+assert.equal(JSON.parse(exported).state.saved[0],'econ-opportunity-cost');
+assert.ok(!exported.includes('ocw-analytics-consent'));
+run('this.parsedBackup=readProgressBackup('+JSON.stringify(exported)+')');
+assert.equal(run('parsedBackup.state.quizAnswers["econ-opportunity-cost"]'),1);
+assert.throws(()=>run('readProgressBackup("invalid JSON")'),/valid/);
+const malformed=JSON.parse(exported);malformed.state.completed['econ-opportunity-cost']='2026-02-31';
+assert.throws(()=>run('readProgressBackup('+JSON.stringify(JSON.stringify(malformed))+')'),/invalid progress/);
+malformed.state.completed['econ-opportunity-cost']='2026-99-99';
+assert.throws(()=>run('readProgressBackup('+JSON.stringify(JSON.stringify(malformed))+')'),/invalid progress/);
+malformed.state.completed['not-available-card']='2026-10-01';delete malformed.state.completed['econ-opportunity-cost'];
+assert.throws(()=>run('readProgressBackup('+JSON.stringify(JSON.stringify(malformed))+')'),/unavailable cards/);
+const futureBackup=JSON.parse(exported);futureBackup.version=2;
+assert.throws(()=>run('readProgressBackup('+JSON.stringify(JSON.stringify(futureBackup))+')'),/supported/);
+run('this.incoming=JSON.parse(JSON.stringify(parsedBackup.state));incoming.saved.push("art-negative-space");incoming.quizAnswers["econ-opportunity-cost"]=0;incoming.completionLog["2026-01-01"]=["art-negative-space"];incoming.completed["art-negative-space"]="2026-01-01";');
+run('this.merged=mergeProgressBackup(state,incoming)');
+assert.equal(run('merged.saved.includes("art-negative-space")&&merged.saved.includes("econ-opportunity-cost")'),true);
+assert.equal(run('merged.quizAnswers["econ-opportunity-cost"]'),1,'Existing answer takes priority');
+assert.equal(run('merged.completed["art-negative-space"]'),'2026-01-01');
+assert.equal(run('JSON.stringify(mergeProgressBackup(merged,incoming))===JSON.stringify(merged)'),true,'Repeated restore is idempotent');
+const originalWrite=globals.localStorage.setItem;globals.localStorage.setItem=()=>{throw new Error('storage full')};
+assert.throws(()=>run('restoreProgressBackup(parsedBackup)'),/storage full/);
+assert.equal(run('JSON.stringify(state)'),backupBefore,'Failed persistence must preserve the current session');
+globals.localStorage.setItem=originalWrite;
+assert.equal(run('JSON.stringify(state)'),backupBefore);
 
 const progressBefore=run('JSON.stringify(state)'),englishTitle=run('CARDS[0].title');
 for(const language of ['el','ru','ro','en']){
