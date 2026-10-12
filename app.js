@@ -41,7 +41,7 @@ function loadState() {
 
 function saveState() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-  catch { showToast("Your browser could not save progress. Free some space or allow site storage."); }
+  catch { showToast(t("Your browser could not save progress. Free some space or allow site storage.")); }
 }
 
 function dateKey(date = new Date()) {
@@ -176,7 +176,7 @@ async function discoverFreshCard() {
   discoveryLoading = true;
   const button = document.querySelector("#discover-button");
   button.disabled = true;
-  button.textContent = "Finding something useful…";
+  button.textContent = t("Finding something useful…");
   const topicId = currentFilter !== "all" ? currentFilter : state.topics[state.discoveryIndex % state.topics.length];
   let card = null;
   try {
@@ -192,13 +192,13 @@ async function discoverFreshCard() {
     saveState();
     renderLibrary();
     openCard(card.id);
-    showToast(`A new ${TOPICS[topicId].label} idea was added`);
+    showToast(t("A new {topic} idea was added",{topic:TOPICS[topicId].label}));
   } catch {
-    showToast("No new source preview found. Your written cards are still available offline.");
+    showToast(t("No new source preview found. Your written cards are still available offline."));
   } finally {
     discoveryLoading = false;
     button.disabled = false;
-    button.textContent = "Explore a source preview";
+    button.textContent = t("Explore a source preview");
   }
 }
 
@@ -213,11 +213,11 @@ function quizMarkup(card) {
     const revealed = state.quizAnswers[card.id] === "recalled";
     return `
       <section class="quiz-box recall-box ${revealed ? "answered" : ""}">
-        <div class="quiz-heading"><span>Memory check</span><strong>Pause before you reveal.</strong></div>
-        <p class="quiz-question">How would you explain “${escapeHtml(card.title)}” in one sentence?</p>
+        <div class="quiz-heading"><span>${t("Memory check")}</span><strong>${t("Pause before you reveal.")}</strong></div>
+        <p class="quiz-question">${escapeHtml(t("How would you explain “{title}” in one sentence?",{title:card.title}))}</p>
         ${revealed
-          ? `<div class="quiz-feedback correct"><strong>Memory cue ✦</strong><p>${escapeHtml(card.hook)}</p></div>`
-          : `<button class="recall-button" type="button" data-recall="${escapeHtml(card.id)}">I have my answer — reveal the cue</button>`}
+          ? `<div class="quiz-feedback correct"><strong>${t("Memory cue ✦")}</strong><p>${escapeHtml(card.hook)}</p></div>`
+          : `<button class="recall-button" type="button" data-recall="${escapeHtml(card.id)}">${t("I have my answer — reveal the cue")}</button>`}
       </section>`;
   }
   const hasAnswer = Object.prototype.hasOwnProperty.call(state.quizAnswers, card.id);
@@ -231,10 +231,10 @@ function quizMarkup(card) {
   }).join("");
   return `
     <section class="quiz-box ${hasAnswer ? "answered" : ""}">
-      <div class="quiz-heading"><span>Quick check</span><strong>One tap. Make it stick.</strong></div>
+      <div class="quiz-heading"><span>${t("Quick check")}</span><strong>${t("One tap. Make it stick.")}</strong></div>
       <p class="quiz-question">${escapeHtml(quiz.question)}</p>
       <div class="quiz-options">${options}</div>
-      ${hasAnswer ? `<div class="quiz-feedback ${isCorrect ? "correct" : "incorrect"}"><strong>${isCorrect ? "That’s it ✦" : "Let’s check the explanation."}</strong><p>${escapeHtml(quiz.feedback)}</p>${!isCorrect ? `<button type="button" data-quiz-reset="${escapeHtml(card.id)}">Try again</button>` : ""}</div>` : ""}
+      ${hasAnswer ? `<div class="quiz-feedback ${isCorrect ? "correct" : "incorrect"}"><strong>${isCorrect ? t("That’s it ✦") : t("Let’s check the explanation.")}</strong><p>${escapeHtml(quiz.feedback)}</p>${!isCorrect ? `<button type="button" data-quiz-reset="${escapeHtml(card.id)}">${t("Try again")}</button>` : ""}</div>` : ""}
     </section>`;
 }
 
@@ -248,23 +248,23 @@ function cardMarkup(card, { dialog = false } = {}) {
       <div class="card-inner">
         <div class="card-topline">
           <span class="topic-tag"><span class="topic-dot"></span>${escapeHtml(topic.label)}</span>
-          <span class="read-time">2 min read</span>
+          <span class="read-time">${t("2 min read")}</span>
         </div>
         <h2 class="card-title">${escapeHtml(card.title)}</h2>
         <p class="card-hook">${escapeHtml(card.hook)}</p>
-        <div class="concept-box"><strong>The idea</strong><p>${escapeHtml(card.concept)}</p></div>
+        <div class="concept-box"><strong>${t("The idea")}</strong><p>${escapeHtml(card.concept)}</p></div>
         <div class="why-row">
-          <div><span>${card.discovered ? "In context" : "In real life"}</span><p>${escapeHtml(card.example)}</p></div>
-          <div><span>Make it stick</span><p>${escapeHtml(card.takeaway)}</p></div>
+          <div><span>${card.discovered ? t("In context") : t("In real life")}</span><p>${escapeHtml(card.example)}</p></div>
+          <div><span>${t("Make it stick")}</span><p>${escapeHtml(card.takeaway)}</p></div>
         </div>
-        ${sourceUrl ? `<a class="source-link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">Source: ${escapeHtml(card.sourceName || "Read more")} ↗</a>${card.discovered ? `<p class="source-attribution">Excerpt adapted from Wikipedia · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>. This is a source preview, not a reviewed learning card.</p>` : ""}` : ""}
-        ${!card.discovered ? `<p class="source-attribution">Explanation and illustrative examples by One Card Wiser. Source linked for further reading.</p>` : ""}
+        ${sourceUrl ? `<a class="source-link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">${t("Source:")} ${escapeHtml(card.sourceName || t("Read more"))} ↗</a>${card.discovered ? `<p class="source-attribution">${t("Excerpt adapted from Wikipedia")} · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>. ${t("This is a source preview, not a reviewed learning card.")}</p>` : ""}` : ""}
+        ${!card.discovered ? `<p class="source-attribution">${t("Explanation and illustrative examples by One Card Wiser. Source linked for further reading.")}</p>` : ""}
         ${quizMarkup(card)}
         <div class="card-actions">
-          <button class="primary-button ${complete ? "completed" : ""}" type="button" data-complete="${escapeHtml(card.id)}">${complete ? "✓ Completed" : "Mark as complete"}</button>
-          <button class="secondary-button ${saved ? "saved" : ""}" type="button" data-save="${escapeHtml(card.id)}">${saved ? "★ Saved" : "☆ Save for later"}</button>
-          <button class="secondary-button" type="button" data-share="${escapeHtml(card.id)}">Share idea ↗</button>
-          <button class="secondary-button" type="button" data-download="${escapeHtml(card.id)}">Download story ↓</button>
+          <button class="primary-button ${complete ? "completed" : ""}" type="button" data-complete="${escapeHtml(card.id)}">${complete ? t("✓ Completed") : t("Mark as complete")}</button>
+          <button class="secondary-button ${saved ? "saved" : ""}" type="button" data-save="${escapeHtml(card.id)}">${saved ? t("★ Saved") : t("☆ Save for later")}</button>
+          <button class="secondary-button" type="button" data-share="${escapeHtml(card.id)}">${t("Share idea ↗")}</button>
+          <button class="secondary-button" type="button" data-download="${escapeHtml(card.id)}">${t("Download story ↓")}</button>
         </div>
       </div>
     </article>`;
@@ -280,7 +280,7 @@ function dailyCardMarkup(card, index) {
       <span class="topic-tag"><span class="topic-dot"></span>${escapeHtml(topic.label)}</span>
       <strong>${escapeHtml(card.title)}</strong>
       <span class="daily-card-hook">${escapeHtml(card.hook)}</span>
-      <span class="daily-card-action">${complete ? "Learned today ✓" : "Open card →"}</span>
+      <span class="daily-card-action">${complete ? t("Learned today ✓") : t("Open card →")}</span>
     </button>`;
 }
 
@@ -291,7 +291,7 @@ function miniCardMarkup(card) {
       <span class="topic-tag"><span class="topic-dot"></span>${escapeHtml(topic.label)}</span>
       <h3>${escapeHtml(card.title)}</h3>
       <p>${escapeHtml(card.hook)}</p>
-      <span class="mini-meta"><span>${card.discovered ? "Source preview" : "Written card"}</span><span class="mini-state">${isComplete(card.id) ? "✓ Learned" : isSaved(card.id) ? "★ Saved" : "Read →"}</span></span>
+      <span class="mini-meta"><span>${card.discovered ? t("Source preview") : t("Written card")}</span><span class="mini-state">${isComplete(card.id) ? t("✓ Learned") : isSaved(card.id) ? t("★ Saved") : t("Read →")}</span></span>
     </button>`;
 }
 
@@ -303,7 +303,7 @@ function dailySkeletonMarkup(topicId, index) {
       <span class="topic-symbol daily-symbol" style="--symbol-bg:${topic.soft}">${escapeHtml(topic.symbol)}</span>
       <span class="topic-tag"><span class="topic-dot"></span>${escapeHtml(topic.label)}</span>
       <span class="skeleton-line wide"></span><span class="skeleton-line"></span><span class="skeleton-line short"></span>
-      <span class="daily-card-action">Finding today’s idea…</span>
+      <span class="daily-card-action">${t("Finding today’s idea…")}</span>
     </div>`;
 }
 
@@ -315,14 +315,15 @@ function renderToday() {
   const completed = cards.filter(card => isCompleteToday(card.id)).length;
   const total = state.topics.length;
   const allDone = total > 0 && cards.length === total && completed === total;
-  document.querySelector("#today-date").textContent = date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
-  document.querySelector("#today-heading").textContent = total === 3 ? "Your daily three" : "Your daily set";
+  document.querySelector("#today-date").textContent = date.toLocaleDateString(currentLanguage, { weekday: "long", day: "numeric", month: "long" });
+  document.querySelector("#today-heading").textContent = total === 3 ? t("Your daily three") : t("Your daily set");
   document.querySelector("#daily-deck").innerHTML = slots.map((slot, index) => slot.card ? dailyCardMarkup(slot.card, index) : dailySkeletonMarkup(slot.topicId, index)).join("");
   document.querySelector("#daily-progress-label").textContent = `${completed} / ${total}`;
-  document.querySelector("#daily-progress-message").textContent = dailyLoading && cards.length < total ? "Curating today’s fresh ideas…" : allDone ? "Today’s set complete. Make room for tomorrow." : completed ? "Keep going—finish today’s set." : `Today’s challenge: master ${total} ${total === 1 ? "idea" : "ideas"}.`;
+  document.querySelector("#daily-progress-message").textContent = dailyLoading && cards.length < total ? t("Curating today’s fresh ideas…") : allDone ? t("Today’s set complete. Make room for tomorrow.") : completed ? t("Keep going—finish today’s set.") : total===1?t("Today’s challenge: master one idea."):t("Today’s challenge: master {n} ideas.",{n:total});
   document.querySelector("#daily-progress-fill").style.width = `${total ? (completed / total) * 100 : 0}%`;
   document.querySelector("#daily-progress").classList.toggle("complete", allDone);
   document.querySelector("#streak-count").textContent = calculateStreak();
+  document.querySelector("#streak-label").textContent=t("{n} day streak",{n:calculateStreak()});
 }
 
 function calculateStreak() {
@@ -341,22 +342,22 @@ function renderFilters() {
   const available = ["all", ...state.topics];
   if (!available.includes(currentFilter)) currentFilter = "all";
   document.querySelector("#library-filters").innerHTML = available.map(topic => {
-    const label = topic === "all" ? "All topics" : TOPICS[topic].label;
+    const label = topic === "all" ? t("All topics") : TOPICS[topic].label;
     return `<button class="filter-button ${currentFilter === topic ? "active" : ""}" type="button" data-filter="${topic}">${label}</button>`;
   }).join("");
 }
 
 function renderLibrary() {
   const list = filteredCards().filter(card => currentFilter === "all" || card.topic === currentFilter);
-  document.querySelector("#library-count").textContent = `${list.length} ideas`;
+  document.querySelector("#library-count").textContent = t("{n} ideas",{n:list.length});
   document.querySelector("#library-grid").innerHTML = list.map(miniCardMarkup).join("");
 }
 
 function renderSaved() {
   const list = state.saved.map(findCard).filter(Boolean);
-  document.querySelector("#saved-count").textContent = `${list.length} saved`;
+  document.querySelector("#saved-count").textContent = t("{n} saved",{n:list.length});
   document.querySelector("#saved-grid").innerHTML = list.length ? list.map(miniCardMarkup).join("") : `
-    <div class="empty-state"><h3>Your collection is waiting</h3><p>Save an idea you want to remember, revisit, or put into practice.</p></div>`;
+    <div class="empty-state"><h3>${t("Your collection is waiting")}</h3><p>${t("Save an idea you want to remember, revisit, or put into practice.")}</p></div>`;
 }
 
 function renderTopicOptions() {
@@ -428,7 +429,7 @@ document.addEventListener("click", event => {
     saveState(); renderAll();
     const dailyIds = todaysCards().map(card => card.id);
     const dailySetComplete = dailyIds.includes(id) && dailyIds.length === state.topics.length && dailyIds.every(cardId => isCompleteToday(cardId));
-    showToast(!completing ? "Marked as not completed" : dailySetComplete ? "Daily set complete — brilliant work ✦" : "One down. Keep your curiosity moving.");
+    showToast(!completing ? t("Marked as not completed") : dailySetComplete ? t("Daily set complete — brilliant work ✦") : t("One down. Keep your curiosity moving."));
   }
 
   const quizChoice = event.target.closest("[data-quiz-choice]");
@@ -438,14 +439,14 @@ document.addEventListener("click", event => {
     trackEvent("quiz_answer", { topic: findCard(id)?.topic, correct: choice === QUIZZES[id].answer });
     state.quizAnswers[id] = choice;
     saveState(); renderAll();
-    if (choice === QUIZZES[id].answer) showToast("Correct — that idea is yours now.");
+    if (choice === QUIZZES[id].answer) showToast(t("Correct — that idea is yours now."));
   }
 
   const recallButton = event.target.closest("[data-recall]");
   if (recallButton) {
     state.quizAnswers[recallButton.dataset.recall] = "recalled";
     saveState(); renderAll();
-    showToast("Good. Active recall makes knowledge last.");
+    showToast(t("Good. Active recall makes knowledge last."));
   }
 
   const quizReset = event.target.closest("[data-quiz-reset]");
@@ -459,11 +460,11 @@ document.addEventListener("click", event => {
     const id = saveButton.dataset.save;
     if (isSaved(id)) {
       state.saved = state.saved.filter(item => item !== id);
-      showToast("Removed from saved");
+      showToast(t("Removed from saved"));
     } else {
       trackEvent("card_save", { topic: findCard(id)?.topic });
       state.saved.unshift(id);
-      showToast("Saved for later");
+      showToast(t("Saved for later"));
     }
     saveState(); renderAll();
   }
@@ -485,7 +486,7 @@ document.querySelector("#topic-form").addEventListener("submit", event => {
   event.preventDefault();
   const selected = [...new FormData(event.currentTarget).getAll("topic")];
   if (!selected.length) {
-    document.querySelector("#topic-error").textContent = "Choose at least one topic.";
+    document.querySelector("#topic-error").textContent = t("Choose at least one topic.");
     return;
   }
   state.topics = selected;
@@ -495,7 +496,7 @@ document.querySelector("#topic-form").addEventListener("submit", event => {
   document.querySelector("#topic-dialog").close();
   renderAll();
   ensureDailyCards();
-  showToast("Your daily mix is ready");
+  showToast(t("Your daily mix is ready"));
 });
 
 document.querySelector("#discover-button").addEventListener("click", discoverFreshCard);
@@ -514,3 +515,4 @@ let renderedDay = dateKey();
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden && renderedDay !== dateKey()) { renderedDay = dateKey(); ensureDailyCards(); }
 });
+

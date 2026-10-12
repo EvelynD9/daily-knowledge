@@ -599,3 +599,13 @@ dialog textarea { width: 100%; }
 .public-page details { background: var(--card); padding: 22px; border-radius: 18px; margin: 28px 0; }
 .public-page summary { cursor: pointer; font-weight: 600; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+
+.language-picker { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); }
+.language-picker select { max-width:145px; background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:10px; padding:10px 8px; font:inherit; cursor:pointer; }
+.topbar { flex-wrap:wrap; gap:14px; } .topbar .brand { margin-right:auto; }
+.sheet-dialog .language-picker { margin-bottom:24px; }
+.public-languages { display:flex; flex-wrap:wrap; gap:16px; margin:0 0 28px; font-size:14px; }
+.public-languages [aria-current="page"] { font-weight:700; text-decoration:none; }
+.nav-item { min-width:0; } .nav-item span { overflow-wrap:anywhere; }
+@media(max-width:540px){.topbar .brand{flex-basis:calc(100% - 60px);order:0}.topbar #settings-button{order:1}.topbar .language-picker{order:2;flex-basis:100%}.intro-row{flex-wrap:wrap;gap:12px}.streak-pill{max-width:100%;white-space:normal}}

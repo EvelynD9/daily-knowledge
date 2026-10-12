@@ -86,3 +86,5 @@ d.text((65,340),'you’re proud of.',font=font('DejaVuSerif',69),fill='#171816')
 d.text((68,525),'Daily ideas. Real examples. A little wiser.',font=font('DejaVuSans',29),fill='#6d6a62')
 im.save(root/'social-preview.png')
 print(f'Generated {len(urls)} sitemap URLs, social preview and installation icons')
+subprocess.run(['python',str(root/'scripts/build-localized.py')],check=True)
+

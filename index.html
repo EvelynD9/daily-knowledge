@@ -20,19 +20,19 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://onecardwiser.com/social-preview.png" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"One Card Wiser","url":"https://onecardwiser.com/","description":"Short daily learning cards with examples, sources and quizzes."}</script>
-    <link rel="stylesheet" href="./styles.css?v=20261009-3" />
+    <link rel="stylesheet" href="./styles.css?v=20261012-1" />
   </head>
   <body>
     <div class="app-shell">
       <header class="topbar">
-        <button class="brand" type="button" data-view-link="today" aria-label="One Card Wiser home">
+        <button class="brand" type="button" data-view-link="today" aria-label="One Card Wiser home" data-i18n-aria="One Card Wiser home">
           <span class="brand-mark" aria-hidden="true"><span class="brand-one">1</span><span class="brand-w">W</span></span>
           <span>
             <strong>One Card Wiser</strong>
-            <small>Build a mind you’re proud of.</small>
+            <small data-i18n="Build a mind you’re proud of.">Build a mind you’re proud of.</small>
           </span>
         </button>
-        <button class="icon-button" id="settings-button" type="button" aria-label="Choose topics" title="Choose topics">
+        <label class="language-picker"><span data-i18n="Language">Language</span><select data-language-select aria-label="Language" data-i18n-aria="Language"><option value="en">English</option><option value="el">Ελληνικά</option><option value="ru">Русский</option><option value="ro">Română</option></select></label><button class="icon-button" id="settings-button" type="button" aria-label="Choose topics" data-i18n-aria="Choose topics" title="Choose topics" data-i18n-title="Choose topics">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.42 1.42-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20h-2v-.08a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06-1.42-1.42.06-.06A1.7 1.7 0 0 0 9.4 15.4a1.7 1.7 0 0 0-1.56-1.03H7.8v-2h.08A1.7 1.7 0 0 0 9.44 11.3a1.7 1.7 0 0 0-.34-1.88l-.06-.06 1.42-1.42.06.06a1.7 1.7 0 0 0 1.88.34A1.7 1.7 0 0 0 13.43 6.8V6.7h2v.08a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06 1.42 1.42-.06.06a1.7 1.7 0 0 0-.34 1.88 1.7 1.7 0 0 0 1.56 1.03H21v2h-.08A1.7 1.7 0 0 0 19.4 15Z"/></svg>
         </button>
       </header>
@@ -42,47 +42,47 @@
           <div class="intro-row">
             <div>
               <p class="eyebrow" id="today-date"></p>
-              <h1 id="today-heading">Your daily three</h1>
+              <h1 id="today-heading" data-i18n="Your daily three">Your daily three</h1>
             </div>
-            <div class="streak-pill" aria-label="Learning streak"><span id="streak-count">0</span> day streak</div>
+            <div class="streak-pill" aria-label="Learning streak" data-i18n-aria="Learning streak"><span id="streak-count" hidden>0</span><span id="streak-label"></span></div>
           </div>
           <p id="weekly-progress" class="weekly-progress" aria-live="polite"></p>
           <div class="daily-progress" id="daily-progress" aria-live="polite">
             <div class="score-lockup">
-              <span class="score-label">Daily score</span>
+              <span class="score-label" data-i18n="Daily score">Daily score</span>
               <strong id="daily-progress-label">0 / 3</strong>
-              <em id="daily-progress-message">Today’s challenge: master three ideas.</em>
+              <em id="daily-progress-message" data-i18n="Today’s challenge: master three ideas.">Today’s challenge: master three ideas.</em>
             </div>
             <div class="progress-track" aria-hidden="true"><span id="daily-progress-fill"></span></div>
           </div>
           <div id="daily-deck" class="daily-deck"></div>
-          <p class="daily-note">A daily card for each selected topic. Written ideas first, then spaced revisits to make them stick.</p>
+          <p class="daily-note" data-i18n="A daily card for each selected topic. Written ideas first, then spaced revisits to make them stick.">A daily card for each selected topic. Written ideas first, then spaced revisits to make them stick.</p>
         </section>
 
         <section id="library-view" class="view" aria-labelledby="library-heading">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">Explore intentionally</p>
-              <h1 id="library-heading">Knowledge library</h1>
+              <p class="eyebrow" data-i18n="Explore intentionally">Explore intentionally</p>
+              <h1 id="library-heading" data-i18n="Knowledge library">Knowledge library</h1>
             </div>
             <span id="library-count" class="count-label"></span>
           </div>
           <div class="discovery-bar">
             <div>
               <span class="discovery-icon" aria-hidden="true">✦</span>
-              <span><strong>Follow your curiosity</strong><small>Browse written cards or explore a clearly labelled Wikipedia source preview.</small></span>
+              <span><strong data-i18n="Follow your curiosity">Follow your curiosity</strong><small data-i18n="Browse written cards or explore a clearly labelled Wikipedia source preview.">Browse written cards or explore a clearly labelled Wikipedia source preview.</small></span>
             </div>
-            <button class="primary-button" id="discover-button" type="button">Explore a source preview</button>
+            <button class="primary-button" id="discover-button" type="button" data-i18n="Explore a source preview">Explore a source preview</button>
           </div>
-          <div class="filter-row" id="library-filters" aria-label="Filter cards"></div>
+          <div class="filter-row" id="library-filters" aria-label="Filter cards" data-i18n-aria="Filter cards"></div>
           <div id="library-grid" class="library-grid"></div>
         </section>
 
         <section id="saved-view" class="view" aria-labelledby="saved-heading">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">Your collection</p>
-              <h1 id="saved-heading">Saved ideas</h1>
+              <p class="eyebrow" data-i18n="Your collection">Your collection</p>
+              <h1 id="saved-heading" data-i18n="Saved ideas">Saved ideas</h1>
             </div>
             <span id="saved-count" class="count-label"></span>
           </div>
@@ -90,55 +90,61 @@
         </section>
       </main>
 
-      <section class="site-tools" aria-label="More from One Card Wiser">
-        <button class="secondary-button" id="install-button" type="button">Install on your phone</button>
-        <a href="./learn-something-new-every-day/">Daily learning</a>
-        <a href="./topics/">Explore topics</a>
-        <a href="./privacy/">Privacy</a>
-        <button class="text-button" id="analytics-settings" type="button">Analytics choices</button>
+      <section class="site-tools" aria-label="More from One Card Wiser" data-i18n-aria="More from One Card Wiser">
+        <button class="secondary-button" id="install-button" type="button" data-i18n="Install on your phone">Install on your phone</button>
+        <a href="./learn-something-new-every-day/" data-locale-path="learn-something-new-every-day/" data-i18n="Daily learning">Daily learning</a>
+        <a href="./topics/" data-locale-path="topics/" data-i18n="Explore topics">Explore topics</a>
+        <a href="./privacy/" data-locale-path="privacy/" data-i18n="Privacy">Privacy</a>
+        <button class="text-button" id="analytics-settings" type="button" data-i18n="Analytics choices">Analytics choices</button>
         <p id="install-help" hidden></p>
       </section>
-      <p class="privacy-note">No account needed · Your topics, streak and saved cards stay on this device.</p>
+      <p class="privacy-note" data-i18n="No account needed · Your topics, streak and saved cards stay on this device.">No account needed · Your topics, streak and saved cards stay on this device.</p>
 
-      <nav class="bottom-nav" aria-label="Main navigation">
+      <nav class="bottom-nav" aria-label="Main navigation" data-i18n-aria="Main navigation">
         <button class="nav-item active" type="button" data-view-link="today">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5v-16Z"/><path d="M4 19a2 2 0 0 1 2-2h14"/></svg>
-          <span>Today</span>
+          <span data-i18n="Today">Today</span>
         </button>
         <button class="nav-item" type="button" data-view-link="library">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><rect x="3" y="15" width="7" height="5" rx="1"/><rect x="14" y="15" width="7" height="5" rx="1"/></svg>
-          <span>Library</span>
+          <span data-i18n="Library">Library</span>
         </button>
         <button class="nav-item" type="button" data-view-link="saved">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1Z"/></svg>
-          <span>Saved</span>
+          <span data-i18n="Saved">Saved</span>
         </button>
       </nav>
     </div>
 
     <dialog id="topic-dialog" class="sheet-dialog">
       <form method="dialog" id="topic-form">
-        <div class="sheet-handle" aria-hidden="true"></div>
-        <p class="eyebrow">Make it yours</p>
-        <h2>What do you want to understand better?</h2>
-        <p class="muted">Choose the subjects you’re curious about. You’ll receive a daily card from every selected topic, with earlier ideas revisited when you finish the written collection. No account is required.</p>
+        <div class="sheet-handle" aria-hidden="true"></div><label class="language-picker"><span data-i18n="Language">Language</span><select data-language-select aria-label="Language" data-i18n-aria="Language"><option value="en">English</option><option value="el">Ελληνικά</option><option value="ru">Русский</option><option value="ro">Română</option></select></label>
+        <p class="eyebrow" data-i18n="Make it yours">Make it yours</p>
+        <h2 data-i18n="What do you want to understand better?">What do you want to understand better?</h2>
+        <p class="muted" data-i18n="Choose the subjects you’re curious about. You’ll receive a daily card from every selected topic, with earlier ideas revisited when you finish the written collection. No account is required.">Choose the subjects you’re curious about. You’ll receive a daily card from every selected topic, with earlier ideas revisited when you finish the written collection. No account is required.</p>
         <div id="topic-options" class="topic-options"></div>
         <p id="topic-error" class="form-error" role="alert"></p>
-        <button class="primary-button full-width" value="default" type="submit">Save my topics</button>
+        <button class="primary-button full-width" value="default" type="submit" data-i18n="Save my topics">Save my topics</button>
       </form>
     </dialog>
 
     <dialog id="card-dialog" class="card-dialog">
       <div class="dialog-content">
-        <button class="dialog-close icon-button" type="button" aria-label="Close card">×</button>
+        <button class="dialog-close icon-button" type="button" aria-label="Close card" data-i18n-aria="Close card">×</button>
         <div id="dialog-card"></div>
       </div>
     </dialog>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="./analytics-config.js?v=20261009-3"></script>
-    <script src="./features.js?v=20261009-3"></script>
-    <script src="./content.js?v=20261009-3"></script>
-    <script src="./app.js?v=20261009-3"></script>
+    <script src="./analytics-config.js?v=20261012-1"></script>
+    <script src="./content.js?v=20261012-1"></script>
+    <script src="./locales.js?v=20261012-1"></script>
+    <script src="./content-el.js?v=20261012-1"></script>
+    <script src="./content-ru.js?v=20261012-1"></script>
+    <script src="./content-ro.js?v=20261012-1"></script>
+    <script src="./i18n.js?v=20261012-1"></script>
+    <script src="./features.js?v=20261012-1"></script>
+    <script src="./app.js?v=20261012-1"></script>
   </body>
 </html>
+

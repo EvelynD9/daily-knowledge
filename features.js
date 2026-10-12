@@ -6,7 +6,7 @@ window.addEventListener("beforeinstallprompt", event => {
 });
 window.addEventListener("appinstalled", () => {
   installPrompt = null;
-  document.querySelector("#install-help").textContent = "Installed. Find One Card Wiser on your home screen.";
+  document.querySelector("#install-help").textContent = t("Installed. Find One Card Wiser on your home screen.");
   document.querySelector("#install-help").hidden = false;
 });
 document.addEventListener("DOMContentLoaded", () => {
@@ -19,8 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const help = document.querySelector("#install-help");
       help.hidden = !help.hidden;
       help.textContent = /iPhone|iPad|iPod/.test(navigator.userAgent)
-        ? "In Safari, open Share → Add to Home Screen. Your progress stays with this device; check your saved cards after installation."
-        : "Open your browser menu and look for Install app or Add to Home Screen. If it is already installed, open it from your home screen.";
+        ? t("In Safari, open Share → Add to Home Screen. Your progress stays with this device; check your saved cards after installation.")
+        : t("Open your browser menu and look for Install app or Add to Home Screen. If it is already installed, open it from your home screen.");
     }
   });
   document.querySelector("#analytics-settings").addEventListener("click", analyticsChoices);
@@ -43,31 +43,31 @@ function renderWeeklyProgress() {
     count += ids.length;
     if (ids.length) days++;
   }
-  document.querySelector("#weekly-progress").textContent = `Last 7 days: ${count} ${count === 1 ? "card" : "cards"} completed · ${days} ${days === 1 ? "day" : "days"} of learning`;
+  document.querySelector("#weekly-progress").textContent = t("Last 7 days: {n} cards completed · {d} days of learning",{n:count,d:days});
 }
 
 function publicCardUrl(card) {
-  return card.discovered ? "https://onecardwiser.com/" : `https://onecardwiser.com/cards/${encodeURIComponent(card.id)}/`;
+  return card.discovered ? `https://onecardwiser.com/?lang=${currentLanguage}` : "https://onecardwiser.com"+localePath(`cards/${encodeURIComponent(card.id)}/`);
 }
 
 async function shareCard(id) {
   const card = findCard(id);
   if (!card) return;
   const url = publicCardUrl(card);
-  const text = `${card.title}\n${card.hook}${card.discovered ? `\nSource: ${safeUrl(card.sourceUrl)}` : ""}`;
+  const text = `${card.title}\n${card.hook}${card.discovered ? `\n${t("Source:")} ${safeUrl(card.sourceUrl)}` : ""}`;
   try {
     if (navigator.share) await navigator.share({ title: "One Card Wiser", text, url });
-    else if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(`${text}\n${url}`); showToast("Idea and link copied."); }
+    else if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(`${text}\n${url}`); showToast(t("Idea and link copied.")); }
     else {
       const box = document.createElement("dialog");
-      const p = document.createElement("p"); p.textContent = "Copy this idea and link:";
+      const p = document.createElement("p"); p.textContent = t("Copy this idea and link:");
       const input = document.createElement("textarea"); input.value = `${text}\n${url}`; input.rows = 8;
-      const close = document.createElement("button"); close.textContent = "Close"; close.className = "secondary-button";
+      const close = document.createElement("button"); close.textContent = t("Close"); close.className = "secondary-button";
       close.onclick = () => box.close(); box.append(p, input, close); document.body.append(box);
       box.addEventListener("close", () => box.remove(), { once: true }); box.showModal(); input.select();
     }
     trackEvent("card_share", { topic: card.topic });
-  } catch (error) { if (error.name !== "AbortError") showToast("Sharing was unavailable. Try Download story instead."); }
+  } catch (error) { if (error.name !== "AbortError") showToast(t("Sharing was unavailable. Try Download story instead.")); }
 }
 
 function wrapLines(ctx, text, width) {
@@ -99,22 +99,22 @@ async function downloadStory(id) {
   do { ctx.font = `${bodySize}px sans-serif`; bodyLines = wrapLines(ctx, card.hook, 900); if (y + bodyLines.length * (bodySize + 16) <= 1450) break; bodySize -= 2; } while (bodySize > 22);
   bodyLines.forEach((line, i) => ctx.fillText(line, 80, y + i * (bodySize + 16)));
   ctx.fillStyle = "#67635c"; ctx.font = "24px sans-serif";
-  ctx.fillText(`Source: ${card.sourceName || "Wikipedia"}`, 80, 1560);
+  ctx.fillText(`${t("Source:")} ${card.sourceName || "Wikipedia"}`, 80, 1560);
   if (card.discovered) {
-    ctx.fillText("Wikipedia source preview · adapted · CC BY-SA 4.0", 80, 1610);
+    ctx.fillText(t("Source preview")+" · Wikipedia · CC BY-SA 4.0",80,1610);
     ctx.font = "18px sans-serif";
     const source = safeUrl(card.sourceUrl);
     wrapLines(ctx, source, 900).slice(0, 3).forEach((line, i) => ctx.fillText(line, 80, 1645 + i * 24));
   }
-  ctx.fillStyle = "#292823"; ctx.font = "bold 40px sans-serif"; ctx.fillText("Build a mind you’re proud of.", 80, 1770);
+  ctx.fillStyle = "#292823"; ctx.font = "bold 40px sans-serif"; wrapLines(ctx,t("Build a mind you’re proud of."),900).slice(0,2).forEach((line,i)=>ctx.fillText(line,80,1740+i*50));
   ctx.font = "32px sans-serif"; ctx.fillText("onecardwiser.com", 80, 1840);
   const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
-  if (!blob) { showToast("Image export failed. Try Share idea."); return; }
+  if (!blob) { showToast(t("Image export failed. Try Share idea.")); return; }
   const url = URL.createObjectURL(blob), link = document.createElement("a");
   link.href = url; link.download = `one-card-wiser-${card.id}.png`; document.body.append(link); link.click(); link.remove();
   setTimeout(() => URL.revokeObjectURL(url), 30000);
   trackEvent("story_download", { topic: card.topic });
-  showToast("Story image downloaded. Find it in your downloads.");
+  showToast(t("Story image downloaded. Find it in your downloads."));
 }
 
 function analyticsConfigured() { return /^G-[A-Z0-9]+$/.test(window.OCW_ANALYTICS_ID || ""); }
@@ -136,10 +136,10 @@ function trackEvent(name, parameters = {}) {
   if (allowed && analyticsStarted && window.gtag) window.gtag("event", name, parameters);
 }
 function analyticsChoices() {
-  if (!analyticsConfigured()) { showToast("Analytics is not enabled. Learning progress is stored on this device."); return; }
+  if (!analyticsConfigured()) { showToast(t("Analytics is not enabled. Learning progress is stored on this device.")); return; }
   if (document.querySelector("#analytics-dialog")) return;
   const dialog = document.createElement("dialog"); dialog.id = "analytics-dialog";
-  dialog.innerHTML = '<h2>Help improve One Card Wiser?</h2><p>Optional Google Analytics measures visits and actions such as completing or sharing a card. Google may receive device and usage information. You can decline and keep learning.</p><p><a href="./privacy/">Read the privacy details</a></p><div class="card-actions"><button class="secondary-button" data-consent="no">Decline analytics</button><button class="secondary-button" data-consent="yes">Allow analytics</button></div>';
+  dialog.innerHTML = `${languageSelectMarkup()}<h2 data-i18n="Help improve One Card Wiser?">${t("Help improve One Card Wiser?")}</h2><p data-i18n="Optional Google Analytics measures visits and actions such as completing or sharing a card. Google may receive device and usage information. You can decline and keep learning.">${t("Optional Google Analytics measures visits and actions such as completing or sharing a card. Google may receive device and usage information. You can decline and keep learning.")}</p><p><a href="${localePath("privacy/")}" data-locale-path="privacy/" data-i18n="Read the privacy details">${t("Read the privacy details")}</a></p><div class="card-actions"><button class="secondary-button" data-consent="no" data-i18n="Decline analytics">${t("Decline analytics")}</button><button class="secondary-button" data-consent="yes" data-i18n="Allow analytics">${t("Allow analytics")}</button></div>`;
   dialog.addEventListener("click", event => {
     const choice = event.target.closest("[data-consent]")?.dataset.consent;
     if (!choice) return;
@@ -156,3 +156,4 @@ function analyticsChoices() {
   });
   dialog.addEventListener("close", () => dialog.remove(), { once: true }); document.body.append(dialog); dialog.showModal();
 }
+

@@ -4,11 +4,11 @@ const elements=new Map(), listeners=new Map(), storage=new Map();
 function element(selector) {if (!elements.has(selector)) elements.set(selector,{textContent:'',innerHTML:'',open:false,style:{},classList:{toggle(){},add(){},remove(){}},addEventListener(name,fn){listeners.set(selector+':'+name,fn)},showModal(){this.open=true},close(){this.open=false}});return elements.get(selector);}
 const globals={console, URL, URLSearchParams, AbortSignal, FormData, Date, setTimeout:()=>0,clearTimeout(){}, navigator:{},location:{search:'',origin:'https://onecardwiser.com',pathname:'/'},
   localStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>storage.set(key,value)},
-  document:{querySelector:element,querySelectorAll:()=>[],addEventListener:(name,fn)=>listeners.set('document:'+name,fn)},
+  document:{documentElement:{lang:'en'},querySelector:element,querySelectorAll:()=>[],addEventListener:(name,fn)=>listeners.set('document:'+name,fn)},
   fetch:async()=>{throw new Error('network offline')}};
 globals.window=globals;globals.scrollTo=()=>{};globals.addEventListener=(name,fn)=>listeners.set('window:'+name,fn);
 const ctx=vm.createContext(globals);
-for(const file of ['analytics-config.js','features.js','content.js','app.js'])vm.runInContext(fs.readFileSync(root+file,'utf8'),ctx,{filename:file});
+for(const file of ['analytics-config.js','content.js','locales.js','content-el.js','content-ru.js','content-ro.js','i18n.js','features.js','app.js'])vm.runInContext(fs.readFileSync(root+file,'utf8'),ctx,{filename:file});
 const run=code=>vm.runInContext(code,ctx);
 const click=attributes=>listeners.get('document:click')({target:{closest:selector=>attributes[selector]||null}});
 assert.equal(run('todaysCards().length'),3);
@@ -22,6 +22,28 @@ assert.equal(run('calculateStreak()'),1);
 click({'[data-save]':{dataset:{save:'econ-opportunity-cost'}}});
 assert.equal(run('state.saved[0]'),'econ-opportunity-cost');
 assert.equal(run('loadState().saved[0]'),'econ-opportunity-cost');
+
+const progressBefore=run('JSON.stringify(state)'),englishTitle=run('CARDS[0].title');
+for(const language of ['el','ru','ro','en']){
+ listeners.get('document:change')({target:{matches:()=>true,value:language}});
+ assert.equal(run('currentLanguage'),language);assert.equal(storage.get('ocw-language'),language);
+ assert.equal(globals.document.documentElement.lang,language);assert.equal(run('initialLanguage()'),language);
+ assert.equal(run('JSON.stringify(state)'),progressBefore,'Language change preserves all progress');
+ assert.equal(run('CARDS.every(c=>QUIZZES[c.id].answer===ORIGINAL_CONTENT.QUIZZES[c.id].answer)'),true);
+ if(language!=='en'){
+  assert.notEqual(run('CARDS[0].title'),englishTitle);
+  assert.equal(run('Object.keys(CONTENT_LOCALES[currentLanguage]).length'),33);
+  assert.equal(run('CARDS.every(c=>{const row=CONTENT_LOCALES[currentLanguage][c.id];return row.length===8&&row.slice(0,6).every(v=>typeof v==="string"&&v.length>0)&&row[6].length===3&&row[6].every(v=>typeof v==="string"&&v.length>0)&&typeof row[7]==="string"})'),true);
+  assert.equal(run('publicCardUrl(CARDS[0])'),'https://onecardwiser.com/'+language+'/cards/econ-opportunity-cost/');
+  assert.ok(run('quizMarkup(CARDS[0])').includes(run('QUIZZES[CARDS[0].id].question')));
+ }
+}
+assert.equal(run('CARDS[0].title'),englishTitle);
+globals.location.search='?lang=ro&card=econ-opportunity-cost';assert.equal(run('initialLanguage()'),'ro');
+globals.location.search='?lang=invalid';storage.set('ocw-language','invalid');assert.equal(run('initialLanguage()'),'en');globals.location.search='';storage.set('ocw-language','en');
+const source=['app.js','features.js','i18n.js'].map(f=>fs.readFileSync(root+f,'utf8')).join('\n');
+for(const match of source.matchAll(/\bt\("([^"\n]+)"/g))assert.equal(run('Object.hasOwn(UI_TRANSLATIONS,'+JSON.stringify(match[1])+')'),true,'Missing translation: '+match[1]);
+
 run('const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);state.completionLog[dateKey(yesterday)]=["econ-opportunity-cost"];state.dailyCardIds[dateKey(yesterday)]=state.dailyCardIds[dateKey()];delete state.dailyCardIds[dateKey()];state.completed["econ-opportunity-cost"]=dateKey(yesterday);state.completionLog[dateKey()]=[];ensureDailyCards()');
 assert.equal(run('todaysCards()[0].id'),'econ-compounding');
 assert.equal(element('#daily-progress-label').textContent,'0 / 3');
@@ -52,7 +74,7 @@ run('fetchKnowledgeCard=async(topic)=>({...CARDS[0],id:"existing-source",topic,d
   const gaStorage=new Map(), gaScripts=[], gaListeners={}; let gaDialog=null;
   const gaElement={addEventListener(){},hidden:true};
   const gaContext=vm.createContext({
-    URL,Date,navigator:{},location:{origin:'https://onecardwiser.com',pathname:'/',hostname:'onecardwiser.com'},
+    languageSelectMarkup:()=>'',t:key=>key,localePath:p=>'/'+p,URL,Date,navigator:{},location:{origin:'https://onecardwiser.com',pathname:'/',hostname:'onecardwiser.com'},
     localStorage:{getItem:k=>gaStorage.get(k)||null,setItem:(k,v)=>gaStorage.set(k,v)},
     document:{
       cookie:'',
@@ -89,8 +111,8 @@ run('fetchKnowledgeCard=async(topic)=>({...CARDS[0],id:"existing-source",topic,d
   assert.equal(gaScripts.length,1,'Re-enabling must not duplicate the tag');
   assert.equal(gaContext['ga-disable-G-GXCH42NMMJ'],false);
   const xml=fs.readFileSync(root+'sitemap.xml','utf8');const urls=[...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(m=>m[1]);
-  assert.equal(urls.length,50);assert.equal(new Set(urls).size,50);
-  for(const url of urls){const p=new URL(url).pathname;assert.ok(fs.existsSync(root+p.replace(/^\//,'')+'index.html'),p);}
+  assert.equal(urls.length,197);assert.equal(new Set(urls).size,197);
+  for(const url of urls){const p=new URL(url).pathname,filename=root+p.replace(/^\//,'')+'index.html';assert.ok(fs.existsSync(filename),p);if(p!=='/'){const page=fs.readFileSync(filename,'utf8');assert.equal([...page.matchAll(/rel="alternate" hreflang=/g)].length,4,p);assert.ok(page.includes('rel="canonical" href="'+url+'"'));const lang=/^\/(el|ru|ro)\//.exec(p)?.[1]||'en';assert.ok(page.includes('<html lang="'+lang+'"'));}}
   const html=fs.readFileSync(root+'index.html','utf8');
   for(const match of html.matchAll(/(?:href|src)="\.\/([^"]+)"/g)){const file=root+match[1].split('?')[0];assert.ok(fs.existsSync(file),file);}
   const manifest=JSON.parse(fs.readFileSync(root+'manifest.webmanifest','utf8'));for(const icon of manifest.icons)assert.ok(fs.existsSync(root+icon.src.replace(/^\.\//,'')));
@@ -101,5 +123,6 @@ run('fetchKnowledgeCard=async(topic)=>({...CARDS[0],id:"existing-source",topic,d
   swEvents.fetch({request:{method:'GET',mode:'navigate',url:'https://onecardwiser.com/'},respondWith:p=>responsePromise=p});assert.match(await (await responsePromise).text(),/cached/);
   swEvents.fetch({request:{method:'GET',mode:'navigate',url:'https://onecardwiser.com/topics/art/'},respondWith:p=>responsePromise=p});assert.match(await (await responsePromise).text(),/You are offline/);
   let intercepted=false;swEvents.fetch({request:{method:'GET',url:'https://en.wikipedia.org/w/api.php'},respondWith:()=>intercepted=true});assert.equal(intercepted,false);
-  console.log('PASS: all 33 cards have source links and quizzes; daily allocation, all 12 topics, completion, streak retention, undo, save, legacy migration, invalid state, duplicate rejection, storage failures, sharing URLs, analytics consent and withdrawal, 50 sitemap pages, manifest assets and offline service worker.');
+  console.log('PASS: four languages, remembered preference, preserved progress and quiz answer indices, reciprocal language pages; all 33 cards have source links and quizzes; daily allocation, all 12 topics, completion, streak retention, undo, save, legacy migration, invalid state, duplicate rejection, storage failures, sharing URLs, analytics consent and withdrawal, 197 sitemap pages, manifest assets and offline service worker.');
 })().catch(error=>{console.error(error);process.exitCode=1});
+
