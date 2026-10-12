@@ -26,6 +26,8 @@ run('state=JSON.parse('+JSON.stringify(initialState)+');renderToday()');
 run('applyLanguage("ru")');assert.equal(run('t("You completed {n} ideas today.",{n:3})'),'Сегодня вы завершили 3 карточки.');run('applyLanguage("en")');
 const report=run('feedbackReport("A sample usability report","bug")');assert.match(report,/Bug/);assert.match(report,/Language: en/);assert.doesNotMatch(report,/saved|completionLog|quizAnswers/);
 
+assert.equal(run('sourcePreviewText({hook:"A definition (e.",concept:"g., branding) includes 0.",example:"5 percent."})'),'A definition (e.g., branding) includes 0.5 percent.');
+assert.equal(run('sourcePreviewText({excerptVersion:2,concept:"Dr. Smith used e.g. and 3.14.\\nThe final sentence has no period"})'),'Dr. Smith used e.g. and 3.14.\nThe final sentence has no period');
 assert.equal(run('CARDS.length'),96);
 assert.equal(run('t("Last 7 days: {n} cards completed · {d} days of learning",{n:1,d:1})'),'Last 7 days: 1 card completed · 1 day of learning');
 assert.equal(run('new Set(CARDS.map(c=>c.id)).size'),96);

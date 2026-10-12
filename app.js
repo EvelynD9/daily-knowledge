@@ -94,8 +94,23 @@ function fallbackCard(topicId, topicIndex = 0) {
   return list[seed % list.length];
 }
 
-function splitSentences(text) {
-  return (text.match(/[^.!?]+[.!?]+/g) || [text]).map(sentence => sentence.trim()).filter(Boolean);
+function sourcePreviewText(card) {
+  if(card.excerptVersion===2)return card.concept;
+  return [card.hook,card.concept,card.example].filter(Boolean).join(' ').replace(/\be\.\s*g\.\s*,?/gi,'e.g.,').replace(/\bi\.\s*e\.\s*,?/gi,'i.e.,').replace(/(\d)\.\s+(\d)/g,'$1.$2');
+}
+const repairedSources=new Set();
+async function repairSourcePreview(card) {
+  if(!card.discovered || card.excerptVersion===2 || repairedSources.has(card.id))return;
+  repairedSources.add(card.id);
+  try{
+    const params=new URLSearchParams({action:'query',titles:card.title,prop:'extracts',exintro:'1',explaintext:'1',redirects:'1',origin:'*',format:'json'});
+    const response=await fetch('https://en.wikipedia.org/w/api.php?'+params,{signal:AbortSignal.timeout(7000)});
+    if(!response.ok)return;
+    const page=Object.values((await response.json())?.query?.pages||{})[0];
+    if(typeof page?.extract!=='string' || page.extract.length<120 || page.extract.length>20000)return;
+    addDiscoveredCard({...card,hook:'Wikipedia · '+card.title,concept:page.extract.trim(),excerptVersion:2});
+    saveState();renderAll();
+  }catch{ /* The continuous cached excerpt remains available offline. */ }
 }
 
 async function fetchKnowledgeCard(topicId, offsetSeed) {
@@ -112,7 +127,6 @@ async function fetchKnowledgeCard(topicId, offsetSeed) {
     prop: "extracts|info",
     exintro: "1",
     explaintext: "1",
-    exsentences: "7",
     inprop: "url",
     redirects: "1",
     origin: "*",
@@ -124,17 +138,14 @@ async function fetchKnowledgeCard(topicId, offsetSeed) {
   const page = Object.values(data?.query?.pages || {})[0];
   if (!page?.extract || page.extract.length < 120) throw new Error("No suitable article found");
   if (/^(List|Outline|Index) of /i.test(page.title) || /may refer to:/i.test(page.extract.slice(0, 180))) throw new Error("Reference page skipped");
-  const sentences = splitSentences(page.extract);
-  const hook = sentences[0] || page.extract.slice(0, 220);
-  const concept = sentences.slice(1, 4).join(" ") || sentences[0];
-  const context = sentences.slice(4, 7).join(" ") || `This idea belongs to the wider study of ${topic.label.toLowerCase()} and connects to many related questions.`;
   return {
     id: `source-${topicId}-${page.pageid}`,
     topic: topicId,
     title: page.title,
-    hook,
-    concept,
-    example: context,
+    hook: "Wikipedia · "+page.title,
+    concept: page.extract.trim(),
+    example: "Read the original source for more context.",
+    excerptVersion: 2,
     takeaway: `Close the card and explain ${page.title} in one clear sentence. If you can do that, the idea is already becoming yours.`,
     sourceName: "Wikipedia",
     sourceUrl: page.fullurl,
@@ -251,15 +262,16 @@ function cardMarkup(card, { dialog = false } = {}) {
       <div class="card-inner">
         <div class="card-topline">
           <span class="topic-tag"><span class="topic-dot"></span>${escapeHtml(topic.label)}</span>
-          <span class="read-time">${t("2 min read")}</span>
+          <span class="read-time">${card.discovered?t("Source preview"):t("2 min read")}</span>
         </div>
         <h2 id="reader-card-title" tabindex="-1" class="card-title">${escapeHtml(card.title)}</h2>
-        <p class="card-hook">${escapeHtml(card.hook)}</p>
+        ${card.discovered ? `<div class="concept-box source-excerpt"><strong>${t("Source preview")}</strong><p>${escapeHtml(sourcePreviewText(card))}</p></div>` : `        <p class="card-hook">${escapeHtml(card.hook)}</p>
         <div class="concept-box"><strong>${t("The idea")}</strong><p>${escapeHtml(card.concept)}</p></div>
         <div class="why-row">
           <div><span>${card.discovered ? t("In context") : t("In real life")}</span><p>${escapeHtml(card.example)}</p></div>
           <div><span>${t("Make it stick")}</span><p>${escapeHtml(card.takeaway)}</p></div>
         </div>
+`}
         ${sourceUrl ? `<a class="source-link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">${t("Source:")} ${escapeHtml(card.sourceName || t("Read more"))} ↗</a>${card.discovered ? `<p class="source-attribution">${t("Excerpt adapted from Wikipedia")} · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>. ${t("This is a source preview, not a reviewed learning card.")}</p>` : ""}` : ""}
         ${!card.discovered ? `<p class="source-attribution">${t("Explanation and illustrative examples by One Card Wiser. Source linked for further reading.")}</p>` : ""}
         ${quizMarkup(card)}
@@ -408,6 +420,7 @@ function openCard(id) {
   if(!document.querySelector("#card-dialog").open)document.querySelector("#card-dialog").showModal();
   document.querySelector("#reader-card-title").focus?.({preventScroll:true});
   document.querySelector(".dialog-content").scrollTop=0;
+  repairSourcePreview(card);
 }
 
 function showToast(message) {
