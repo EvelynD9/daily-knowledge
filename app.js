@@ -253,7 +253,7 @@ function cardMarkup(card, { dialog = false } = {}) {
           <span class="topic-tag"><span class="topic-dot"></span>${escapeHtml(topic.label)}</span>
           <span class="read-time">${t("2 min read")}</span>
         </div>
-        <h2 class="card-title">${escapeHtml(card.title)}</h2>
+        <h2 id="reader-card-title" tabindex="-1" class="card-title">${escapeHtml(card.title)}</h2>
         <p class="card-hook">${escapeHtml(card.hook)}</p>
         <div class="concept-box"><strong>${t("The idea")}</strong><p>${escapeHtml(card.concept)}</p></div>
         <div class="why-row">
@@ -406,6 +406,7 @@ function openCard(id) {
   activeDialogCardId = id;
   document.querySelector("#dialog-card").innerHTML = cardMarkup(card, { dialog: true });
   if(!document.querySelector("#card-dialog").open)document.querySelector("#card-dialog").showModal();
+  document.querySelector("#reader-card-title").focus?.({preventScroll:true});
   document.querySelector(".dialog-content").scrollTop=0;
 }
 

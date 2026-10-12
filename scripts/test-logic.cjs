@@ -23,6 +23,7 @@ assert.match(run('sessionNextAction(todaysCards()[0])'),/data-session-summary/);
 run('state.completionLog[dateKey()].splice(1,1);renderToday()');
 assert.equal(element('#session-complete').hidden,true);assert.match(run('sessionNextAction(todaysCards()[0])'),/data-next-idea/);
 run('state=JSON.parse('+JSON.stringify(initialState)+');renderToday()');
+run('applyLanguage("ru")');assert.equal(run('t("You completed {n} ideas today.",{n:3})'),'Сегодня вы завершили 3 карточки.');run('applyLanguage("en")');
 const report=run('feedbackReport("A sample usability report","bug")');assert.match(report,/Bug/);assert.match(report,/Language: en/);assert.doesNotMatch(report,/saved|completionLog|quizAnswers/);
 
 assert.equal(run('CARDS.length'),96);
