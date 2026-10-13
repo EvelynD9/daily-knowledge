@@ -1,6 +1,6 @@
-const CACHE = "ocw-shell-v12";
+const CACHE = "ocw-shell-v13";
 const ROOT = new URL("./", self.location).pathname;
-const SHELL = ["", "index.html", "styles.css?v=20261012-8", "content.js?v=20261012-8", "app.js?v=20261012-8", "features.js?v=20261012-8", "analytics-config.js?v=20261012-8", "locales.js?v=20261012-8","content-el.js?v=20261012-8","content-ru.js?v=20261012-8","content-ro.js?v=20261012-8","i18n.js?v=20261012-8", "extra-content.js?v=20261012-8", "review.js?v=20261012-8", "experience.js?v=20261012-8", "progress.js?v=20261012-8", "logo-mark.svg", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png"].map(path => ROOT + path);
+const SHELL = ["", "index.html", "styles.css?v=20261013-1", "content.js?v=20261013-1", "app.js?v=20261013-1", "features.js?v=20261013-1", "analytics-config.js?v=20261013-1", "locales.js?v=20261013-1","content-el.js?v=20261013-1","content-ru.js?v=20261013-1","content-ro.js?v=20261013-1","i18n.js?v=20261013-1", "extra-content.js?v=20261013-1", "review.js?v=20261013-1", "experience.js?v=20261013-1", "progress.js?v=20261013-1", "logo-mark.svg", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png"].map(path => ROOT + path);
 const SHELL_PATHS = new Set(SHELL.map(path => path.split("?")[0]));
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)));
