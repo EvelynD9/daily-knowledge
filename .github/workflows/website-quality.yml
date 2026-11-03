@@ -1,0 +1,35 @@
+name: Website content quality
+
+on:
+  pull_request:
+    paths:
+      - "content.js"
+      - "content-*.js"
+      - "extra-content.js"
+      - "locales.js"
+      - "i18n.js"
+      - "app.js"
+      - "scripts/**"
+      - ".github/workflows/website-quality.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: validate (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Audit website content
+        run: node scripts/audit-content.cjs
+      - name: Run existing website regression suite
+        run: node scripts/test-logic.cjs
