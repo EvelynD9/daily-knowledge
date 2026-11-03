@@ -78,12 +78,14 @@ function renderTopics(){
 }
 function renderSeasonal(){
  const grid=$('seasonalStoryGrid');
- grid.replaceChildren(...SEASONAL_STORIES.map(story=>{
+ const stories=learningCards.filter(card=>card.seasonal);
+ grid.replaceChildren(...stories.map(story=>{
   const card=h('article',{className:'seasonal-story'});
-  card.append(h('span',{className:'tag'},story.category),h('h2',{},story.title),h('p',{},story.body));
-  const link=h('a',{href:story.url,target:'_blank',rel:'noopener noreferrer'},'READ SOURCE ↗');
+  card.append(h('span',{className:'tag'},story.category.toUpperCase()),h('h2',{},story.title),h('p',{},story.body),h('p',{className:'muted'},story.takeaway));
+  const link=h('a',{href:story.sourceUrl,target:'_blank',rel:'noopener noreferrer'},story.sourceTitle+' · SOURCE ↗');
   card.append(link);return card;
  }));
+ if(!stories.length)grid.replaceChildren(h('p',{className:'muted'},'Seasonal stories are currently unavailable.'));
 }
 function renderLibrary(){const categories=['all',...new Set(questions.map(x=>x.category))];$('topicSelect').replaceChildren(...categories.map(name=>h('option',{value:name},name==='all'?'All topics':name[0].toUpperCase()+name.slice(1))));$('topicSelect').value=categories.includes(state.filter)?state.filter:'all';$('chips').replaceChildren(...categories.map(name=>{const b=h('button',{type:'button',className:'chip '+(state.filter===name?'selected':'')},name[0].toUpperCase()+name.slice(1));b.onclick=()=>{state.filter=name;libraryLimit=60;save();renderLibrary()};return b}));const query=$('search').value.trim().toLowerCase();const filtered=questions.filter(q=>(state.filter==='all'||q.category===state.filter)&&[q.prompt,q.reveal,q.takeaway,...q.answers].join(' ').toLowerCase().includes(query));$('resultCount').textContent=filtered.length+' results';$('libraryGrid').replaceChildren(...filtered.slice(0,libraryLimit).map(q=>{const id='question-'+questions.indexOf(q);const card=h('article',{className:'panel'});card.append(h('span',{className:'tag'},q.category.toUpperCase()),h('div',{className:'cardtitle'},q.prompt),h('p',{className:'muted'},q.takeaway));const button=h('button',{type:'button',className:'button ghost mini'},state.claimed[id]?'POINT CLAIMED':'READ · CLAIM +1');button.disabled=!!state.claimed[id];button.onclick=()=>{if(state.claimed[id])return;state.claimed[id]=true;state.points++;if(!Array.isArray(state.topicActivity))state.topicActivity=[];state.topicActivity.push({category:q.category,kind:'read'});save();renderLibrary()};card.append(button);return card}));$('libraryShowing').textContent='Showing '+Math.min(filtered.length,libraryLimit)+' of '+filtered.length+' items';$('libraryLoadMore').classList.toggle('hidden',filtered.length<=libraryLimit)}
 function renderInterests(){
