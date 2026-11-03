@@ -19,13 +19,15 @@ function practiceSet(chaos=false,category=null){const chaosLabels=new Set(['logi
 function renderQuestion(){selected=null;const q=daily[step];$('phase').textContent=chaosMode?'CHAOS · '+String(q.label||['TRAP','TWIST','REALITY CHECK'][step]).replace('onePercent','1% QUESTION').toUpperCase():practiceCategory?practiceCategory.toUpperCase()+' · '+(step+1)+'/3':['WARM-UP','THINK DEEPER','STRETCH'][step];$('counter').textContent=(step+1)+' / 3';$('bar').style.width=((step+1)/3*100)+'%';$('question').textContent=q.prompt;$('answers').replaceChildren(...q.answers.map((answer,i)=>{const b=h('button',{type:'button',className:'answer'},String.fromCharCode(65+i)+'.  '+answer);b.addEventListener('click',()=>answerQuestion(i));return b}));$('reveal').classList.add('hidden');$('challengeReflection').classList.add('hidden');$('continue').classList.add('hidden')}
 function answerQuestion(i){if(selected!==null)return;selected=i;const q=daily[step];roundAnswers[step]={category:q.category,correct:i===q.correct};if(i===q.correct)score++;for(const [j,btn] of [...$('answers').children].entries()){btn.disabled=true;if(j===q.correct)btn.classList.add('good');else if(j===i)btn.classList.add('bad')}$('reveal').replaceChildren(h('strong',{},i===q.correct?'Annoyingly good.':'Well, that was a confident mistake.'),h('p',{},q.reveal),h('p',{className:'muted'},q.takeaway));renderReflection(q);$('reveal').classList.remove('hidden');$('continue').textContent=step===2?'SEE RESULTS →':'NEXT QUESTION →';$('continue').classList.remove('hidden')}
 function renderReflection(q){
- const wrap=$('challengeReflection');wrap.classList.remove('hidden');
- $('reflectionQuestion').textContent='Which idea should you remember from this answer?';
- $('reflectionOptions').replaceChildren();
- const correct=q.takeaway;
- const bad='The first answer you see is always right.';
- [correct,bad].forEach((textValue,i)=>{const button=h('button',{type:'button'},textValue);button.onclick=()=>{[...$('reflectionOptions').children].forEach(x=>x.disabled=true);$('reflectionFeedback').textContent=i===0?'Exactly. That is the insight worth keeping.':'Not quite. Look at the takeaway above — the explanation matters more than a quick guess.';};$('reflectionOptions').append(button)});
- $('reflectionFeedback').textContent='Optional check — no extra points.';
+ const panel=$('challengeReflection');panel.classList.remove('hidden');
+ $('reflectionQuestion').textContent='Did this explanation challenge what you expected?';
+ const choices=[['Yes — that surprised me','Then keep the takeaway in mind. Surprises make excellent memory hooks.'],['Not this time','Good. Try explaining it to someone else without looking — that is another level of understanding.']];
+ $('reflectionOptions').replaceChildren(...choices.map(([label,feedback])=>{
+  const button=h('button',{type:'button'},label);
+  button.onclick=()=>{[...$('reflectionOptions').children].forEach(b=>b.disabled=true);$('reflectionFeedback').textContent=feedback+' No extra points are awarded.'};
+  return button;
+ }));
+ $('reflectionFeedback').textContent='Optional reflection · no additional points.';
 }
 function next(){if(selected===null)return;if(step<2){step++;renderQuestion()}else{if(practiceMode){state.practiceCount=(Number(state.practiceCount)||0)+1;state.practiceBest=Math.max(Number(state.practiceBest)||0,score)}else{state.results[dayKey()]={score,total:3};state.points=Math.max(0,Number(state.points)||0)+score;}if(!Array.isArray(state.topicActivity))state.topicActivity=[];for(const answer of roundAnswers){if(answer&&typeof answer.category==='string')state.topicActivity.push({category:answer.category,kind:'answer',correct:answer.correct})}save();showFinished(false);renderHome()}}
 function showFinished(previous){$('question').textContent='';$('answers').replaceChildren();$('reveal').classList.add('hidden');$('challengeReflection').classList.add('hidden');$('continue').classList.add('hidden');$('phase').textContent='COMPLETE';$('counter').textContent='3 / 3';$('bar').style.width='100%';const val=previous?state.results[dayKey()].score:score;$('finishTitle').textContent=val===3?'Okay. You are annoyingly good at this.':val===2?'Almost. Your ego survives.':val===1?'At least you learned something.':'That was a reality check.';$('finishDescription').textContent=val+' / 3 correct · '+(previous?'You already played today. Come back tomorrow.':(practiceMode?'Practice result saved · No extra streak day or mastery points.':'Your score has been saved on this browser.'));$('finish').classList.remove('hidden')}
