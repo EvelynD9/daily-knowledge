@@ -30,5 +30,37 @@ function renderProfile(){
  $('profileDark').setAttribute('aria-pressed',String(state.theme==='dark'));
 }
 function setWebTheme(theme){if(theme!=='light'&&theme!=='dark')return;state.theme=theme;document.documentElement.dataset.theme=theme;save();renderProfile();}
-function renderProgress(){$('practiceBest').textContent=Number.isInteger(state.practiceBest)?state.practiceBest+'/3':'—';$('practiceCount').textContent=(Number(state.practiceCount)||0)+' rounds played';$('pStreak').textContent=getStreak();$('pLevel').textContent=level();$('pPoints').textContent=state.points;$('week').replaceChildren(...Array.from({length:7},(_,i)=>{const d=new Date();d.setDate(d.getDate()-6+i);return h('div',{className:'day '+(state.results[dayKey(d)]?'on':'')},d.toLocaleDateString('en',{weekday:'short'})+(state.results[dayKey(d)]?' ✓':''))}))}
-async function init(){document.documentElement.dataset.theme=state.theme;renderNav();document.body.addEventListener('click',e=>{const topic=e.target.closest('[data-topic]');if(topic){state.filter=topic.getAttribute('data-topic');save();show('library');return;}const b=e.target.closest('[data-view]');if(b){show(b.getAttribute('data-view'));return;}});$('start').onclick=()=>show('challenge');$('homeExtraRound').onclick=()=>startChallenge(true);$('homeChaos').onclick=()=>startChallenge(true,true);$('extraRound').onclick=()=>startChallenge(true);$('topicSelect').onchange=()=>{state.filter=$('topicSelect').value;save();renderLibrary()};$('topicRandom').onclick=()=>{const opts=['all',...new Set(questions.map(q=>q.category))];if(opts.length>1){state.filter=opts[1+Math.floor(Math.random()*(opts.length-1))];save();renderLibrary()}};$('continue').onclick=next;$('themeToggle').onclick=()=>setWebTheme(state.theme==='dark'?'light':'dark');$('profileLight').onclick=()=>setWebTheme('light');$('profileDark').onclick=()=>setWebTheme('dark');$('search').addEventListener('input',renderLibrary);$('reset').onclick=()=>{if(confirm('Reset this browser’s beta progress?')){state={...defaultState,theme:state.theme};save();show('today')}};try{const response=await fetch('./questions.json');if(!response.ok)throw Error(String(response.status));const data=await response.json();if(!Array.isArray(data)||!data.length)throw Error('empty catalog');questions=data.filter(x=>Array.isArray(x.answers)&&x.answers.length===3&&Number.isInteger(x.correct));renderHome();renderLibrary()}catch{ $('dailyFactBody').textContent='Questions are currently unavailable. Try refreshing the page.';}}init();
+function renderProgress(){
+ const pts=Math.max(0,Number(state.points)||0);
+ const currentLevel=level();
+ const lower=(currentLevel-1)*10;
+ const earned=pts-lower;
+ const remaining=Math.max(0,10-earned);
+ const dailyResults=Object.values(state.results||{}).filter(r=>r&&Number.isInteger(r.score)&&Number.isInteger(r.total)&&r.total>0&&r.score>=0&&r.score<=r.total);
+ const attempted=dailyResults.reduce((sum,r)=>sum+r.total,0);
+ const correct=dailyResults.reduce((sum,r)=>sum+r.score,0);
+ const totalReads=Object.values(state.claimed||{}).filter(Boolean).length;
+ $('pLevel').textContent=currentLevel;
+ $('pPoints').textContent=pts;
+ $('pStreak').textContent=getStreak();
+ $('progressCompleted').textContent=dailyResults.length;
+ $('progressAccuracy').textContent=attempted?Math.round(100*correct/attempted)+'%':'—';
+ $('progressReads').textContent=totalReads;
+ $('progressNextPoints').textContent=remaining+' points to go';
+ $('progressNextBar').setAttribute('aria-valuenow',String(earned));
+ $('progressNextFill').style.width=Math.min(100,Math.max(0,earned*10))+'%';
+ $('progressHeadline').textContent=dailyResults.length===0?'A little curiosity goes a long way. Your first daily challenge is waiting.':getStreak()>=3?'Consistency looks surprisingly good on you.':correct===attempted?'Perfect so far. Your ego must be thrilled.':'You showed up. That is how progress gets made.';
+ $('practiceBest').textContent=Number.isInteger(state.practiceBest)?state.practiceBest+'/3':'—';
+ $('practiceCount').textContent=(Number(state.practiceCount)||0)+' optional rounds played';
+ const days=Array.from({length:7},(_,i)=>{
+  const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-6+i);
+  const done=!!state.results[dayKey(d)];
+  const box=h('div',{className:'progress-day'+(done?' is-done':'')});
+  box.append(h('strong',{},d.toLocaleDateString('en',{weekday:'short'})),h('span',{},done?'✓':'·'));
+  box.setAttribute('aria-label',d.toLocaleDateString('en',{weekday:'long',month:'short',day:'numeric'})+(done?' — completed':' — no daily result'));
+  return box;
+ });
+ $('week').replaceChildren(...days);
+ $('progressWeekCount').textContent=days.filter(x=>x.classList.contains('is-done')).length+' / 7 days';
+}
+async function init(){document.documentElement.dataset.theme=state.theme;renderNav();document.body.addEventListener('click',e=>{const topic=e.target.closest('[data-topic]');if(topic){state.filter=topic.getAttribute('data-topic');save();show('library');return;}const b=e.target.closest('[data-view]');if(b){show(b.getAttribute('data-view'));return;}});$('start').onclick=()=>show('challenge');$('homeExtraRound').onclick=()=>startChallenge(true);$('homeChaos').onclick=()=>startChallenge(true,true);$('extraRound').onclick=()=>startChallenge(true);$('progressPractice').onclick=()=>startChallenge(true);$('topicSelect').onchange=()=>{state.filter=$('topicSelect').value;save();renderLibrary()};$('topicRandom').onclick=()=>{const opts=['all',...new Set(questions.map(q=>q.category))];if(opts.length>1){state.filter=opts[1+Math.floor(Math.random()*(opts.length-1))];save();renderLibrary()}};$('continue').onclick=next;$('themeToggle').onclick=()=>setWebTheme(state.theme==='dark'?'light':'dark');$('profileLight').onclick=()=>setWebTheme('light');$('profileDark').onclick=()=>setWebTheme('dark');$('search').addEventListener('input',renderLibrary);$('reset').onclick=()=>{if(confirm('Reset this browser’s beta progress?')){state={...defaultState,theme:state.theme};save();show('today')}};try{const response=await fetch('./questions.json');if(!response.ok)throw Error(String(response.status));const data=await response.json();if(!Array.isArray(data)||!data.length)throw Error('empty catalog');questions=data.filter(x=>Array.isArray(x.answers)&&x.answers.length===3&&Number.isInteger(x.correct));renderHome();renderLibrary()}catch{ $('dailyFactBody').textContent='Questions are currently unavailable. Try refreshing the page.';}}init();
