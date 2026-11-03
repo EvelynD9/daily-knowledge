@@ -53,7 +53,7 @@ function renderKnowledgeMap(){
   const n=row.answers+row.reads, name=row.category.replace(/(^|[-_ ])\w/g,m=>m.toUpperCase()).replace(/[-_]/g,' ');
   const container=h('div',{className:'knowledge-map-row'+(n===0?' knowledge-map-row-empty':'')});
   const upper=h('div',{className:'knowledge-map-row-top'});
-  upper.append(h('strong',{},name),h('small',{},row.answers+' answers · '+row.reads+' reads'));
+  upper.append(h('strong',{},name),h('small',{},row.answers+' answers · '+row.correct+'/'+row.answers+' correct · '+row.reads+' reads'));
   const track=h('div',{className:'knowledge-map-track',role:'meter','aria-label':name+' recorded activity','aria-valuemin':'0','aria-valuemax':String(peak),'aria-valuenow':String(n)});
   const fill=h('span',{className:'knowledge-map-fill'});fill.style.width=(100*n/peak)+'%';
   track.append(fill);container.append(upper,track);return container;
