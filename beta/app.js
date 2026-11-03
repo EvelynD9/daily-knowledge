@@ -2,7 +2,7 @@
 const KEY='ocw:web-beta:v1';
 const defaultState={results:{},points:0,claimed:{},topicActivity:[],interests:[],theme:'dark',filter:'all'};
 let state;try{state={...defaultState,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{state={...defaultState}};
-let questions=[],daily=[],step=0,score=0,selected=null,practiceMode=false,chaosMode=false,roundAnswers=[],readingIndex=0,practiceCategory=null,libraryLimit=60;
+let learningCards=[],questions=[],daily=[],step=0,score=0,selected=null,practiceMode=false,chaosMode=false,roundAnswers=[],readingIndex=0,practiceCategory=null,libraryLimit=60;
 const $=id=>document.getElementById(id);
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}};
 const dayKey=(d=new Date())=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
@@ -45,16 +45,24 @@ function claimReading(id,category,callback){
  state.topicActivity.push({category,kind:'read'});save();callback();
 }
 function renderLearn(){
- if(!questions.length){$('learnTitle').textContent='Your next idea is loading…';$('learnExplanation').textContent='Try again after the catalog loads.';return;}
- const interests=Array.isArray(state.interests)?state.interests:[];const preferred=questions.filter(q=>interests.includes(q.category));const pool=preferred.length?preferred:questions;const q=pool[((readingIndex%pool.length)+pool.length)%pool.length];
- const id='question-'+questions.indexOf(q);
- $('learnCategory').textContent=q.category.toUpperCase();
- $('learnTitle').textContent=q.prompt;
- $('learnExplanation').textContent=q.reveal;
- $('learnTakeaway').textContent=q.takeaway;$('learnThought').textContent='Where might this fact challenge something you assumed before?';$('learnQuiz').onclick=()=>startChallenge(true,false,q.category);
+ if(!learningCards.length){$('learnTitle').textContent='Stories are loading…';return;}
+ const interests=Array.isArray(state.interests)?state.interests:[];
+ const preferred=learningCards.filter(card=>interests.includes(card.category));
+ const pool=preferred.length?preferred:learningCards;
+ const card=pool[((readingIndex%pool.length)+pool.length)%pool.length];
+ $('learnCategory').textContent=card.category.toUpperCase()+' · EDITORIAL CARD';
+ $('learnTitle').textContent=card.title;
+ $('learnIntro').textContent=card.introduction||'';
+ $('learnExplanation').textContent=card.body;
+ $('learnTakeaway').textContent=card.takeaway;
+ $('learnSourceLine').textContent='Source: '+card.sourceTitle;
+ $('learnSource').href=card.sourceUrl;
+ $('learnThought').textContent='What assumption would you reconsider after learning this?';
+ $('learnQuiz').onclick=()=>startChallenge(true,false,questions.some(q=>q.category===card.category)?card.category:null);
+ const id='card-'+card.id;
  $('learnClaim').disabled=!!state.claimed[id];
  $('learnClaim').textContent=state.claimed[id]?'POINT ALREADY CLAIMED':'I READ IT · CLAIM +1';
- $('learnClaim').onclick=()=>claimReading(id,q.category,renderLearn);
+ $('learnClaim').onclick=()=>claimReading(id,card.category,renderLearn);
 }
 function renderTopics(){
  const interests=Array.isArray(state.interests)?state.interests:[];const categories=[...new Set(questions.map(q=>q.category))].sort((a,b)=>Number(interests.includes(b))-Number(interests.includes(a))||a.localeCompare(b));
@@ -177,4 +185,4 @@ function renderProgress(){
  $('week').replaceChildren(...days);
  $('progressWeekCount').textContent=days.filter(x=>x.classList.contains('is-done')).length+' / 7 days';
 }
-async function init(){document.documentElement.dataset.theme=state.theme;renderNav();document.body.addEventListener('click',e=>{const topic=e.target.closest('[data-topic]');if(topic){state.filter=topic.getAttribute('data-topic');save();show('library');return;}const b=e.target.closest('[data-view]');if(b){show(b.getAttribute('data-view'));return;}});$('start').onclick=()=>show('challenge');$('extraBegin').onclick=()=>startChallenge(true);$('chaosBegin').onclick=()=>startChallenge(true,true);$('seasonalQuiz').onclick=()=>startChallenge(true,false,'earth');$('learnNext').onclick=()=>{readingIndex++;renderLearn()};$('homeExtraRound').onclick=()=>startChallenge(true);$('homeChaos').onclick=()=>startChallenge(true,true);$('extraRound').onclick=()=>startChallenge(true);$('progressPractice').onclick=()=>startChallenge(true);$('topicSelect').onchange=()=>{state.filter=$('topicSelect').value;libraryLimit=60;save();renderLibrary()};$('libraryLoadMore').onclick=()=>{libraryLimit+=60;renderLibrary()};$('topicRandom').onclick=()=>{const opts=['all',...new Set(questions.map(q=>q.category))];if(opts.length>1){state.filter=opts[1+Math.floor(Math.random()*(opts.length-1))];save();renderLibrary()}};$('continue').onclick=next;$('themeToggle').onclick=()=>setWebTheme(state.theme==='dark'?'light':'dark');$('profileLight').onclick=()=>setWebTheme('light');$('profileDark').onclick=()=>setWebTheme('dark');$('search').addEventListener('input',()=>{libraryLimit=60;renderLibrary()});$('reset').onclick=()=>{if(confirm('Reset this browser’s beta progress?')){state={...defaultState,theme:state.theme};save();show('today')}};try{const embedded=$('embeddedQuestionCatalog');let data=embedded?JSON.parse(embedded.textContent):null;if(!Array.isArray(data)||!data.length){const response=await fetch('./questions.json');if(!response.ok)throw Error(String(response.status));data=await response.json()}if(!Array.isArray(data)||!data.length)throw Error('empty catalog');questions=data.filter(x=>x&&typeof x.prompt==='string'&&Array.isArray(x.answers)&&x.answers.length===3&&Number.isInteger(x.correct)&&x.correct>=0&&x.correct<3);if(!questions.length)throw Error('no valid questions');renderHome();renderLibrary()}catch(e){$('dailyFactBody').textContent='Questions are currently unavailable. Try refreshing the page.';console.error('Question catalog unavailable',e)}}init();
+async function init(){document.documentElement.dataset.theme=state.theme;renderNav();try{learningCards=JSON.parse($('embeddedLearningCards')?.textContent||'[]')}catch{learningCards=[]};document.body.addEventListener('click',e=>{const topic=e.target.closest('[data-topic]');if(topic){state.filter=topic.getAttribute('data-topic');save();show('library');return;}const b=e.target.closest('[data-view]');if(b){show(b.getAttribute('data-view'));return;}});$('start').onclick=()=>show('challenge');$('extraBegin').onclick=()=>startChallenge(true);$('chaosBegin').onclick=()=>startChallenge(true,true);$('seasonalQuiz').onclick=()=>startChallenge(true,false,'earth');$('learnNext').onclick=()=>{readingIndex++;renderLearn()};$('homeExtraRound').onclick=()=>startChallenge(true);$('homeChaos').onclick=()=>startChallenge(true,true);$('extraRound').onclick=()=>startChallenge(true);$('progressPractice').onclick=()=>startChallenge(true);$('topicSelect').onchange=()=>{state.filter=$('topicSelect').value;libraryLimit=60;save();renderLibrary()};$('libraryLoadMore').onclick=()=>{libraryLimit+=60;renderLibrary()};$('topicRandom').onclick=()=>{const opts=['all',...new Set(questions.map(q=>q.category))];if(opts.length>1){state.filter=opts[1+Math.floor(Math.random()*(opts.length-1))];save();renderLibrary()}};$('continue').onclick=next;$('themeToggle').onclick=()=>setWebTheme(state.theme==='dark'?'light':'dark');$('profileLight').onclick=()=>setWebTheme('light');$('profileDark').onclick=()=>setWebTheme('dark');$('search').addEventListener('input',()=>{libraryLimit=60;renderLibrary()});$('reset').onclick=()=>{if(confirm('Reset this browser’s beta progress?')){state={...defaultState,theme:state.theme};save();show('today')}};try{const embedded=$('embeddedQuestionCatalog');let data=embedded?JSON.parse(embedded.textContent):null;if(!Array.isArray(data)||!data.length){const response=await fetch('./questions.json');if(!response.ok)throw Error(String(response.status));data=await response.json()}if(!Array.isArray(data)||!data.length)throw Error('empty catalog');questions=data.filter(x=>x&&typeof x.prompt==='string'&&Array.isArray(x.answers)&&x.answers.length===3&&Number.isInteger(x.correct)&&x.correct>=0&&x.correct<3);if(!questions.length)throw Error('no valid questions');renderHome();renderLibrary()}catch(e){$('dailyFactBody').textContent='Questions are currently unavailable. Try refreshing the page.';console.error('Question catalog unavailable',e)}}init();
