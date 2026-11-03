@@ -1,6 +1,6 @@
 'use strict';
 const KEY='ocw:web-beta:v1';
-const defaultState={results:{},points:0,claimed:{},topicActivity:[],theme:'dark',filter:'all'};
+const defaultState={results:{},points:0,claimed:{},topicActivity:[],interests:[],theme:'dark',filter:'all'};
 let state;try{state={...defaultState,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{state={...defaultState}};
 let questions=[],daily=[],step=0,score=0,selected=null,practiceMode=false,chaosMode=false,roundAnswers=[],readingIndex=0,practiceCategory=null;
 const $=id=>document.getElementById(id);
@@ -16,10 +16,19 @@ function show(view){if(view==='challenge'){startChallenge();return}document.quer
 function dailyQuestionSet(){const len=questions.length;if(!len)return [];const idx=dayIndex();const used=new Set();return Array.from({length:3},(_,i)=>{let n=((idx*7+i*31)%len+len)%len;while(used.has(n))n=(n+1)%len;used.add(n);return questions[n]})}
 function startChallenge(isPractice=false,isChaos=false,category=null){practiceMode=!!isPractice;chaosMode=!!isChaos;practiceCategory=category;if(!questions.length){alert('Questions could not be loaded. Please refresh.');return}daily=practiceMode?practiceSet(chaosMode,practiceCategory):dailyQuestionSet();step=0;score=0;selected=null;roundAnswers=[];document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id==='challenge'));document.querySelectorAll('[data-view]').forEach(el=>el.classList.toggle('active',el.getAttribute('data-view')==='challenge'));$('finish').classList.add('hidden');if(!practiceMode&&state.results[dayKey()]){showFinished(true)}else renderQuestion();scrollTo(0,0)}
 function practiceSet(chaos=false,category=null){const bank=category?questions.filter(q=>q.category===category):chaos?questions.filter(q=>['reasoning','science','psychology','mathematics'].includes(q.category)):questions;const pool=bank.length>=3?bank:questions;const len=pool.length;const n=Number(state.practiceCount)||0;const used=new Set();return Array.from({length:Math.min(3,len)},(_,i)=>{let k=((n*19+dayIndex()*5+i*17)%len+len)%len;while(used.has(k))k=(k+1)%len;used.add(k);return pool[k]})}
-function renderQuestion(){selected=null;const q=daily[step];$('phase').textContent=chaosMode?'CHAOS · '+['TRAP','TWIST','REALITY CHECK'][step]:practiceCategory?practiceCategory.toUpperCase()+' · '+(step+1)+'/3':['WARM-UP','THINK DEEPER','STRETCH'][step];$('counter').textContent=(step+1)+' / 3';$('bar').style.width=((step+1)/3*100)+'%';$('question').textContent=q.prompt;$('answers').replaceChildren(...q.answers.map((answer,i)=>{const b=h('button',{type:'button',className:'answer'},String.fromCharCode(65+i)+'.  '+answer);b.addEventListener('click',()=>answerQuestion(i));return b}));$('reveal').classList.add('hidden');$('continue').classList.add('hidden')}
-function answerQuestion(i){if(selected!==null)return;selected=i;const q=daily[step];roundAnswers[step]={category:q.category,correct:i===q.correct};if(i===q.correct)score++;for(const [j,btn] of [...$('answers').children].entries()){btn.disabled=true;if(j===q.correct)btn.classList.add('good');else if(j===i)btn.classList.add('bad')}$('reveal').replaceChildren(h('strong',{},i===q.correct?'Annoyingly good.':'Well, that was a confident mistake.'),h('p',{},q.reveal),h('p',{className:'muted'},q.takeaway));$('reveal').classList.remove('hidden');$('continue').textContent=step===2?'SEE RESULTS →':'NEXT QUESTION →';$('continue').classList.remove('hidden')}
+function renderQuestion(){selected=null;const q=daily[step];$('phase').textContent=chaosMode?'CHAOS · '+['TRAP','TWIST','REALITY CHECK'][step]:practiceCategory?practiceCategory.toUpperCase()+' · '+(step+1)+'/3':['WARM-UP','THINK DEEPER','STRETCH'][step];$('counter').textContent=(step+1)+' / 3';$('bar').style.width=((step+1)/3*100)+'%';$('question').textContent=q.prompt;$('answers').replaceChildren(...q.answers.map((answer,i)=>{const b=h('button',{type:'button',className:'answer'},String.fromCharCode(65+i)+'.  '+answer);b.addEventListener('click',()=>answerQuestion(i));return b}));$('reveal').classList.add('hidden');$('challengeReflection').classList.add('hidden');$('continue').classList.add('hidden')}
+function answerQuestion(i){if(selected!==null)return;selected=i;const q=daily[step];roundAnswers[step]={category:q.category,correct:i===q.correct};if(i===q.correct)score++;for(const [j,btn] of [...$('answers').children].entries()){btn.disabled=true;if(j===q.correct)btn.classList.add('good');else if(j===i)btn.classList.add('bad')}$('reveal').replaceChildren(h('strong',{},i===q.correct?'Annoyingly good.':'Well, that was a confident mistake.'),h('p',{},q.reveal),h('p',{className:'muted'},q.takeaway));renderReflection(q);$('reveal').classList.remove('hidden');$('continue').textContent=step===2?'SEE RESULTS →':'NEXT QUESTION →';$('continue').classList.remove('hidden')}
+function renderReflection(q){
+ const wrap=$('challengeReflection');wrap.classList.remove('hidden');
+ $('reflectionQuestion').textContent='Which idea should you remember from this answer?';
+ $('reflectionOptions').replaceChildren();
+ const correct=q.takeaway;
+ const bad='The first answer you see is always right.';
+ [correct,bad].forEach((textValue,i)=>{const button=h('button',{type:'button'},textValue);button.onclick=()=>{[...$('reflectionOptions').children].forEach(x=>x.disabled=true);$('reflectionFeedback').textContent=i===0?'Exactly. That is the insight worth keeping.':'Not quite. Look at the takeaway above — the explanation matters more than a quick guess.';};$('reflectionOptions').append(button)});
+ $('reflectionFeedback').textContent='Optional check — no extra points.';
+}
 function next(){if(selected===null)return;if(step<2){step++;renderQuestion()}else{if(practiceMode){state.practiceCount=(Number(state.practiceCount)||0)+1;state.practiceBest=Math.max(Number(state.practiceBest)||0,score)}else{state.results[dayKey()]={score,total:3};state.points=Math.max(0,Number(state.points)||0)+score;}if(!Array.isArray(state.topicActivity))state.topicActivity=[];for(const answer of roundAnswers){if(answer&&typeof answer.category==='string')state.topicActivity.push({category:answer.category,kind:'answer',correct:answer.correct})}save();showFinished(false);renderHome()}}
-function showFinished(previous){$('question').textContent='';$('answers').replaceChildren();$('reveal').classList.add('hidden');$('continue').classList.add('hidden');$('phase').textContent='COMPLETE';$('counter').textContent='3 / 3';$('bar').style.width='100%';const val=previous?state.results[dayKey()].score:score;$('finishTitle').textContent=val===3?'Okay. You are annoyingly good at this.':val===2?'Almost. Your ego survives.':val===1?'At least you learned something.':'That was a reality check.';$('finishDescription').textContent=val+' / 3 correct · '+(previous?'You already played today. Come back tomorrow.':(practiceMode?'Practice result saved · No extra streak day or mastery points.':'Your score has been saved on this browser.'));$('finish').classList.remove('hidden')}
+function showFinished(previous){$('question').textContent='';$('answers').replaceChildren();$('reveal').classList.add('hidden');$('challengeReflection').classList.add('hidden');$('continue').classList.add('hidden');$('phase').textContent='COMPLETE';$('counter').textContent='3 / 3';$('bar').style.width='100%';const val=previous?state.results[dayKey()].score:score;$('finishTitle').textContent=val===3?'Okay. You are annoyingly good at this.':val===2?'Almost. Your ego survives.':val===1?'At least you learned something.':'That was a reality check.';$('finishDescription').textContent=val+' / 3 correct · '+(previous?'You already played today. Come back tomorrow.':(practiceMode?'Practice result saved · No extra streak day or mastery points.':'Your score has been saved on this browser.'));$('finish').classList.remove('hidden')}
 function renderHome(){const d=state.results[dayKey()];$('homeStreak').textContent=getStreak();$('homeLevel').textContent=level();$('homePoints').textContent=(Number(state.points)||0)+' points';$('homeScore').textContent=d?d.score+'/3':'—';const q=questions[(dayIndex()*13%Math.max(questions.length,1)+Math.max(questions.length,1))%Math.max(questions.length,1)];if(q){$('dailyFactTitle').textContent=q.prompt;$('dailyFactBody').textContent=q.takeaway;const id='read-'+dayKey();$('dailyFactClaim').disabled=!!state.claimed[id];$('dailyFactClaim').textContent=state.claimed[id]?'+1 point claimed':'I read it · Claim +1 point';$('dailyFactClaim').onclick=()=>{if(state.claimed[id])return;state.claimed[id]=true;state.points++;if(!Array.isArray(state.topicActivity))state.topicActivity=[];state.topicActivity.push({category:q.category,kind:'read'});save();renderHome()}}}
 const SEASONAL_STORIES=[
  {title:'The planet leans into it',category:'SCIENCE OF THE SEASONS',body:'Earth’s axis is tilted by about 23.4 degrees. As Earth moves around the Sun, changes in daylight length and the angle of sunlight produce our seasons — not primarily Earth’s changing distance from the Sun.',source:'NASA Space Place',url:'https://spaceplace.nasa.gov/seasons/en/'},
@@ -35,18 +44,18 @@ function claimReading(id,category,callback){
 }
 function renderLearn(){
  if(!questions.length){$('learnTitle').textContent='Your next idea is loading…';$('learnExplanation').textContent='Try again after the catalog loads.';return;}
- const q=questions[((readingIndex%questions.length)+questions.length)%questions.length];
+ const interests=Array.isArray(state.interests)?state.interests:[];const preferred=questions.filter(q=>interests.includes(q.category));const pool=preferred.length?preferred:questions;const q=pool[((readingIndex%pool.length)+pool.length)%pool.length];
  const id='question-'+questions.indexOf(q);
  $('learnCategory').textContent=q.category.toUpperCase();
  $('learnTitle').textContent=q.prompt;
  $('learnExplanation').textContent=q.reveal;
- $('learnTakeaway').textContent=q.takeaway;
+ $('learnTakeaway').textContent=q.takeaway;$('learnThought').textContent='Where might this fact challenge something you assumed before?';$('learnQuiz').onclick=()=>startChallenge(true,false,q.category);
  $('learnClaim').disabled=!!state.claimed[id];
  $('learnClaim').textContent=state.claimed[id]?'POINT ALREADY CLAIMED':'I READ IT · CLAIM +1';
  $('learnClaim').onclick=()=>claimReading(id,q.category,renderLearn);
 }
 function renderTopics(){
- const categories=[...new Set(questions.map(q=>q.category))].sort();
+ const interests=Array.isArray(state.interests)?state.interests:[];const categories=[...new Set(questions.map(q=>q.category))].sort((a,b)=>Number(interests.includes(b))-Number(interests.includes(a))||a.localeCompare(b));
  $('topicsChoiceGrid').replaceChildren(...categories.map(category=>{
   const count=questions.filter(q=>q.category===category).length;
   const b=h('article',{className:'topic-choice'});
@@ -67,7 +76,23 @@ function renderSeasonal(){
  }));
 }
 function renderLibrary(){const categories=['all',...new Set(questions.map(x=>x.category))];$('topicSelect').replaceChildren(...categories.map(name=>h('option',{value:name},name==='all'?'All topics':name[0].toUpperCase()+name.slice(1))));$('topicSelect').value=categories.includes(state.filter)?state.filter:'all';$('chips').replaceChildren(...categories.map(name=>{const b=h('button',{type:'button',className:'chip '+(state.filter===name?'selected':'')},name[0].toUpperCase()+name.slice(1));b.onclick=()=>{state.filter=name;save();renderLibrary()};return b}));const query=$('search').value.trim().toLowerCase();const filtered=questions.filter(q=>(state.filter==='all'||q.category===state.filter)&&[q.prompt,q.reveal,q.takeaway,...q.answers].join(' ').toLowerCase().includes(query));$('resultCount').textContent=filtered.length+' results';$('libraryGrid').replaceChildren(...filtered.slice(0,60).map(q=>{const id='question-'+questions.indexOf(q);const card=h('article',{className:'panel'});card.append(h('span',{className:'tag'},q.category.toUpperCase()),h('div',{className:'cardtitle'},q.prompt),h('p',{className:'muted'},q.takeaway));const button=h('button',{type:'button',className:'button ghost mini'},state.claimed[id]?'POINT CLAIMED':'READ · CLAIM +1');button.disabled=!!state.claimed[id];button.onclick=()=>{if(state.claimed[id])return;state.claimed[id]=true;state.points++;if(!Array.isArray(state.topicActivity))state.topicActivity=[];state.topicActivity.push({category:q.category,kind:'read'});save();renderLibrary()};card.append(button);return card}));if(filtered.length>60)$('libraryGrid').append(h('p',{className:'muted'},'Showing the first 60 matching cards. Narrow your search to see more.'))}
+function renderInterests(){
+ const grid=$('interestChoices');if(!grid)return;
+ const interests=Array.isArray(state.interests)?state.interests:[];
+ const categories=[...new Set(questions.map(q=>q.category))].sort();
+ grid.replaceChildren(...categories.map(category=>{
+  const button=h('button',{type:'button',className:'interest-choice'},category.charAt(0).toUpperCase()+category.slice(1));
+  button.setAttribute('aria-pressed',String(interests.includes(category)));
+  button.onclick=()=>{
+   const chosen=Array.isArray(state.interests)?state.interests:[];
+   state.interests=chosen.includes(category)?chosen.filter(c=>c!==category):[...chosen,category];
+   save();renderInterests();
+  };
+  return button;
+ }));
+}
 function renderProfile(){
+ renderInterests();
  $('profileStreak').textContent=getStreak();
  $('profileLevel').textContent=level();
  $('profilePoints').textContent=Number(state.points)||0;
@@ -104,8 +129,20 @@ function renderKnowledgeMap(){
   track.append(fill);container.append(upper,track);return container;
  }));
 }
+function renderWeekComparison(){
+ const el=$('weekComparison');if(!el)return;
+ const rows=[{name:'Previous 7 days',offset:13},{name:'Recent 7 days',offset:6}];
+ el.replaceChildren(...rows.map(({name,offset})=>{
+  let count=0;
+  for(let i=offset;i>offset-7;i--){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-i);if(state.results[dayKey(d)])count++;}
+  const row=h('div',{className:'week-comparison-row'});row.append(h('span',{},name));
+  const track=h('div',{className:'week-comparison-track',role:'meter','aria-label':name+' completed Daily Challenges','aria-valuemin':'0','aria-valuemax':'7','aria-valuenow':String(count)});
+  const bar=h('div',{className:'week-comparison-fill'});bar.style.width=(count/7*100)+'%';track.append(bar);row.append(track,h('strong',{},count+' / 7'));return row;
+ }));
+}
 function renderProgress(){
  renderKnowledgeMap();
+ renderWeekComparison();
  const pts=Math.max(0,Number(state.points)||0);
  const currentLevel=level();
  const lower=(currentLevel-1)*10;
