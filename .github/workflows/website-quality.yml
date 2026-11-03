@@ -10,6 +10,8 @@ on:
       - "i18n.js"
       - "app.js"
       - "scripts/**"
+      - "styles.css"
+      - "index.html"
       - ".github/workflows/website-quality.yml"
   workflow_dispatch:
 
@@ -31,5 +33,7 @@ jobs:
           node-version: '22'
       - name: Audit website content
         run: node scripts/audit-content.cjs
+      - name: Verify mobile layout contract
+        run: node scripts/test-layout-contract.cjs
       - name: Run existing website regression suite
         run: node scripts/test-logic.cjs
