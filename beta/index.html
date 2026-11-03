@@ -147,6 +147,30 @@ main{padding-bottom:100px}h1,h2,h3{font-family:Georgia,'Times New Roman',serif;f
 @media(max-width:760px){.progress-heading{align-items:start;flex-direction:column;gap:12px}.progress-hero{grid-template-columns:1fr auto;padding:23px;gap:12px}.progress-hero h2{font-size:32px}.progress-level{min-width:95px;padding:12px}.progress-level-value{font-size:52px}.progress-level-label{font-size:8px}.progress-snapshot{gap:9px}.progress-stat{padding:17px 13px}.progress-stat-value{font-size:37px}.progress-week{gap:5px}.progress-day{padding:11px 1px}.progress-day span{height:29px;width:29px;margin-top:10px}.progress-bottom{padding:23px}}
 @media(max-width:390px){.progress-hero{grid-template-columns:1fr}.progress-level{justify-self:start;display:flex;align-items:center;gap:10px}.progress-level-value{font-size:39px}.progress-week{gap:3px}.progress-day span{height:25px;width:25px;font-size:11px}}
 @media(prefers-reduced-motion:reduce){.progress-track>span{transition:none}}
+
+/* Knowledge map: per-topic participation, without invented skill levels */
+.knowledge-map{margin:24px 0;border:1px solid var(--line);border-radius:26px;background:var(--card);padding:clamp(20px,3vw,33px)}
+.knowledge-map-head{display:flex;align-items:start;justify-content:space-between;gap:15px;margin-bottom:22px}
+.knowledge-map-head h2{font-size:clamp(29px,3vw,38px);margin:7px 0 8px}.knowledge-map-head p{margin:0;font-size:13px}
+.knowledge-map-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(230px,.65fr);gap:20px}
+.knowledge-map-main{border:1px solid var(--line);border-radius:19px;padding:22px;min-width:0}
+.knowledge-map-caption{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:19px;font-size:13px}
+.knowledge-map-caption span{font-size:11px;color:var(--muted)}
+.knowledge-map-list{display:grid;gap:17px}
+.knowledge-map-row{display:grid;gap:7px}.knowledge-map-row-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.knowledge-map-row-top strong{font-size:13px}.knowledge-map-row-top small{font-size:11px;color:var(--muted);text-align:right}
+.knowledge-map-track{height:9px;border-radius:999px;overflow:hidden;background:var(--soft)}
+.knowledge-map-fill{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#294659,#bda16d);min-width:0}
+.knowledge-map-row-empty .knowledge-map-fill{width:0!important}
+.knowledge-map-side{border-radius:19px;background:linear-gradient(135deg,#ece5d5,#f7f1e5);padding:25px;color:#243b4b;display:flex;flex-direction:column;align-items:start;gap:8px}
+.knowledge-map-side .eyebrow{color:#79552b}.knowledge-map-side .muted{color:#555e62;margin:0}
+.knowledge-map-side .button{margin-top:auto;background:#fff8ea;color:#243b4b}
+.knowledge-map-aside-symbol{font:400 34px Georgia,serif;color:#a9894f}
+.knowledge-map-big{font:400 68px/1 Georgia,serif;margin:10px 0 0}
+.knowledge-map-insight{font:400 18px/1.4 Georgia,serif;margin:15px 0 23px;max-width:290px}
+.knowledge-map-footnote{font-size:12px;color:var(--muted);margin:16px 2px 0;line-height:1.65}
+@media(max-width:900px){.knowledge-map-grid{grid-template-columns:1fr}.knowledge-map-side{min-height:190px}.knowledge-map-insight{margin:5px 0 14px}}
+@media(max-width:760px){.knowledge-map{padding:19px;margin-top:19px}.knowledge-map-head{flex-direction:column}.knowledge-map-main{padding:16px}.knowledge-map-caption{align-items:start;flex-direction:column;gap:3px}.knowledge-map-row-top small{font-size:10px}.knowledge-map-side{padding:20px}.knowledge-map-big{font-size:51px}}
 </style></head><body><div class="container">
 <header class="top"><button class="brand" type="button" data-view="today" aria-label="One Card Wiser — go to home" style="border:0;background:transparent;color:inherit;cursor:pointer;text-align:left;padding:0"><span>1W</span> ONE CARD WISER</button><nav class="nav" id="nav"></nav><button class="chip" id="themeToggle" aria-label="Toggle theme">◑ Theme</button></header>
 <main>
@@ -181,6 +205,11 @@ main{padding-bottom:100px}h1,h2,h3{font-family:Georgia,'Times New Roman',serif;f
 <section class="progress-panel"><div class="progress-panel-heading"><div><div class="eyebrow">CONSISTENCY</div><h2>Your last seven days</h2></div><span class="progress-side-note" id="progressWeekCount">0 / 7 days</span></div><p class="muted">A completed Daily Challenge marks a day. Optional rounds don't add streak days.</p><div id="week" class="progress-week" aria-label="Last seven days of Daily Challenges"></div><div class="progress-key"><span><i class="progress-dot"></i> Daily completed</span><span><i class="progress-dot muted-dot"></i> No daily result</span></div></section>
 <section class="progress-panel"><div class="progress-panel-heading"><div><div class="eyebrow">YOUR PERSONAL BEST</div><h2>One more round?</h2></div><span class="progress-symbol" aria-hidden="true">✳</span></div><div class="progress-best"><span class="progress-best-number" id="practiceBest">—</span><span class="muted">best correct answers in 3</span></div><p class="muted" id="practiceCount">0 rounds played</p><button type="button" class="button" id="progressPractice">TRY EXTRA ROUNDS ↗</button><p class="profile-note">Practice scores are tracked separately and don't grant additional daily streaks or points in this beta.</p></section>
 </div>
+<section class="knowledge-map" aria-labelledby="knowledgeMapTitle">
+<div class="knowledge-map-head"><div><div class="eyebrow">YOUR KNOWLEDGE MAP</div><h2 id="knowledgeMapTitle">Where curiosity takes you.</h2><p class="muted">Discover the subjects you engage with most — and where you might explore next.</p></div><span class="profile-private">BASED ON RECORDED ACTIVITY</span></div>
+<div class="knowledge-map-grid"><div class="knowledge-map-main"><div class="knowledge-map-caption"><strong>Topics you've explored</strong><span>Activity, not a knowledge score</span></div><div id="knowledgeMapList" class="knowledge-map-list" aria-live="polite"><p class="muted">Complete a challenge or read a card to start your map.</p></div></div><aside class="knowledge-map-side"><div class="knowledge-map-aside-symbol" aria-hidden="true">✳</div><div class="eyebrow">YOUR EXPLORATION</div><div class="knowledge-map-big" id="knowledgeTopicCount">0</div><p class="muted">topics with recorded activity</p><div class="knowledge-map-insight" id="knowledgeMapInsight">Every curious mind starts somewhere.</div><button class="button ghost mini" type="button" data-view="library">EXPLORE MORE TOPICS ↗</button></aside></div>
+<p class="knowledge-map-footnote">Each bar compares recorded question answers and claimed reading cards by topic; it does not measure intelligence or expertise. Earlier challenge results only saved total scores, so their topic breakdown cannot be reconstructed. Practice contributes to activity but not extra daily streaks or rewards.</p>
+</section>
 <section class="progress-bottom"><div><div class="eyebrow">YOUR NEXT MOVE</div><h2>Less scrolling. More knowing.</h2><p>Choose a fresh challenge, or explore something worth remembering.</p></div><div class="row"><button type="button" class="button" data-view="challenge">DAILY CHALLENGE ↗</button><button type="button" class="button ghost" data-view="library">EXPLORE LIBRARY ↗</button></div></section>
 <p class="progress-disclaimer">This progress is saved locally in the current browser. It isn't synced with your mobile account. Your points and levels here use the web beta's temporary rules and may differ from the mobile app.</p>
 </section>
