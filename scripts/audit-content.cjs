@@ -20,7 +20,7 @@ const errors = [];
 const fail = (id, message) => errors.push(`${id}: ${message}`);
 const seen = new Set();
 const perTopic = Object.fromEntries(Object.keys(topics).map((id) => [id, 0]));
-const normalized = (s) => String(s).normalize("NFKC").trim().toLocaleLowerCase().replace(/\\s+/g, " ");
+const normalized = (s) => String(s).normalize("NFKC").trim().toLocaleLowerCase().replace(/\s+/g, " ");
 const questionKeys = Object.fromEntries(locales.map((lang) => [lang, new Map()]));
 
 for (const card of cards) {
@@ -33,7 +33,7 @@ for (const card of cards) {
   for (const field of ["title", "hook", "concept", "example", "takeaway", "sourceName"]) {
     if (typeof card[field] !== "string" || !card[field].trim()) fail(id, `missing ${field}`);
   }
-  if (typeof card.sourceUrl !== "string" || !/^https:\/\/[^/\\s]+/.test(card.sourceUrl)) fail(id, "invalid HTTPS source URL");
+  if (typeof card.sourceUrl !== "string" || !/^https:\/\/[^/\s]+/.test(card.sourceUrl)) fail(id, "invalid HTTPS source URL");
   const quiz = quizzes[id];
   if (!quiz) { fail(id, "missing quiz"); continue; }
   if (!Number.isInteger(quiz.answer) || quiz.answer < 0 || quiz.answer > 2) fail(id, "invalid correct-answer index");
